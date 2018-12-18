@@ -1,0 +1,11 @@
+name: HumineShop
+main: com.humine.main.ShopMain
+author: MizakiGaming
+version: 1.0a
+commands:
+  gemme:
+    usage: /gemme
+    description: Voir le nombre de gemme
+  shop:
+    usage: /shop
+    description: ouvre la boutique de cosmetique
