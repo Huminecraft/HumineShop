@@ -20,48 +20,51 @@ public class Page {
 		this.cosmetiques = new ArrayList<Cosmetique>();
 		this.limit = (9 * 4);
 		this.title = "";
-		this.inventory = Bukkit.createInventory(null, (this.limit * 9), this.title);
+		this.inventory = Bukkit.createInventory(null, (this.limit + 9), this.title);
 	
-		this.inventory.setItem(this.limit, addArrow("Précédent"));
-		this.inventory.setItem((this.limit * 9)-1, addArrow("Suivant"));
+		this.inventory.setItem(this.limit, addArrow("Precedent"));
+		this.inventory.setItem((this.limit + 9)-1, addArrow("Suivant"));
 	}
 	
 	public Page(String title) {
 		this.cosmetiques = new ArrayList<Cosmetique>();
 		this.limit = (9 * 4);
 		this.title = title;
-		this.inventory = Bukkit.createInventory(null, (this.limit * 9), this.title);
+		this.inventory = Bukkit.createInventory(null, (this.limit + 9), this.title);
 	
-		this.inventory.setItem(this.limit, addArrow("Précédent"));
-		this.inventory.setItem((this.limit * 9)-1, addArrow("Suivant"));
+		this.inventory.setItem(this.limit, addArrow("Precedent"));
+		this.inventory.setItem((this.limit + 9)-1, addArrow("Suivant"));
 	}
 	
 	public Page(String title, int numberOfLine) {
 		this.cosmetiques = new ArrayList<Cosmetique>();
 		this.limit = (9 * numberOfLine);
 		this.title = title;
-		this.inventory = Bukkit.createInventory(null, (this.limit * 9), this.title);
+		this.inventory = Bukkit.createInventory(null, (this.limit + 9), this.title);
 	
-		this.inventory.setItem(this.limit, addArrow("Précédent"));
-		this.inventory.setItem((this.limit * 9)-1, addArrow("Suivant"));
+		this.inventory.setItem(this.limit, addArrow("Precedent"));
+		this.inventory.setItem((this.limit + 9)-1, addArrow("Suivant"));
 	}
 	
 	private ItemStack addArrow(String name) {
 		ItemStack item = new ItemStack(Material.ARROW);
 		ItemMeta meta = item.getItemMeta();
-		meta.setDisplayName(ChatColor.AQUA + name);
+		meta.setDisplayName(ChatColor.AQUA + "" + ChatColor.ITALIC + name);
 		item.setItemMeta(meta);
 		
 		return item;
 	}
 	
 	public void addCosmetique(Cosmetique cosmetique) {
-		if(this.limit > this.cosmetiques.size())
+		if(this.limit > this.cosmetiques.size()) {
 			this.cosmetiques.add(cosmetique);
+			this.inventory.setItem(this.cosmetiques.size()-1, cosmetique.getBlockRepresentation());
+		}
 	}
 	
 	public void removeCosmetique(Cosmetique cosmetique) {
 		this.cosmetiques.remove(cosmetique);
+		this.inventory.remove(cosmetique.getBlockRepresentation());
 	}
 	
 	public boolean containsCosmetique(Cosmetique cosmetique) {
@@ -70,6 +73,10 @@ public class Page {
 	
 	public boolean hasReachLimit() {
 		return this.limit <= this.cosmetiques.size();
+	}
+	
+	public boolean isEmpty() {
+		return this.cosmetiques.isEmpty();
 	}
 
 	public ArrayList<Cosmetique> getCosmetiques() {
@@ -102,5 +109,9 @@ public class Page {
 
 	public void setTitle(String title) {
 		this.title = title;
+		
+		Inventory inv = Bukkit.createInventory(null, (this.limit + 9), this.title);
+		inv.setContents(this.inventory.getContents());
+		this.inventory = inv;
 	}
 }

@@ -21,30 +21,30 @@ public class Cosmetique {
 		this.price = 0;
 		this.name = "";
 		this.particle = Particle.CLOUD;
-		this.blockRepresentation = generateBlock("Default", this.price);
+		this.blockRepresentation = generateBlock("Default", this.price, Material.RED_WOOL);
 	}
 	
 	public Cosmetique(String name) {
 		this.price = 0;
 		this.name = name;
 		this.particle = Particle.CLOUD;
-		this.blockRepresentation = generateBlock(this.name, this.price);
+		this.blockRepresentation = generateBlock(this.name, this.price, Material.RED_WOOL);
 	}
 	
 	public Cosmetique(String name, int price) {
 		this.price = price;
 		this.name = name;
 		this.particle = Particle.CLOUD;
-		this.blockRepresentation = generateBlock(this.name, this.price);
+		this.blockRepresentation = generateBlock(this.name, this.price, Material.RED_WOOL);
 	}
 	
-	private ItemStack generateBlock(String name, int price) {
-		ItemStack item = new ItemStack(Material.RED_WOOL);
+	private ItemStack generateBlock(String name, int price, Material material) {
+		ItemStack item = new ItemStack(material);
 		List<String> lores = new ArrayList<String>();
 		
 		lores.add("Prix: " + ChatColor.GREEN + price);
 		ItemMeta meta = item.getItemMeta();
-		meta.setDisplayName(name);
+		meta.setDisplayName(ChatColor.WHITE + name);
 		meta.setLore(lores);
 		
 		item.setItemMeta(meta);

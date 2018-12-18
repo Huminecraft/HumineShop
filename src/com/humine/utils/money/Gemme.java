@@ -8,6 +8,10 @@ public class Gemme {
 		this.gemme = 0;
 	}
 	
+	public Gemme(int number) {
+		this.gemme = number;
+	}
+	
 	public void addGemme(int gemme) {
 		this.gemme += gemme;
 	}

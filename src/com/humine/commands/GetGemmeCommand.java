@@ -1,5 +1,6 @@
 package com.humine.commands;
 
+import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -17,9 +18,11 @@ public class GetGemmeCommand implements CommandExecutor{
 			Player player = (Player) sender;
 			if(ShopMain.getInstance().getGemmeManager().containsPlayer(player))
 			{
-				ShopMain.sendMessage(player, "Nombre de gemme: " + ShopMain.getInstance().getGemmeManager().getGemme(player));
+				ShopMain.sendMessage(player, "Nombre de gemme: " + ChatColor.GREEN + ShopMain.getInstance().getGemmeManager().getGemme(player).getGemme());
 				return true;
 			}
+			else
+				ShopMain.sendMessage(player, "Vous n'avez pas de compte avec des gemmes, veuillez le signaler aux administrateurs");
 		}
 		
 		return false;
