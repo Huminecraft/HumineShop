@@ -20,7 +20,7 @@ public abstract class Presentation
 
 	public static void openPresentation(Cosmetique cosmetique, Player player)
 	{
-		inv = Bukkit.createInventory(player, (9 * 3), ShopMain.getInstance().getShop().getName() + cosmetique.getName());
+		inv = Bukkit.createInventory(player, (9 * 3), ShopMain.getInstance().getShop().getName() + " " + cosmetique.getName());
 		
 		Cosmetique c = cosmetique;
 		c.setBlockRepresentation(blockBuy(c.getPrice(), player));
