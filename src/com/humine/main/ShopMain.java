@@ -10,8 +10,8 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import com.humine.commands.GetGemmeCommand;
-import com.humine.commands.OpenShopCommand;
+import com.humine.commands.GemmeGetCommand;
+import com.humine.commands.ShopOpenCommand;
 import com.humine.events.GemmeOnJoinEvent;
 import com.humine.events.ShopClickItemEvent;
 import com.humine.events.ShopMoveItemEvent;
@@ -84,8 +84,8 @@ public class ShopMain extends JavaPlugin{
 	}
 	
 	private void initializeCommands() {
-		this.getCommand("gemme").setExecutor(new GetGemmeCommand());
-		this.getCommand("shop").setExecutor(new OpenShopCommand());
+		this.getCommand("gemme").setExecutor(new GemmeGetCommand());
+		this.getCommand("shop").setExecutor(new ShopOpenCommand());
 	}
 	
 	private void initializeEvents() {

@@ -9,18 +9,23 @@ import org.bukkit.Particle;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import com.humine.utils.shop.utils.CosmetiqueEffect;
+
 public class Cosmetique {
 
 	private Particle particle;
 	private int price;
 	private String name;
+	private CosmetiqueEffect type;
 	
 	private ItemStack blockRepresentation;
+	private ItemStack block;
 	
 	public Cosmetique() {
 		this.price = 0;
 		this.name = "";
 		this.particle = Particle.CLOUD;
+		this.type = CosmetiqueEffect.NOTHING;
 		this.blockRepresentation = generateBlock("Default", this.price, Material.RED_WOOL);
 	}
 	
@@ -28,6 +33,7 @@ public class Cosmetique {
 		this.price = 0;
 		this.name = name;
 		this.particle = Particle.CLOUD;
+		this.type = CosmetiqueEffect.NOTHING;
 		this.blockRepresentation = generateBlock(this.name, this.price, Material.RED_WOOL);
 	}
 	
@@ -35,6 +41,7 @@ public class Cosmetique {
 		this.price = price;
 		this.name = name;
 		this.particle = Particle.CLOUD;
+		this.type = CosmetiqueEffect.NOTHING;
 		this.blockRepresentation = generateBlock(this.name, this.price, Material.RED_WOOL);
 	}
 	
@@ -82,6 +89,22 @@ public class Cosmetique {
 
 	public void setBlockRepresentation(ItemStack blockRepresentation) {
 		this.blockRepresentation = blockRepresentation;
+	}
+
+	public CosmetiqueEffect getType() {
+		return type;
+	}
+
+	public void setType(CosmetiqueEffect type) {
+		this.type = type;
+	}
+
+	public ItemStack getBlock() {
+		return block;
+	}
+
+	public void setBlock(ItemStack block) {
+		this.block = block;
 	}
 
 	@Override

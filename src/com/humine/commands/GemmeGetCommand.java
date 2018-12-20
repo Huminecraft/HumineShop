@@ -8,7 +8,7 @@ import org.bukkit.entity.Player;
 
 import com.humine.main.ShopMain;
 
-public class GetGemmeCommand implements CommandExecutor{
+public class GemmeGetCommand implements CommandExecutor{
 
 	@Override
 	public boolean onCommand(CommandSender sender, Command arg1, String arg2, String[] args) {
