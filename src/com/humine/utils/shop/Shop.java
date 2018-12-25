@@ -12,7 +12,6 @@ public class Shop {
 
 	private ArrayList<Page> pages;
 	private String name;
-	
 	private HashMap<String, Integer> players;
 	
 	public Shop() {

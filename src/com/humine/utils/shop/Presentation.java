@@ -13,40 +13,37 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import com.humine.main.ShopMain;
 
-public abstract class Presentation
-{
+public abstract class Presentation {
 
 	private static Inventory inv;
 
-	public static void openPresentation(Cosmetique cosmetique, Player player)
-	{
-		inv = Bukkit.createInventory(player, (9 * 3), ShopMain.getInstance().getShop().getName() + cosmetique.getName());
-		
-		Cosmetique c = cosmetique;
-		c.setBlockRepresentation(blockBuy(c.getPrice(), player));
-		inv.setItem(14, c.getBlockRepresentation());
-		
-		c.setBlockRepresentation(blockTest());
-		inv.setItem(12, c.getBlockRepresentation());
-		
+	public static void openPresentation(Cosmetique cosmetique, Player player) {
+		inv = Bukkit.createInventory(player, (9 * 3), ShopMain.getInstance().getShop().getName());
+
+		inv.setItem(14, blockBuy(cosmetique, player));
+
+		inv.setItem(12, blockTest(cosmetique));
+
 		inv.setItem(18, addArrow("Retour"));
-		
+
 		player.openInventory(inv);
 	}
 
-	private static ItemStack blockBuy(int price, Player player)
-	{
+	private static ItemStack blockBuy(Cosmetique cosmetique, Player player) {
 		ItemStack item = new ItemStack(Material.GREEN_WOOL);
 		ItemMeta meta = item.getItemMeta();
 
 		List<String> lores = new ArrayList<String>();
-		lores.add("Prix: " + ChatColor.GREEN + price);
+
+		if (ShopMain.getInstance().getGemmeManager().getGemme(player).getGemme() >= cosmetique.getPrice())
+			lores.add(ChatColor.BOLD + "" + ChatColor.GREEN + "Acheter !");
+		else
+			lores.add(ChatColor.BOLD + "" + ChatColor.RED + "Vous n'avez pas assez de gemme(s) !");
+
+		lores.add("Prix: " + ChatColor.GREEN + cosmetique.getPrice());
 		lores.add("Vous avez " + ShopMain.getInstance().getGemmeManager().getGemme(player).getGemme() + " gemme(s)");
 
-		if (ShopMain.getInstance().getGemmeManager().getGemme(player).getGemme() >= price)
-			meta.setDisplayName(ChatColor.BOLD + "" + ChatColor.GREEN + "Acheter !");
-		else
-			meta.setDisplayName(ChatColor.BOLD + "" + ChatColor.RED + "Vous n'avez pas assez de gemme(s) !");
+		meta.setDisplayName(cosmetique.getName());
 
 		meta.setLore(lores);
 
@@ -54,26 +51,29 @@ public abstract class Presentation
 		return item;
 
 	}
-	
-	private static ItemStack blockTest()
-	{
+
+	private static ItemStack blockTest(Cosmetique cosmetique) {
 		ItemStack item = new ItemStack(Material.PURPLE_WOOL);
 		ItemMeta meta = item.getItemMeta();
+		ArrayList<String> lores = new ArrayList<String>();
 
+		meta.setDisplayName(cosmetique.getName());
 
-		meta.setDisplayName(ChatColor.BOLD + "" + ChatColor.LIGHT_PURPLE + "Essayer le !");
-
+		lores.add(ChatColor.BOLD + "" + ChatColor.LIGHT_PURPLE + "Essayer le !");
+		meta.setLore(lores);
+		
 		item.setItemMeta(meta);
+		
 		return item;
 
 	}
-	
+
 	private static ItemStack addArrow(String name) {
 		ItemStack item = new ItemStack(Material.ARROW);
 		ItemMeta meta = item.getItemMeta();
 		meta.setDisplayName(ChatColor.AQUA + "" + ChatColor.ITALIC + name);
 		item.setItemMeta(meta);
-		
+
 		return item;
 	}
 }

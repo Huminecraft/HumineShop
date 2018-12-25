@@ -12,7 +12,7 @@ import com.humine.main.ShopMain;
 import com.humine.utils.shop.Cosmetique;
 import com.humine.utils.shop.Presentation;
 
-public class ShopClickItemEvent implements Listener
+public class ShopClickItemInShopEvent implements Listener
 {
 
 	@EventHandler

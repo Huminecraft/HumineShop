@@ -13,7 +13,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import com.humine.commands.GemmeGetCommand;
 import com.humine.commands.ShopOpenCommand;
 import com.humine.events.GemmeOnJoinEvent;
-import com.humine.events.ShopClickItemEvent;
+import com.humine.events.ShopClickItemInShopEvent;
 import com.humine.events.ShopMoveItemEvent;
 import com.humine.utils.money.GemmeManager;
 import com.humine.utils.shop.Cosmetique;
@@ -89,7 +89,7 @@ public class ShopMain extends JavaPlugin{
 	}
 	
 	private void initializeEvents() {
-		this.getServer().getPluginManager().registerEvents(new ShopClickItemEvent(), this);
+		this.getServer().getPluginManager().registerEvents(new ShopClickItemInShopEvent(), this);
 		this.getServer().getPluginManager().registerEvents(new ShopMoveItemEvent(), this);
 		this.getServer().getPluginManager().registerEvents(new GemmeOnJoinEvent(), this);
 	}
