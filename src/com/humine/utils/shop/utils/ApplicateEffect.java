@@ -22,6 +22,19 @@ public abstract class ApplicateEffect {
 	}
 	
 	public static void playEffectOnPlayer(Player player, Cosmetique cosmetique) {
-		
+		if(cosmetique.getType() != CosmetiqueEffect.NOTHING) {
+			while(true) {
+				player.getWorld().spawnParticle(cosmetique.getParticle(), player.getLocation(), 2);
+				try
+				{
+					Thread.sleep(50);
+				}
+				catch (InterruptedException e)
+				{
+					e.printStackTrace();
+				}
+			}
+		}
 	}
+	
 }

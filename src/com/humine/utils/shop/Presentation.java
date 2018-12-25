@@ -61,9 +61,9 @@ public abstract class Presentation {
 
 		lores.add(ChatColor.BOLD + "" + ChatColor.LIGHT_PURPLE + "Essayer le !");
 		meta.setLore(lores);
-		
+
 		item.setItemMeta(meta);
-		
+
 		return item;
 
 	}

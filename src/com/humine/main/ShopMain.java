@@ -41,6 +41,10 @@ public class ShopMain extends JavaPlugin{
 			this.shop.addCosmetique(c.get(i));
 		}
 		
+		for(int i = 5; i < 70; i = i + 2) {
+			this.shop.removeCosmetique(c.get(i));
+		}
+		
 		this.saveDefaultConfig();
 		
 		initializeGemmes();
