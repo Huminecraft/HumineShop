@@ -77,6 +77,16 @@ public class Page
 		this.cosmetiques.add(cosmetique);
 		this.inventory.setItem(slot, cosmetique.getBlockRepresentation());
 	}
+	
+	public Cosmetique getCosmetique(String name) {
+		
+		for(Cosmetique c : this.cosmetiques) {
+			if(c.getName().equals(name))
+				return c;
+		}
+		
+		return null;
+	}
 
 	public Cosmetique getCosmetique(int index)
 	{

@@ -16,6 +16,7 @@ import com.humine.events.GemmeOnJoinEvent;
 import com.humine.events.ShopClickItemInShopEvent;
 import com.humine.events.ShopMoveItemEvent;
 import com.humine.utils.money.GemmeManager;
+import com.humine.utils.player.CosmetiquePlayerManager;
 import com.humine.utils.shop.Cosmetique;
 import com.humine.utils.shop.Shop;
 
@@ -23,13 +24,16 @@ public class ShopMain extends JavaPlugin{
 
 	private static ShopMain instance;
 	private GemmeManager gemmeManager;
+	private CosmetiquePlayerManager cosmetiquePlayerManager;
 	private Shop shop;
 	
 	private File gemmeFile;
+	
 	@Override
 	public void onEnable() {
 		instance = this;
 		this.gemmeManager = new GemmeManager();
+		this.cosmetiquePlayerManager = new CosmetiquePlayerManager();
 		this.shop = new Shop();
 		
 		for(Player player : Bukkit.getOnlinePlayers())
@@ -37,7 +41,7 @@ public class ShopMain extends JavaPlugin{
 		
 		ArrayList<Cosmetique> c = new ArrayList<>();
 		for(int i = 0; i < 100; i++) {
-			c.add(new Cosmetique("itemDebug #" + i, i*10));
+			c.add(new Cosmetique("itemTest #" + i, i*10));
 			this.shop.addCosmetique(c.get(i));
 		}
 		
@@ -121,5 +125,13 @@ public class ShopMain extends JavaPlugin{
 
 	public void setShop(Shop shop) {
 		this.shop = shop;
+	}
+
+	public CosmetiquePlayerManager getCosmetiquePlayerManager() {
+		return cosmetiquePlayerManager;
+	}
+
+	public void setCosmetiquePlayerManager(CosmetiquePlayerManager cosmetiquePlayerManager) {
+		this.cosmetiquePlayerManager = cosmetiquePlayerManager;
 	}
 }

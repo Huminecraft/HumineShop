@@ -18,7 +18,7 @@ public abstract class Presentation {
 	private static Inventory inv;
 
 	public static void openPresentation(Cosmetique cosmetique, Player player) {
-		inv = Bukkit.createInventory(player, (9 * 3), ShopMain.getInstance().getShop().getName());
+		inv = Bukkit.createInventory(player, (9 * 3), "Présentation");
 
 		inv.setItem(14, blockBuy(cosmetique, player));
 
@@ -42,6 +42,7 @@ public abstract class Presentation {
 
 		lores.add("Prix: " + ChatColor.GREEN + cosmetique.getPrice());
 		lores.add("Vous avez " + ShopMain.getInstance().getGemmeManager().getGemme(player).getGemme() + " gemme(s)");
+		lores.add("Buy");
 
 		meta.setDisplayName(cosmetique.getName());
 
@@ -60,6 +61,7 @@ public abstract class Presentation {
 		meta.setDisplayName(cosmetique.getName());
 
 		lores.add(ChatColor.BOLD + "" + ChatColor.LIGHT_PURPLE + "Essayer le !");
+		lores.add("Try");
 		meta.setLore(lores);
 
 		item.setItemMeta(meta);
