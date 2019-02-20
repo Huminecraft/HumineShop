@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 
 import com.humine.main.ShopMain;
 
@@ -127,19 +126,34 @@ public class Shop {
 	{
 		return this.pages.get(this.pages.size() - 1);
 	}
-
-	public Cosmetique getCosmetique(ItemStack item)
-	{
-		for (Page page : this.pages)
-		{
-			for (Cosmetique cosmetique : page.getCosmetiques())
-			{
-				if (cosmetique.getBlockRepresentation().isSimilar(item))
-					return cosmetique;
-			}
-		}
-
+	
+	public Page getPage(int index) {
+		if(index < this.pages.size())
+			return this.pages.get(index);
+		
 		return null;
+	}
+	
+	public Cosmetique getCosmetique(String name) {
+		Cosmetique c;
+		for(Page page : this.pages) {
+			c = page.getCosmetique(name);
+			
+			if(c != null)
+				return c;
+		}
+		
+		return null;
+	}
+	
+	public Cosmetique getCosmetique(String name, Page page) {
+		Cosmetique c;
+		c = page.getCosmetique(name);
+		
+		if(c != null)
+			return c;
+		else
+			return null;
 	}
 
 	private void refreshNamePage()

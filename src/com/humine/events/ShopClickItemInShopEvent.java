@@ -18,7 +18,8 @@ public class ShopClickItemInShopEvent implements Listener
 	@EventHandler
 	public void onClick(InventoryClickEvent event)
 	{
-		if (event.getInventory().getName().contains(ShopMain.getInstance().getShop().getName()))
+		
+		if (event.getInventory().getName().startsWith(ShopMain.getInstance().getShop().getName()))
 		{
 			if (event.getCurrentItem() != null)
 			{
@@ -53,7 +54,7 @@ public class ShopClickItemInShopEvent implements Listener
 
 	private void blockToPresentation(ItemStack item, Player player)
 	{
-		Cosmetique cosmetique = ShopMain.getInstance().getShop().getCosmetique(item);
+		Cosmetique cosmetique = ShopMain.getInstance().getShop().getCosmetique(item.getItemMeta().getDisplayName());
 
 		if (cosmetique != null)
 		{

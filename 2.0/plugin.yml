@@ -1,0 +1,18 @@
+name: HumineShop
+main: humine.main.MainShop
+version: 1.2
+author: MizakiGaming
+commands:
+  shop:
+    usage:
+    description: ouvrir le shop
+    permission:
+  money:
+    usage:
+    description:
+    permission:
+  ccp:
+    usage:
+    description:
+    permission:
+  
