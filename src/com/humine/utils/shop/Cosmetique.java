@@ -19,7 +19,7 @@ public class Cosmetique {
 	private CosmetiqueEffect type;
 	
 	private ItemStack blockRepresentation;
-	private ItemStack block;
+	private ItemStack item;
 	
 	public Cosmetique() {
 		this.price = 0;
@@ -99,12 +99,12 @@ public class Cosmetique {
 		this.type = type;
 	}
 
-	public ItemStack getBlock() {
-		return block;
+	public ItemStack getItem() {
+		return item;
 	}
 
-	public void setBlock(ItemStack block) {
-		this.block = block;
+	public void setItem(ItemStack item) {
+		this.item = item;
 	}
 
 	@Override
