@@ -226,7 +226,7 @@ public class Inventories {
 		index.delete();
 		
 		for(File file : folder.listFiles()) {
-			Stock stock = new Stock("", "");
+			Stock stock = new Stock("");
 			stock.load(file);
 			this.stocks.add(stock);
 		}
