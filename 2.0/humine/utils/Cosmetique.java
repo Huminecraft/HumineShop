@@ -20,7 +20,7 @@ public abstract class Cosmetique {
 	public static int NumId = 0;
 	
 	static {
-		File file = new File(MainShop.getInstance().getDataFolder(), "ID.yml");
+		File file = MainShop.getInstance().getIDFile();
 		if(file.exists()) {
 			FileConfiguration config = YamlConfiguration.loadConfiguration(file);
 			if(config.contains("cosmetique")) {

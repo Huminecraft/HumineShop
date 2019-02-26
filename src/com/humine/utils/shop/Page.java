@@ -9,6 +9,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+
 public class Page
 {
 
@@ -157,7 +158,6 @@ public class Page
 	public void setTitle(String title)
 	{
 		this.title = title;
-
 		Inventory inv = Bukkit.createInventory(null, (this.limit + 9), this.title);
 		inv.setContents(this.inventory.getContents());
 		this.inventory = inv;

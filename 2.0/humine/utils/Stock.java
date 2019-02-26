@@ -19,7 +19,7 @@ public class Stock {
 	private static int NumId = 0;
 	
 	static {
-		File file = new File(MainShop.getInstance().getDataFolder(), "ID.yml");
+		File file = MainShop.getInstance().getIDFile();
 		if(file.exists()) {
 			FileConfiguration config = YamlConfiguration.loadConfiguration(file);
 			if(config.contains("stock")) {
@@ -217,7 +217,7 @@ public class Stock {
 		
 		File pageFile;
 		for(Page page : this.pages) {
-			pageFile = new File(folder, page.getId()+".yml");
+			pageFile = new File(folder, page.getId());
 			page.save(pageFile);
 		}
 		

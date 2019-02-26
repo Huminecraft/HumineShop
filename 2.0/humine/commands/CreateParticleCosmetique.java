@@ -49,6 +49,13 @@ public class CreateParticleCosmetique implements CommandExecutor{
 		ParticleCosmetique cosmetique = new ParticleCosmetique(args[0], material, price, particle);
 		Utils.addCosmetique(MainShop.getInstance().getShop(), cosmetique);
 		
+		MainShop.sendMessage(sender, "Cosmetique de Particule créée !");
+		MainShop.sendMessage(sender, "nom: " + cosmetique.getName());
+		MainShop.sendMessage(sender, "id: #" + cosmetique.getId());
+		MainShop.sendMessage(sender, "prix: " + cosmetique.getPrice());
+		MainShop.sendMessage(sender, "Item presentation: " + cosmetique.getItemShop());
+		MainShop.sendMessage(sender, "effet particule: " + cosmetique.getParticleEffect());
+		
 		return true;
 	}
 	
@@ -67,7 +74,7 @@ public class CreateParticleCosmetique implements CommandExecutor{
 				return false;
 			}
 		}
-		return false;
+		return true;
 	}
 	
 	private int getParticle(String particle) {
