@@ -18,7 +18,7 @@ public class Inventories {
 	private static int NumId = 0;
 	
 	static {
-		File file = new File(MainShop.getInstance().getDataFolder(), "ID.yml");
+		File file = MainShop.getInstance().getIDFile();
 		if(file.exists()) {
 			FileConfiguration config = YamlConfiguration.loadConfiguration(file);
 			if(config.contains("inventories")) {
@@ -202,7 +202,7 @@ public class Inventories {
 		
 		File pageFile;
 		for(Stock stock : this.stocks) {
-			pageFile = new File(folder, stock.getId()+".yml");
+			pageFile = new File(folder, stock.getId());
 			stock.save(pageFile);
 		}
 	}
@@ -226,7 +226,7 @@ public class Inventories {
 		index.delete();
 		
 		for(File file : folder.listFiles()) {
-			Stock stock = new Stock("", "");
+			Stock stock = new Stock("");
 			stock.load(file);
 			this.stocks.add(stock);
 		}

@@ -46,12 +46,26 @@ public class ParticleCosmetique extends Cosmetique{
 	 */
 	@Override
 	public void save(File file) {
+		if(!file.exists()) {
+			try {
+				file.createNewFile();
+			} catch (IOException e) {
+				System.err.println("Erreur dans la creation du fichier");
+				e.printStackTrace();
+				return;
+			}
+		}
+		
 		FileConfiguration config = YamlConfiguration.loadConfiguration(file);
+		config.set("id", this.getId());
+		config.set("name", this.getName());
+		config.set("prix", this.getPrice());
+		config.set("itemshop", this.getItemShop().toString());
 		config.set("particle", this.particleEffect.toString());
 		try {
 			config.save(file);
 		} catch (IOException e) {
-			System.err.println("Erreur enregistrement particule");
+			System.err.println("Erreur enregistrement fichier");
 			e.printStackTrace();
 			return;
 		}
@@ -63,13 +77,20 @@ public class ParticleCosmetique extends Cosmetique{
 	 */
 	@Override
 	public void load(File file) {
+		if(!file.exists())
+			return;
+		
 		FileConfiguration config = YamlConfiguration.loadConfiguration(file);
 
-		if(!config.contains("particle")) {
-			System.err.println("Erreur parametre (particle) manquant dans le fichier " + file.getName());
+		if(!config.contains("id") || !config.contains("name") || !config.contains("itemshop") || !config.contains("particle")) {
+			System.err.println("Erreur parametre manquant dans le fichier " + file.getName());
 			return;
 		}
 		
+		this.setId(config.getString("id"));
+		this.setName(config.getString("name"));
+		this.setPrice(config.getInt("prix"));
+		this.setItemShop(Material.matchMaterial(config.getString("itemshop")));
 		this.particleEffect = Particle.valueOf(config.getString("particle"));
 	}
 

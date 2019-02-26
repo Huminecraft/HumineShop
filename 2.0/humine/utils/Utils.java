@@ -1,7 +1,9 @@
 package humine.utils;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map.Entry;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -10,8 +12,10 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.plugin.Plugin;
 
-import com.humine.main.ShopMain;
+import com.aypi.utils.Timer;
+import com.aypi.utils.inter.TimerFinishListener;
 
 import humine.main.MainShop;
 
@@ -19,6 +23,10 @@ import humine.main.MainShop;
 
 public abstract class Utils {
 
+	
+	private static HashMap<Player, Cosmetique> tryList = new HashMap<Player, Cosmetique>();
+	private static HashMap<Player, Cosmetique> BuyList = new HashMap<Player, Cosmetique>();
+	
 	/**
 	 * Ouvrir la premiere page de la boutique au joueur, ne fait rien
 	 * si la boutique est vide
@@ -36,6 +44,11 @@ public abstract class Utils {
 				inv.addItem(item);
 			}
 		}
+		
+		inv.setItem(inv.getSize() - 9, addArrow("Retour"));
+		inv.setItem(inv.getSize() - 5, itemStock());
+		inv.setItem(inv.getSize() - 4, itemRandomShop());
+		inv.setItem(inv.getSize() - 1, addArrow("Suivant"));
 		
 		shop.getPlayersOnShop().put(player, 1);
 		player.openInventory(inv);
@@ -63,6 +76,11 @@ public abstract class Utils {
 			}
 		}
 		
+		inv.setItem(inv.getSize() - 9, addArrow("Retour"));
+		inv.setItem(inv.getSize() - 5, itemStock());
+		inv.setItem(inv.getSize() - 4, itemRandomShop());
+		inv.setItem(inv.getSize() - 1, addArrow("Suivant"));
+		
 		shop.getPlayersOnShop().replace(player, page);
 		player.openInventory(inv);
 	}
@@ -88,6 +106,11 @@ public abstract class Utils {
 				inv.addItem(item);
 			}
 		}
+		
+		inv.setItem(inv.getSize() - 9, addArrow("Retour"));
+		inv.setItem(inv.getSize() - 5, itemStock());
+		inv.setItem(inv.getSize() - 4, itemRandomShop());
+		inv.setItem(inv.getSize() - 1, addArrow("Suivant"));
 		
 		shop.getPlayersOnShop().replace(player, page);
 		player.openInventory(inv);
@@ -116,6 +139,11 @@ public abstract class Utils {
 			}
 		}
 		
+		inv.setItem(inv.getSize() - 9, addArrow("Retour"));
+		inv.setItem(inv.getSize() - 5, itemStock());
+		inv.setItem(inv.getSize() - 4, itemRandomShop());
+		inv.setItem(inv.getSize() - 1, addArrow("Suivant"));
+		
 		shop.getPlayersOnShop().replace(player, page);
 		player.openInventory(inv);
 	}
@@ -137,7 +165,7 @@ public abstract class Utils {
 			}
 		}
 		else {
-			Page page = new Page("Page 1", 36);
+			Page page = new Page("Page 1", (9 * 4));
 			page.addCosmetique(cosmetique);
 			shop.addPage(page);
 		}
@@ -152,6 +180,14 @@ public abstract class Utils {
 		ItemStack item = new ItemStack(c.getItemShop());
 		ItemMeta meta = item.getItemMeta();
 		meta.setDisplayName(c.getName() + " #" + c.getId());
+		
+		ArrayList<String> lores = new ArrayList<String>();
+		lores.add("Prix: " + c.getPrice());
+		if(c instanceof ParticleCosmetique) {
+			lores.add("Effet particule: " + ((ParticleCosmetique) c).getParticleEffect().name().toLowerCase());
+		}
+		
+		meta.setLore(lores);
 		item.setItemMeta(meta);
 		return item;
 	}
@@ -162,7 +198,7 @@ public abstract class Utils {
 	 * @param cosmetique
 	 */
 	public static void openPresentation(Player player, Cosmetique cosmetique) {
-		Inventory inv = Bukkit.createInventory(player, (9 * 3), "Présentation #" + cosmetique.getId());
+		Inventory inv = Bukkit.createInventory(player, (9 * 3), "Presentation #" + cosmetique.getId());
 
 		inv.setItem(14, blockBuy(cosmetique, player));
 		inv.setItem(12, blockTest(cosmetique));
@@ -174,9 +210,21 @@ public abstract class Utils {
 	private static ItemStack blockBuy(Cosmetique cosmetique, Player player) {
 		ItemStack item = new ItemStack(Material.GREEN_WOOL);
 		ItemMeta meta = item.getItemMeta();
-
+		meta.setDisplayName(cosmetique.getName());
+		
 		List<String> lores = new ArrayList<String>();
-
+		
+		if(MainShop.getInstance().getInventories().containsStockOfPlayer(player.getName())) {
+			for(Page page : MainShop.getInstance().getInventories().getStockOfPlayer(player.getName()).getPages()) {
+				if(page.containsCosmetique(cosmetique)) {
+					lores.add("Vous avez deja ce cosmetique");
+					meta.setLore(lores);
+					item.setItemMeta(meta);
+					return item;
+				}
+			}
+		}
+		
 		if (MainShop.getInstance().getBank().getMoney(player) >= cosmetique.getPrice())
 			lores.add(ChatColor.BOLD + "" + ChatColor.GREEN + "Acheter !");
 		else
@@ -185,8 +233,6 @@ public abstract class Utils {
 		lores.add("Prix: " + ChatColor.GREEN + cosmetique.getPrice());
 		lores.add("Vous avez " + MainShop.getInstance().getBank().getMoney(player) + " " + MainShop.getInstance().getBank().getNameValue());
 		lores.add("Buy");
-
-		meta.setDisplayName(cosmetique.getName());
 
 		meta.setLore(lores);
 
@@ -219,5 +265,93 @@ public abstract class Utils {
 		item.setItemMeta(meta);
 
 		return item;
+	}
+	
+	private static ItemStack itemStock() {
+		ItemStack item = new ItemStack(Material.ENDER_PEARL);
+		ItemMeta meta = item.getItemMeta();
+		meta.setDisplayName(ChatColor.AQUA + "" + ChatColor.ITALIC + "Vos cosmetiques");
+		item.setItemMeta(meta);
+
+		return item;
+	}
+	
+	private static ItemStack itemRandomShop() {
+		ItemStack item = new ItemStack(Material.BOOK);
+		ItemMeta meta = item.getItemMeta();
+		meta.setDisplayName(ChatColor.AQUA + "" + ChatColor.ITALIC + "Boutique Aleatoire");
+		item.setItemMeta(meta);
+
+		return item;
+	}
+	
+	public static void lauchTryCosmetique(Player player, Cosmetique cosmetique, Plugin plugin) {
+		if(cosmetique instanceof ParticleCosmetique) {
+			tryList.put(player, cosmetique);
+			Timer timer = new Timer(plugin, 5, new TimerFinishListener() {
+				
+				@Override
+				public void execute()
+				{
+					tryList.remove(player);
+				}
+			});
+			timer.start();
+		}
+		
+	}
+	
+	public static void lauchBuyCosmetique(Player player, Cosmetique cosmetique) {
+		if(cosmetique instanceof ParticleCosmetique) {
+			BuyList.put(player, cosmetique);
+		}
+	}
+	
+	public static void disableParticleCosmetique(Player player) {
+		BuyList.remove(player);
+		tryList.remove(player);
+	}
+	
+	public static void schedulerTryCosmetique(Plugin plugin) {
+		
+		Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, new Runnable() {
+			public void run()
+			{
+				for(Entry<Player, Cosmetique> entry : tryList.entrySet()) {
+					ParticleCosmetique c = (ParticleCosmetique) entry.getValue();
+					entry.getKey().getWorld().spawnParticle(c.getParticleEffect(), entry.getKey().getLocation().getX(), entry.getKey().getLocation().getY()+1.0, entry.getKey().getLocation().getZ(), 30, 0.3, 0.3, 0.3, 1.0, null);
+				}
+			}
+		}, 0L, 15L);
+	}
+	
+	public static void schedulerBuyCosmetique(Plugin plugin) {
+		Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, new Runnable() {
+			public void run()
+			{
+				for(Entry<Player, Cosmetique> entry : tryList.entrySet()) {
+					ParticleCosmetique c = (ParticleCosmetique) entry.getValue();
+					entry.getKey().getWorld().spawnParticle(c.getParticleEffect(), entry.getKey().getLocation().getX(), entry.getKey().getLocation().getY()+1.0, entry.getKey().getLocation().getZ(), 30, 0.3, 0.3, 0.3, 1.0, null);
+				}
+			}
+		}, 0L, 15L);
+	}
+	
+	public static void addCosmetiqueToStock(Player player, Cosmetique cosmetique, Inventories inv) {
+		Stock stock = inv.getStockOfPlayer(player.getName());
+		if(stock == null)
+			return;
+		
+		if(stock.isEmpty()) {
+			Page page = new Page("Page 1", (9 * 4));
+			stock.addPage(page);
+		}
+		
+		if(stock.getLastPage().isFull()) {
+			Page page = new Page("Page " + stock.getPages().size() + 1, (9 * 4));
+			stock.addPage(page);
+		}
+		
+		stock.getLastPage().addCosmetique(cosmetique);
 	}
 }
