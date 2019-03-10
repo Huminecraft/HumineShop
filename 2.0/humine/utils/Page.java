@@ -291,8 +291,10 @@ public class Page
 	 */
 	public void save(File folder)
 	{
-		if (!folder.exists() || !folder.isDirectory())
-			folder.mkdirs();
+		if(folder.exists())
+			folder.delete();
+		
+		folder.mkdirs();
 
 		File index = new File(folder, "index.yml");
 		if (!index.exists())

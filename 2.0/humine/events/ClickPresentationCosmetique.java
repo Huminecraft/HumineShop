@@ -9,6 +9,7 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import humine.main.MainShop;
 import humine.utils.Cosmetique;
 import humine.utils.Page;
+import humine.utils.Stock;
 import humine.utils.Utils;
 
 public class ClickPresentationCosmetique implements Listener
@@ -31,7 +32,19 @@ public class ClickPresentationCosmetique implements Listener
 				MainShop.getInstance().getShop().getPlayersOnShop().remove(player);
 			}
 			else if(event.getCurrentItem().getItemMeta().getLore() != null && event.getCurrentItem().getItemMeta().getLore().contains("Buy")) {
-				MainShop.sendMessage(player, "BUY CLICKED");
+				Cosmetique c = getCosmetique(event.getInventory().getName().split("#")[1]);
+				if(c != null) {
+					if(MainShop.getInstance().getBank().getMoney(player) >= c.getPrice()) {
+						Stock stock = MainShop.getInstance().getInventories().getStockOfPlayer(player.getName());
+						if(stock != null) {
+							Utils.addCosmetique(stock, c);
+							player.closeInventory();
+							MainShop.sendMessage(player, "Cosmetique acheté !");
+							MainShop.getInstance().getBank().removeMoney(player, c.getPrice());
+						}
+					}
+				}
+				
 			}
 			else {
 				if(event.getCurrentItem().getItemMeta().getDisplayName().contains("Retour")) {

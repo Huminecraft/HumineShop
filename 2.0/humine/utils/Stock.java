@@ -2,50 +2,19 @@ package humine.utils;
 
 import java.io.File;
 import java.io.IOException;
-import java.time.LocalDate;
 import java.util.ArrayList;
 
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
-import humine.main.MainShop;
+public class Stock extends Shop{
 
-public class Stock {
-
-	private String id;
+	
 	private String owner;
-	private ArrayList<Page> pages;
-	
-	private static int NumId = 0;
-	
-	static {
-		File file = MainShop.getInstance().getIDFile();
-		if(file.exists()) {
-			FileConfiguration config = YamlConfiguration.loadConfiguration(file);
-			if(config.contains("stock")) {
-				NumId = config.getInt("stock");
-			}
-			else {
-				config.set("stock", NumId);
-				try {
-					config.save(file);
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			}
-		}
-	}
 	
 	public Stock(String owner) {
+		super(owner);
 		this.owner = owner;
-		this.pages = new ArrayList<Page>();
-		
-		this.id = "" + LocalDate.now().getYear();
-		this.id = this.id.substring(2);
-		this.id += LocalDate.now().getDayOfYear();
-		this.id += NumId;
-		
-		NumId++;
 	}
 	
 	/**
@@ -205,7 +174,7 @@ public class Stock {
 		}
 		
 		FileConfiguration config = YamlConfiguration.loadConfiguration(index);
-		config.set("id", this.id);
+		config.set("id", this.getId());
 		config.set("owner", this.owner);
 		try {
 			config.save(index);
@@ -249,9 +218,6 @@ public class Stock {
 		}
 	}
 
-	public String getId() {
-		return id;
-	}
 
 	public String getOwner() {
 		return owner;
@@ -262,6 +228,6 @@ public class Stock {
 	}
 
 	public static int getNumId() {
-		return NumId;
+		return getNumId();
 	}
 }

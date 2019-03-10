@@ -20,4 +20,12 @@ commands:
     usage:
     description:
     permission:
+  tccp:
+    usage:
+    description:
+    permission:
+  rc:
+    usage:
+    description:
+    permission:
   

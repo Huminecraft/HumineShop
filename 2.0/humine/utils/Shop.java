@@ -15,10 +15,10 @@ import humine.main.MainShop;
 
 public class Shop {
 
-	private String id;
+	protected String id;
 	private String name;
-	private ArrayList<Page> pages;
-	private HashMap<Player, Integer> playersOnShop;
+	protected ArrayList<Page> pages;
+	protected HashMap<Player, Integer> playersOnShop;
 	
 	private static int NumId = 0;
 	

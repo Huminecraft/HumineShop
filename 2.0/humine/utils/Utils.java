@@ -1,5 +1,7 @@
 package humine.utils;
 
+import java.io.File;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -27,6 +29,7 @@ public abstract class Utils {
 	private static HashMap<Player, Cosmetique> tryList = new HashMap<Player, Cosmetique>();
 	private static HashMap<Player, Cosmetique> BuyList = new HashMap<Player, Cosmetique>();
 	
+	private static int size = (9 * 4);
 	/**
 	 * Ouvrir la premiere page de la boutique au joueur, ne fait rien
 	 * si la boutique est vide
@@ -34,8 +37,9 @@ public abstract class Utils {
 	 * @param player a qui ouvrir la boutique
 	 */
 	public static void openShop(Shop shop, Player player) {
-		if(shop.isEmpty())
+		if(shop.isEmpty()) {
 			return;
+		}
 		
 		Inventory inv = Bukkit.createInventory(player, shop.getFirstPage().getSize()+9, shop.getName());
 		for(int i = 0; i < shop.getFirstPage().getSize(); i++) {
@@ -51,6 +55,26 @@ public abstract class Utils {
 		inv.setItem(inv.getSize() - 1, addArrow("Suivant"));
 		
 		shop.getPlayersOnShop().put(player, 1);
+		player.openInventory(inv);
+	}
+	
+	public static void openStock(Stock stock, Player player) {
+		if(stock.isEmpty()) {
+			return;
+		}
+		
+		Inventory inv = Bukkit.createInventory(player, stock.getFirstPage().getSize()+9, "Inventaire");
+		for(int i = 0; i < stock.getFirstPage().getSize(); i++) {
+			if(stock.getFirstPage().getCosmetiques()[i] != null) {
+				ItemStack item = CosmetiqueToItem(stock.getFirstPage().getCosmetiques()[i]);
+				inv.addItem(item);
+			}
+		}
+		
+		inv.setItem(inv.getSize() - 9, addArrow("Retour"));
+		inv.setItem(inv.getSize() - 5, itemQuit());
+		inv.setItem(inv.getSize() - 1, addArrow("Suivant"));
+		
 		player.openInventory(inv);
 	}
 	
@@ -165,7 +189,7 @@ public abstract class Utils {
 			}
 		}
 		else {
-			Page page = new Page("Page 1", (9 * 4));
+			Page page = new Page("Page 1", size);
 			page.addCosmetique(cosmetique);
 			shop.addPage(page);
 		}
@@ -200,6 +224,7 @@ public abstract class Utils {
 	public static void openPresentation(Player player, Cosmetique cosmetique) {
 		Inventory inv = Bukkit.createInventory(player, (9 * 3), "Presentation #" + cosmetique.getId());
 
+		
 		inv.setItem(14, blockBuy(cosmetique, player));
 		inv.setItem(12, blockTest(cosmetique));
 		inv.setItem(18, addArrow("Retour"));
@@ -262,6 +287,15 @@ public abstract class Utils {
 		ItemStack item = new ItemStack(Material.ARROW);
 		ItemMeta meta = item.getItemMeta();
 		meta.setDisplayName(ChatColor.AQUA + "" + ChatColor.ITALIC + name);
+		item.setItemMeta(meta);
+
+		return item;
+	}
+	
+	private static ItemStack itemQuit() {
+		ItemStack item = new ItemStack(Material.ENDER_PEARL);
+		ItemMeta meta = item.getItemMeta();
+		meta.setDisplayName(ChatColor.AQUA + "" + ChatColor.ITALIC + "Quittez");
 		item.setItemMeta(meta);
 
 		return item;
@@ -343,15 +377,37 @@ public abstract class Utils {
 			return;
 		
 		if(stock.isEmpty()) {
-			Page page = new Page("Page 1", (9 * 4));
+			Page page = new Page("Page 1", size);
 			stock.addPage(page);
 		}
 		
 		if(stock.getLastPage().isFull()) {
-			Page page = new Page("Page " + stock.getPages().size() + 1, (9 * 4));
+			Page page = new Page("Page " + stock.getPages().size() + 1, size);
 			stock.addPage(page);
 		}
 		
 		stock.getLastPage().addCosmetique(cosmetique);
+	}
+	
+	
+	public static void registerTemporaryCosmetique(Cosmetique cosmetique, LocalDate date) {
+		File file = new File(MainShop.getInstance().getRandomShopFolder(), date.toString());
+		
+		Page page;
+		if(!file.exists()) {
+			file.mkdirs();
+			page = new Page("Page 1", size);
+			page.addCosmetique(cosmetique);
+			page.save(file);
+		}
+		else {
+			for(File f : file.listFiles()) {
+				if(f.listFiles().length < size) {
+					cosmetique.save(new File(f, cosmetique.getId() + ".yml"));
+					break;
+				}
+			}
+		}
+		
 	}
 }

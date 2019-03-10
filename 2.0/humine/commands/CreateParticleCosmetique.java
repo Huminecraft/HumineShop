@@ -1,5 +1,7 @@
 package humine.commands;
 
+
+
 import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.command.Command;
@@ -16,7 +18,7 @@ public class CreateParticleCosmetique implements CommandExecutor{
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
 		
-		if(args.length < 3) {
+		if(args.length < 4) {
 			MainShop.sendMessage(sender, "Argument insuffisant");
 			MainShop.sendMessage(sender, "/ccp <name> <material> <price> <particle>");
 			return false;
@@ -47,9 +49,10 @@ public class CreateParticleCosmetique implements CommandExecutor{
 		Particle particle = Particle.values()[ordinalParticle];
 		
 		ParticleCosmetique cosmetique = new ParticleCosmetique(args[0], material, price, particle);
+		
 		Utils.addCosmetique(MainShop.getInstance().getShop(), cosmetique);
 		
-		MainShop.sendMessage(sender, "Cosmetique de Particule créée !");
+		MainShop.sendMessage(sender, "Cosmetique de Particule crÃ©Ã©e !");
 		MainShop.sendMessage(sender, "nom: " + cosmetique.getName());
 		MainShop.sendMessage(sender, "id: #" + cosmetique.getId());
 		MainShop.sendMessage(sender, "prix: " + cosmetique.getPrice());
@@ -85,4 +88,5 @@ public class CreateParticleCosmetique implements CommandExecutor{
 		}
 		return -1;
 	}
+	
 }

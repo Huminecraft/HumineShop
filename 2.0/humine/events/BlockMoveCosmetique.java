@@ -18,5 +18,9 @@ public class BlockMoveCosmetique implements Listener{
 		if(event.getInventory().getName().startsWith("Presentation")) {
 			event.setCancelled(true);
 		}
+		
+		if(event.getInventory().getName().startsWith("Inventaire")) {
+			event.setCancelled(true);
+		}
 	}
 }
