@@ -1,4 +1,4 @@
-package humine.events;
+package humine.events.shop;
 
 import org.bukkit.Material;
 import org.bukkit.entity.Player;

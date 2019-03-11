@@ -71,7 +71,7 @@ public class CreateTemporaryParticleCosmetique implements CommandExecutor {
 		Utils.registerTemporaryCosmetique(cosmetique, date);
 		
 		if(date.isEqual(LocalDate.now())) {
-			MainShop.getInstance().getRandomShop().update(MainShop.getInstance().getRandomShopFolder());
+			Utils.addCosmetique(MainShop.getInstance().getRandomShop(), cosmetique);
 		}
 		
 		MainShop.sendMessage(sender, "cosmetique de particule créée !");

@@ -20,6 +20,7 @@ import com.aypi.utils.Timer;
 import com.aypi.utils.inter.TimerFinishListener;
 
 import humine.main.MainShop;
+import humine.utils.randomshop.RandomShop;
 
 
 
@@ -37,6 +38,28 @@ public abstract class Utils {
 	 * @param player a qui ouvrir la boutique
 	 */
 	public static void openShop(Shop shop, Player player) {
+		if(shop.isEmpty()) {
+			return;
+		}
+		
+		Inventory inv = Bukkit.createInventory(player, shop.getFirstPage().getSize()+9, shop.getName());
+		for(int i = 0; i < shop.getFirstPage().getSize(); i++) {
+			if(shop.getFirstPage().getCosmetiques()[i] != null) {
+				ItemStack item = CosmetiqueToItem(shop.getFirstPage().getCosmetiques()[i]);
+				inv.addItem(item);
+			}
+		}
+		
+		inv.setItem(inv.getSize() - 9, addArrow("Retour"));
+		inv.setItem(inv.getSize() - 5, itemStock());
+		inv.setItem(inv.getSize() - 4, itemRandomShop());
+		inv.setItem(inv.getSize() - 1, addArrow("Suivant"));
+		
+		shop.getPlayersOnShop().put(player, 1);
+		player.openInventory(inv);
+	}
+	
+	public static void openRandomShop(RandomShop shop, Player player) {
 		if(shop.isEmpty()) {
 			return;
 		}

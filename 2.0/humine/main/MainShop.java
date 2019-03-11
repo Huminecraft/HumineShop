@@ -16,11 +16,12 @@ import humine.commands.Money;
 import humine.commands.OpenShop;
 import humine.commands.RemoveCosmetique;
 import humine.events.BlockMoveCosmetique;
-import humine.events.ClickCosmetique;
 import humine.events.ClickPresentationCosmetique;
-import humine.events.ClickStock;
 import humine.events.CreateBankAccount;
 import humine.events.CreateStockAccount;
+import humine.events.shop.ClickCosmetique;
+import humine.events.shop.ClickRandomShop;
+import humine.events.shop.ClickStock;
 import humine.utils.Cosmetique;
 import humine.utils.Inventories;
 import humine.utils.Page;
@@ -116,7 +117,7 @@ public class MainShop extends JavaPlugin {
 		this.getServer().getPluginManager().registerEvents(new CreateBankAccount(), this);
 		this.getServer().getPluginManager().registerEvents(new CreateStockAccount(), this);
 		this.getServer().getPluginManager().registerEvents(new ClickStock(), this);
-		
+		this.getServer().getPluginManager().registerEvents(new ClickRandomShop(), this);
 	}
 
 	public static MainShop getInstance() {
