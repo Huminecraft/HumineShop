@@ -9,27 +9,20 @@ import org.bukkit.Particle;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
-import humine.utils.ParticleCosmetique;
 import humine.utils.Prestige;
+import humine.utils.TemporaryCosmetique;
 
-public class TemporaryParticleCosmetique extends ParticleCosmetique{
+public class TemporaryParticleCosmetique extends TemporaryCosmetique{
 
+	private Particle particle;
 	
-	private LocalDate date;
-	private Prestige prestige;
-	
-	public TemporaryParticleCosmetique(String name, Material itemShop, int price, Particle particle, LocalDate date, Prestige prestige) {
-		super(name, itemShop, price, particle);
-		this.date = date;
-		this.prestige = prestige;
+	public TemporaryParticleCosmetique(String name, Material itemShop, int price, LocalDate date, Prestige prestige, Particle particle) {
+		super(name, itemShop, price, date, prestige);
+		this.particle = particle;
 	}
 	
-	public LocalDate getDate() {
-		return date;
-	}
-	
-	public Prestige getPrestige() {
-		return prestige;
+	public Particle getParticle() {
+		return particle;
 	}
 	
 	@Override
@@ -37,8 +30,7 @@ public class TemporaryParticleCosmetique extends ParticleCosmetique{
 		super.save(file);
 		
 		FileConfiguration config = YamlConfiguration.loadConfiguration(file);
-		config.set("date", this.date.toString());
-		config.set("prestige", this.prestige.toString());
+		config.set("particle", this.particle.toString());
 		try {
 			config.save(file);
 		} catch (IOException e) {
@@ -52,16 +44,11 @@ public class TemporaryParticleCosmetique extends ParticleCosmetique{
 		
 		FileConfiguration config = YamlConfiguration.loadConfiguration(file);
 
-		if(!config.contains("date") || !config.contains("prestige")) {
+		if(!config.contains("particle")) {
 			System.err.println("Erreur parametre manquant dans le fichier " + file.getName());
 			return;
 		}
 		
-		int year = Integer.parseInt(config.getString("date").split("-")[0]);
-		int month = Integer.parseInt(config.getString("date").split("-")[1]);
-		int day = Integer.parseInt(config.getString("date").split("-")[2]);
-		
-		this.date = LocalDate.of(year, month, day);
-		this.prestige = Prestige.valueOf(config.getString("prestige"));
+		this.particle = Particle.valueOf(config.getString("particle"));
 	}
 }

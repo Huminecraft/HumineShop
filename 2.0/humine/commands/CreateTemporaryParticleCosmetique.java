@@ -66,7 +66,7 @@ public class CreateTemporaryParticleCosmetique implements CommandExecutor {
 		LocalDate date = getDate(args[4]);
 		Prestige prestige = Prestige.values()[ordinalPrestige];
 		
-		TemporaryParticleCosmetique cosmetique = new TemporaryParticleCosmetique(args[0], material, price, particle, date, prestige);
+		TemporaryParticleCosmetique cosmetique = new TemporaryParticleCosmetique(args[0], material, price, date, prestige, particle);
 		
 		Utils.registerTemporaryCosmetique(cosmetique, date);
 		
@@ -79,7 +79,7 @@ public class CreateTemporaryParticleCosmetique implements CommandExecutor {
 		MainShop.sendMessage(sender, "id: #" + cosmetique.getId());
 		MainShop.sendMessage(sender, "prix: " + cosmetique.getPrice());
 		MainShop.sendMessage(sender, "item presentation: " + cosmetique.getItemShop());
-		MainShop.sendMessage(sender, "effet particule: " + cosmetique.getParticleEffect());
+		MainShop.sendMessage(sender, "effet particule: " + cosmetique.getParticle());
 		MainShop.sendMessage(sender, "date de presentation: " + args[4]);
 		MainShop.sendMessage(sender, "prestige: " + cosmetique.getPrestige().toString());
 		

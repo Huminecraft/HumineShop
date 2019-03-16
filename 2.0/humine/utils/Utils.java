@@ -20,7 +20,6 @@ import com.aypi.utils.Timer;
 import com.aypi.utils.inter.TimerFinishListener;
 
 import humine.main.MainShop;
-import humine.utils.randomshop.RandomShop;
 
 
 
@@ -31,169 +30,7 @@ public abstract class Utils {
 	private static HashMap<Player, Cosmetique> BuyList = new HashMap<Player, Cosmetique>();
 	
 	private static int size = (9 * 4);
-	/**
-	 * Ouvrir la premiere page de la boutique au joueur, ne fait rien
-	 * si la boutique est vide
-	 * @param shop la boutique a ouvrir
-	 * @param player a qui ouvrir la boutique
-	 */
-	public static void openShop(Shop shop, Player player) {
-		if(shop.isEmpty()) {
-			return;
-		}
-		
-		Inventory inv = Bukkit.createInventory(player, shop.getFirstPage().getSize()+9, shop.getName());
-		for(int i = 0; i < shop.getFirstPage().getSize(); i++) {
-			if(shop.getFirstPage().getCosmetiques()[i] != null) {
-				ItemStack item = CosmetiqueToItem(shop.getFirstPage().getCosmetiques()[i]);
-				inv.addItem(item);
-			}
-		}
-		
-		inv.setItem(inv.getSize() - 9, addArrow("Retour"));
-		inv.setItem(inv.getSize() - 5, itemStock());
-		inv.setItem(inv.getSize() - 4, itemRandomShop());
-		inv.setItem(inv.getSize() - 1, addArrow("Suivant"));
-		
-		shop.getPlayersOnShop().put(player, 1);
-		player.openInventory(inv);
-	}
 	
-	public static void openRandomShop(RandomShop shop, Player player) {
-		if(shop.isEmpty()) {
-			return;
-		}
-		
-		Inventory inv = Bukkit.createInventory(player, shop.getFirstPage().getSize()+9, shop.getName());
-		for(int i = 0; i < shop.getFirstPage().getSize(); i++) {
-			if(shop.getFirstPage().getCosmetiques()[i] != null) {
-				ItemStack item = CosmetiqueToItem(shop.getFirstPage().getCosmetiques()[i]);
-				inv.addItem(item);
-			}
-		}
-		
-		inv.setItem(inv.getSize() - 9, addArrow("Retour"));
-		inv.setItem(inv.getSize() - 5, itemStock());
-		inv.setItem(inv.getSize() - 4, itemRandomShop());
-		inv.setItem(inv.getSize() - 1, addArrow("Suivant"));
-		
-		shop.getPlayersOnShop().put(player, 1);
-		player.openInventory(inv);
-	}
-	
-	public static void openStock(Stock stock, Player player) {
-		if(stock.isEmpty()) {
-			return;
-		}
-		
-		Inventory inv = Bukkit.createInventory(player, stock.getFirstPage().getSize()+9, "Inventaire");
-		for(int i = 0; i < stock.getFirstPage().getSize(); i++) {
-			if(stock.getFirstPage().getCosmetiques()[i] != null) {
-				ItemStack item = CosmetiqueToItem(stock.getFirstPage().getCosmetiques()[i]);
-				inv.addItem(item);
-			}
-		}
-		
-		inv.setItem(inv.getSize() - 9, addArrow("Retour"));
-		inv.setItem(inv.getSize() - 5, itemQuit());
-		inv.setItem(inv.getSize() - 1, addArrow("Suivant"));
-		
-		player.openInventory(inv);
-	}
-	
-	/**
-	 * Permet d'aller a la page suivante
-	 * @param shop la boutique en question
-	 * @param player le joueur en question
-	 */
-	public static void nextPage(Shop shop, Player player) {
-		if(shop.isEmpty() || !shop.containsPlayer(player))
-			return;
-		
-		if((shop.getPlayersOnShop().get(player) + 1) > shop.getPages().size())
-			return;
-		
-		int page = shop.getPlayersOnShop().get(player) + 1;
-		
-		Inventory inv = Bukkit.createInventory(player, shop.getPage(page-1).getSize(), shop.getName());
-		for(int i = 0; i < shop.getPage(page-1).getSize(); i++) {
-			if(shop.getPage(page-1).getCosmetiques()[i] != null) {
-				ItemStack item = CosmetiqueToItem(shop.getPage(page-1).getCosmetiques()[i]);
-				inv.addItem(item);
-			}
-		}
-		
-		inv.setItem(inv.getSize() - 9, addArrow("Retour"));
-		inv.setItem(inv.getSize() - 5, itemStock());
-		inv.setItem(inv.getSize() - 4, itemRandomShop());
-		inv.setItem(inv.getSize() - 1, addArrow("Suivant"));
-		
-		shop.getPlayersOnShop().replace(player, page);
-		player.openInventory(inv);
-	}
-	
-	/**
-	 * Permet d'aller a la page precedente
-	 * @param shop la boutique en question
-	 * @param player le joueur en question
-	 */
-	public static void previousPage(Shop shop, Player player) {
-		if(shop.isEmpty() || !shop.containsPlayer(player))
-			return;
-		
-		if((shop.getPlayersOnShop().get(player) - 1) < 1)
-			return;
-		
-		int page = shop.getPlayersOnShop().get(player) - 1;
-		
-		Inventory inv = Bukkit.createInventory(player, shop.getPage(page-1).getSize(), shop.getName());
-		for(int i = 0; i < shop.getPage(page-1).getSize(); i++) {
-			if(shop.getPage(page-1).getCosmetiques()[i] != null) {
-				ItemStack item = CosmetiqueToItem(shop.getPage(page-1).getCosmetiques()[i]);
-				inv.addItem(item);
-			}
-		}
-		
-		inv.setItem(inv.getSize() - 9, addArrow("Retour"));
-		inv.setItem(inv.getSize() - 5, itemStock());
-		inv.setItem(inv.getSize() - 4, itemRandomShop());
-		inv.setItem(inv.getSize() - 1, addArrow("Suivant"));
-		
-		shop.getPlayersOnShop().replace(player, page);
-		player.openInventory(inv);
-	}
-	
-	/**
-	 * Permet d'aller a la page numPage
-	 * @param shop la boutique en question
-	 * @param player le joueur en question
-	 * @param numPage la page voulu
-	 */
-	public static void goToPage(Shop shop, Player player, int numPage) {
-		if(shop.isEmpty() || !shop.containsPlayer(player))
-			return;
-		
-		if((shop.getPlayersOnShop().get(player) + 1) > shop.getPages().size())
-			return;
-		
-		int page = shop.getPlayersOnShop().get(player) + 1;
-		
-		Inventory inv = Bukkit.createInventory(player, shop.getPage(page-1).getSize(), shop.getName());
-		for(int i = 0; i < shop.getPage(page-1).getSize(); i++) {
-			if(shop.getPage(page-1).getCosmetiques()[i] != null) {
-				ItemStack item = CosmetiqueToItem(shop.getPage(page-1).getCosmetiques()[i]);
-				inv.addItem(item);
-			}
-		}
-		
-		inv.setItem(inv.getSize() - 9, addArrow("Retour"));
-		inv.setItem(inv.getSize() - 5, itemStock());
-		inv.setItem(inv.getSize() - 4, itemRandomShop());
-		inv.setItem(inv.getSize() - 1, addArrow("Suivant"));
-		
-		shop.getPlayersOnShop().replace(player, page);
-		player.openInventory(inv);
-	}
 	
 	/**
 	 * ajoute un cosmetique dans un shop
@@ -306,7 +143,7 @@ public abstract class Utils {
 
 	}
 
-	private static ItemStack addArrow(String name) {
+	public static ItemStack addArrow(String name) {
 		ItemStack item = new ItemStack(Material.ARROW);
 		ItemMeta meta = item.getItemMeta();
 		meta.setDisplayName(ChatColor.AQUA + "" + ChatColor.ITALIC + name);
@@ -315,7 +152,7 @@ public abstract class Utils {
 		return item;
 	}
 	
-	private static ItemStack itemQuit() {
+	public static ItemStack itemQuit() {
 		ItemStack item = new ItemStack(Material.ENDER_PEARL);
 		ItemMeta meta = item.getItemMeta();
 		meta.setDisplayName(ChatColor.AQUA + "" + ChatColor.ITALIC + "Quittez");
@@ -324,7 +161,7 @@ public abstract class Utils {
 		return item;
 	}
 	
-	private static ItemStack itemStock() {
+	public static ItemStack itemStock() {
 		ItemStack item = new ItemStack(Material.ENDER_PEARL);
 		ItemMeta meta = item.getItemMeta();
 		meta.setDisplayName(ChatColor.AQUA + "" + ChatColor.ITALIC + "Vos cosmetiques");
@@ -333,7 +170,7 @@ public abstract class Utils {
 		return item;
 	}
 	
-	private static ItemStack itemRandomShop() {
+	public static ItemStack itemRandomShop() {
 		ItemStack item = new ItemStack(Material.BOOK);
 		ItemMeta meta = item.getItemMeta();
 		meta.setDisplayName(ChatColor.AQUA + "" + ChatColor.ITALIC + "Boutique Aleatoire");

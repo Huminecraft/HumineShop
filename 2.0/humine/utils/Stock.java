@@ -4,8 +4,12 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
 
 public class Stock extends Shop{
 
@@ -230,4 +234,87 @@ public class Stock extends Shop{
 	public static int getNumId() {
 		return getNumId();
 	}
+	
+	public static void openStock(Stock stock, Player player) {
+		if(stock.isEmpty()) {
+			return;
+		}
+		
+		Inventory inv = Bukkit.createInventory(player, stock.getFirstPage().getSize()+9, "Inventaire");
+		for(int i = 0; i < stock.getFirstPage().getSize(); i++) {
+			if(stock.getFirstPage().getCosmetiques()[i] != null) {
+				ItemStack item = Utils.CosmetiqueToItem(stock.getFirstPage().getCosmetiques()[i]);
+				inv.addItem(item);
+			}
+		}
+		
+		inv.setItem(inv.getSize() - 9, Utils.addArrow("Retour"));
+		inv.setItem(inv.getSize() - 5, Utils.itemQuit());
+		inv.setItem(inv.getSize() - 1, Utils.addArrow("Suivant"));
+		
+		player.openInventory(inv);
+	}
+	
+	/**
+	 * Permet d'aller a la page suivante
+	 * @param stock la boutique en question
+	 * @param player le joueur en question
+	 */
+	public static void nextPage(Stock stock, Player player) {
+		if(stock.isEmpty() || !stock.containsPlayer(player))
+			return;
+		
+		if((stock.getPlayersOnShop().get(player) + 1) > stock.getPages().size())
+			return;
+		
+		int page = stock.getPlayersOnShop().get(player) + 1;
+		
+		Inventory inv = Bukkit.createInventory(player, stock.getPage(page-1).getSize(), stock.getName());
+		for(int i = 0; i < stock.getPage(page-1).getSize(); i++) {
+			if(stock.getPage(page-1).getCosmetiques()[i] != null) {
+				ItemStack item = Utils.CosmetiqueToItem(stock.getPage(page-1).getCosmetiques()[i]);
+				inv.addItem(item);
+			}
+		}
+		
+		inv.setItem(inv.getSize() - 9, Utils.addArrow("Retour"));
+		inv.setItem(inv.getSize() - 5, Utils.itemStock());
+		inv.setItem(inv.getSize() - 4, Utils.itemRandomShop());
+		inv.setItem(inv.getSize() - 1, Utils.addArrow("Suivant"));
+		
+		stock.getPlayersOnShop().replace(player, page);
+		player.openInventory(inv);
+	}
+	
+	/**
+	 * Permet d'aller a la page precedente
+	 * @param stock la boutique en question
+	 * @param player le joueur en question
+	 */
+	public static void previousPage(Stock stock, Player player) {
+		if(stock.isEmpty() || !stock.containsPlayer(player))
+			return;
+		
+		if((stock.getPlayersOnShop().get(player) - 1) < 1)
+			return;
+		
+		int page = stock.getPlayersOnShop().get(player) - 1;
+		
+		Inventory inv = Bukkit.createInventory(player, stock.getPage(page-1).getSize(), stock.getName());
+		for(int i = 0; i < stock.getPage(page-1).getSize(); i++) {
+			if(stock.getPage(page-1).getCosmetiques()[i] != null) {
+				ItemStack item = Utils.CosmetiqueToItem(stock.getPage(page-1).getCosmetiques()[i]);
+				inv.addItem(item);
+			}
+		}
+		
+		inv.setItem(inv.getSize() - 9, Utils.addArrow("Retour"));
+		inv.setItem(inv.getSize() - 5, Utils.itemStock());
+		inv.setItem(inv.getSize() - 4, Utils.itemRandomShop());
+		inv.setItem(inv.getSize() - 1, Utils.addArrow("Suivant"));
+		
+		stock.getPlayersOnShop().replace(player, page);
+		player.openInventory(inv);
+	}
+
 }

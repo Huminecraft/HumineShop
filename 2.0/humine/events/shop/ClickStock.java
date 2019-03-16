@@ -8,7 +8,6 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 
 import humine.main.MainShop;
 import humine.utils.Stock;
-import humine.utils.Utils;
 
 public class ClickStock implements Listener{
 
@@ -25,7 +24,7 @@ public class ClickStock implements Listener{
 			{
 				Stock stock = MainShop.getInstance().getInventories().getStockOfPlayer(player.getName());
 				if(stock != null) {
-					Utils.openStock(stock, player);
+					Stock.openStock(stock, player);
 				}
 				
 			}

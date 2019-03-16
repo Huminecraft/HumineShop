@@ -9,6 +9,7 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import humine.main.MainShop;
 import humine.utils.Cosmetique;
 import humine.utils.Page;
+import humine.utils.Shop;
 import humine.utils.Stock;
 import humine.utils.Utils;
 
@@ -48,7 +49,7 @@ public class ClickPresentationCosmetique implements Listener
 			}
 			else {
 				if(event.getCurrentItem().getItemMeta().getDisplayName().contains("Retour")) {
-					Utils.openShop(MainShop.getInstance().getShop(), player);
+					Shop.openShop(MainShop.getInstance().getShop(), player);
 				}
 			}
 		}

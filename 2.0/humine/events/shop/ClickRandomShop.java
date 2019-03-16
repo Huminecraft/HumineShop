@@ -7,7 +7,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 
 import humine.main.MainShop;
-import humine.utils.Utils;
+import humine.utils.randomshop.RandomShop;
 
 public class ClickRandomShop implements Listener
 {
@@ -22,7 +22,7 @@ public class ClickRandomShop implements Listener
 			Player player = (Player) event.getWhoClicked();
 			if (event.getCurrentItem().getItemMeta().getDisplayName().contains("Boutique Aleatoire"))
 			{
-				Utils.openShop(MainShop.getInstance().getRandomShop(), player);
+				RandomShop.openShop(MainShop.getInstance().getRandomShop(), player);
 			}
 		}
 	}
