@@ -250,6 +250,7 @@ public class Stock extends Shop{
 		
 		inv.setItem(inv.getSize() - 9, Utils.addArrow("Retour"));
 		inv.setItem(inv.getSize() - 5, Utils.itemQuit());
+		inv.setItem(inv.getSize() - 4, Utils.itemDisable());
 		inv.setItem(inv.getSize() - 1, Utils.addArrow("Suivant"));
 		
 		player.openInventory(inv);
@@ -278,8 +279,8 @@ public class Stock extends Shop{
 		}
 		
 		inv.setItem(inv.getSize() - 9, Utils.addArrow("Retour"));
-		inv.setItem(inv.getSize() - 5, Utils.itemStock());
-		inv.setItem(inv.getSize() - 4, Utils.itemRandomShop());
+		inv.setItem(inv.getSize() - 5, Utils.itemQuit());
+		inv.setItem(inv.getSize() - 4, Utils.itemDisable());
 		inv.setItem(inv.getSize() - 1, Utils.addArrow("Suivant"));
 		
 		stock.getPlayersOnShop().replace(player, page);
@@ -309,8 +310,8 @@ public class Stock extends Shop{
 		}
 		
 		inv.setItem(inv.getSize() - 9, Utils.addArrow("Retour"));
-		inv.setItem(inv.getSize() - 5, Utils.itemStock());
-		inv.setItem(inv.getSize() - 4, Utils.itemRandomShop());
+		inv.setItem(inv.getSize() - 5, Utils.itemQuit());
+		inv.setItem(inv.getSize() - 4, Utils.itemDisable());
 		inv.setItem(inv.getSize() - 1, Utils.addArrow("Suivant"));
 		
 		stock.getPlayersOnShop().replace(player, page);

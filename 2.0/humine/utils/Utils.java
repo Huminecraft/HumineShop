@@ -161,6 +161,15 @@ public abstract class Utils {
 		return item;
 	}
 	
+	public static ItemStack itemDisable() {
+		ItemStack item = new ItemStack(Material.MILK_BUCKET);
+		ItemMeta meta = item.getItemMeta();
+		meta.setDisplayName(ChatColor.AQUA + "" + ChatColor.ITALIC + "Desactiver");
+		item.setItemMeta(meta);
+
+		return item;
+	}
+	
 	public static ItemStack itemStock() {
 		ItemStack item = new ItemStack(Material.ENDER_PEARL);
 		ItemMeta meta = item.getItemMeta();
@@ -196,9 +205,7 @@ public abstract class Utils {
 	}
 	
 	public static void lauchBuyCosmetique(Player player, Cosmetique cosmetique) {
-		if(cosmetique instanceof ParticleCosmetique) {
-			BuyList.put(player, cosmetique);
-		}
+		BuyList.put(player, cosmetique);
 	}
 	
 	public static void disableParticleCosmetique(Player player) {
@@ -223,7 +230,7 @@ public abstract class Utils {
 		Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, new Runnable() {
 			public void run()
 			{
-				for(Entry<Player, Cosmetique> entry : tryList.entrySet()) {
+				for(Entry<Player, Cosmetique> entry : BuyList.entrySet()) {
 					ParticleCosmetique c = (ParticleCosmetique) entry.getValue();
 					entry.getKey().getWorld().spawnParticle(c.getParticleEffect(), entry.getKey().getLocation().getX(), entry.getKey().getLocation().getY()+1.0, entry.getKey().getLocation().getZ(), 30, 0.3, 0.3, 0.3, 1.0, null);
 				}

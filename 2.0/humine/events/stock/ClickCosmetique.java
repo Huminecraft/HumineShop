@@ -1,4 +1,4 @@
-package humine.events.shop;
+package humine.events.stock;
 
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -9,6 +9,7 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import humine.main.MainShop;
 import humine.utils.Cosmetique;
 import humine.utils.Page;
+import humine.utils.Stock;
 import humine.utils.Utils;
 
 public class ClickCosmetique implements Listener
@@ -17,26 +18,30 @@ public class ClickCosmetique implements Listener
 	@EventHandler
 	public void onClick(InventoryClickEvent event)
 	{
-
-		if (event.getInventory().getName().equals(MainShop.getInstance().getShop().getName()))
+		if (event.getInventory().getName().startsWith("Inventaire"))
 		{
 			if (event.getCurrentItem() == null || event.getCurrentItem().getType() == Material.AIR)
 				return;
 
 			Player player = (Player) event.getWhoClicked();
-			if (event.getCurrentItem().getItemMeta().getDisplayName().contains("#"))
-			{
-				String id = event.getCurrentItem().getItemMeta().getDisplayName().split("#")[1];
-				Cosmetique cosmetique = getCosmetique(id);
-				if (cosmetique != null)
+			Stock stock = MainShop.getInstance().getInventories().getStockOfPlayer(player.getName());
+			
+			if(stock != null) {
+				if (event.getCurrentItem().getItemMeta().getDisplayName().contains("#"))
 				{
-					Utils.openPresentation(player, cosmetique);
-					MainShop.getInstance().getShop().getPlayersOnShop().remove(player);
+					String id = event.getCurrentItem().getItemMeta().getDisplayName().split("#")[1];
+					Cosmetique cosmetique = getCosmetique(id);
+					if (cosmetique != null)
+					{
+						Utils.disableParticleCosmetique(player);
+						Utils.lauchBuyCosmetique(player, cosmetique);
+						player.closeInventory();
+					}
 				}
 			}
 		}
 	}
-
+	
 	private Cosmetique getCosmetique(String id)
 	{
 		for (Page page : MainShop.getInstance().getShop().getPages())

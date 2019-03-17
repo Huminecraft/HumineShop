@@ -13,7 +13,6 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import humine.utils.Page;
 import humine.utils.Shop;
-import humine.utils.TemporaryCosmetique;
 import humine.utils.Utils;
 
 public class RandomShop extends Shop{
@@ -71,8 +70,7 @@ public class RandomShop extends Shop{
 		}
 		
 		inv.setItem(inv.getSize() - 9, Utils.addArrow("Retour"));
-		inv.setItem(inv.getSize() - 5, Utils.itemStock());
-		inv.setItem(inv.getSize() - 4, Utils.itemRandomShop());
+		inv.setItem(inv.getSize() - 5, Utils.itemQuit());
 		inv.setItem(inv.getSize() - 1, Utils.addArrow("Suivant"));
 		
 		shop.getPlayersOnShop().put(player, 1);
@@ -88,26 +86,33 @@ public class RandomShop extends Shop{
 		if(shop.isEmpty() || !shop.containsPlayer(player))
 			return;
 		
+		Bukkit.broadcastMessage("DEBUG 3");
+		
 		if((shop.getPlayersOnShop().get(player) + 1) > shop.getPages().size())
 			return;
+		
+		Bukkit.broadcastMessage("DEBUG 3");
 		
 		int page = shop.getPlayersOnShop().get(player) + 1;
 		
 		Inventory inv = Bukkit.createInventory(player, shop.getPage(page-1).getSize(), shop.getName());
 		for(int i = 0; i < shop.getPage(page-1).getSize(); i++) {
 			if(shop.getPage(page-1).getCosmetiques()[i] != null) {
-				ItemStack item = cosmetiqueToItem((TemporaryCosmetique) shop.getPage(page-1).getCosmetiques()[i]);
+				ItemStack item = Utils.CosmetiqueToItem(shop.getPage(page-1).getCosmetiques()[i]);
 				inv.addItem(item);
 			}
 		}
 		
+		Bukkit.broadcastMessage("DEBUG 3");
+		
 		inv.setItem(inv.getSize() - 9, Utils.addArrow("Retour"));
-		inv.setItem(inv.getSize() - 5, Utils.itemStock());
-		inv.setItem(inv.getSize() - 4, Utils.itemRandomShop());
+		inv.setItem(inv.getSize() - 5, Utils.itemQuit());
 		inv.setItem(inv.getSize() - 1, Utils.addArrow("Suivant"));
 		
 		shop.getPlayersOnShop().replace(player, page);
 		player.openInventory(inv);
+		
+		Bukkit.broadcastMessage("DEBUG 4");
 	}
 	
 	/**
@@ -133,8 +138,7 @@ public class RandomShop extends Shop{
 		}
 		
 		inv.setItem(inv.getSize() - 9, Utils.addArrow("Retour"));
-		inv.setItem(inv.getSize() - 5, Utils.itemStock());
-		inv.setItem(inv.getSize() - 4, Utils.itemRandomShop());
+		inv.setItem(inv.getSize() - 5, Utils.itemQuit());
 		inv.setItem(inv.getSize() - 1, Utils.addArrow("Suivant"));
 		
 		shop.getPlayersOnShop().replace(player, page);
@@ -165,8 +169,7 @@ public class RandomShop extends Shop{
 		}
 		
 		inv.setItem(inv.getSize() - 9, Utils.addArrow("Retour"));
-		inv.setItem(inv.getSize() - 5, Utils.itemStock());
-		inv.setItem(inv.getSize() - 4, Utils.itemRandomShop());
+		inv.setItem(inv.getSize() - 5, Utils.itemQuit());
 		inv.setItem(inv.getSize() - 1, Utils.addArrow("Suivant"));
 		
 		shop.getPlayersOnShop().replace(player, page);

@@ -7,22 +7,27 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 
 import humine.main.MainShop;
-import humine.utils.randomshop.RandomShop;
+import humine.utils.Shop;
 
-public class ClickRandomShop implements Listener
+public class ClickArrowButton implements Listener
 {
-	@EventHandler
-	public void onClick(InventoryClickEvent event) {
 
+	@EventHandler
+	public void onClick(InventoryClickEvent event)
+	{
 		if (event.getInventory().getName().equals(MainShop.getInstance().getShop().getName()))
 		{
 			if (event.getCurrentItem() == null || event.getCurrentItem().getType() == Material.AIR)
 				return;
 
 			Player player = (Player) event.getWhoClicked();
-			if (event.getCurrentItem().getItemMeta().getDisplayName().contains("Boutique Aleatoire"))
+			if (event.getCurrentItem().getItemMeta().getDisplayName().contains("Retour"))
 			{
-				RandomShop.openRandomShop(MainShop.getInstance().getRandomShop(), player);
+				Shop.previousPage(MainShop.getInstance().getShop(), player);
+			}
+			else if (event.getCurrentItem().getItemMeta().getDisplayName().contains("Suivant"))
+			{
+				Shop.nextPage(MainShop.getInstance().getShop(), player);
 			}
 		}
 	}

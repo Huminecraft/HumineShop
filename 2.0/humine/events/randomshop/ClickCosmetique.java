@@ -1,4 +1,4 @@
-package humine.events.shop;
+package humine.events.randomshop;
 
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -18,7 +18,7 @@ public class ClickCosmetique implements Listener
 	public void onClick(InventoryClickEvent event)
 	{
 
-		if (event.getInventory().getName().equals(MainShop.getInstance().getShop().getName()))
+		if (event.getInventory().getName().equals(MainShop.getInstance().getRandomShop().getName()))
 		{
 			if (event.getCurrentItem() == null || event.getCurrentItem().getType() == Material.AIR)
 				return;
@@ -31,7 +31,7 @@ public class ClickCosmetique implements Listener
 				if (cosmetique != null)
 				{
 					Utils.openPresentation(player, cosmetique);
-					MainShop.getInstance().getShop().getPlayersOnShop().remove(player);
+					MainShop.getInstance().getRandomShop().getPlayersOnShop().remove(player);
 				}
 			}
 		}
@@ -39,7 +39,7 @@ public class ClickCosmetique implements Listener
 
 	private Cosmetique getCosmetique(String id)
 	{
-		for (Page page : MainShop.getInstance().getShop().getPages())
+		for (Page page : MainShop.getInstance().getRandomShop().getPages())
 		{
 			for (int i = 0; i < page.getSize(); i++)
 			{

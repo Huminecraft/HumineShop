@@ -19,9 +19,16 @@ import humine.events.BlockMoveCosmetique;
 import humine.events.ClickPresentationCosmetique;
 import humine.events.CreateBankAccount;
 import humine.events.CreateStockAccount;
+import humine.events.PlayerQuit;
+import humine.events.randomshop.ClickArrowButton;
+import humine.events.randomshop.ClickQuitButton;
+import humine.events.randomshop.QuitRandomShop;
 import humine.events.shop.ClickCosmetique;
 import humine.events.shop.ClickRandomShop;
 import humine.events.shop.ClickStock;
+import humine.events.shop.QuitShop;
+import humine.events.stock.ClickDisableButton;
+import humine.events.stock.QuitStock;
 import humine.utils.Cosmetique;
 import humine.utils.Inventories;
 import humine.utils.Page;
@@ -51,7 +58,7 @@ public class MainShop extends JavaPlugin {
 
 		this.shop = new Shop("Shop");
 		this.randomShop = new RandomShop("RandomShop");
-		this.bank = new Bank("Humins");
+		this.bank = new Bank("Humis");
 		this.inventories = new Inventories();
 
 		this.shop.load(this.shopFolder);
@@ -111,13 +118,28 @@ public class MainShop extends JavaPlugin {
 	}
 	
 	private void initializeEvents() {
-		this.getServer().getPluginManager().registerEvents(new BlockMoveCosmetique(), this);
+		this.getServer().getPluginManager().registerEvents(new ClickArrowButton(), this);
+		this.getServer().getPluginManager().registerEvents(new humine.events.randomshop.ClickCosmetique(), this);
+		this.getServer().getPluginManager().registerEvents(new ClickQuitButton(), this);
+		this.getServer().getPluginManager().registerEvents(new QuitRandomShop(), this);
+		
+		this.getServer().getPluginManager().registerEvents(new humine.events.shop.ClickArrowButton(), this);
 		this.getServer().getPluginManager().registerEvents(new ClickCosmetique(), this);
+		this.getServer().getPluginManager().registerEvents(new ClickRandomShop(), this);
+		this.getServer().getPluginManager().registerEvents(new ClickStock(), this);
+		this.getServer().getPluginManager().registerEvents(new QuitShop(), this);
+		
+		this.getServer().getPluginManager().registerEvents(new BlockMoveCosmetique(), this);
 		this.getServer().getPluginManager().registerEvents(new ClickPresentationCosmetique(), this);
 		this.getServer().getPluginManager().registerEvents(new CreateBankAccount(), this);
 		this.getServer().getPluginManager().registerEvents(new CreateStockAccount(), this);
-		this.getServer().getPluginManager().registerEvents(new ClickStock(), this);
-		this.getServer().getPluginManager().registerEvents(new ClickRandomShop(), this);
+		this.getServer().getPluginManager().registerEvents(new PlayerQuit(), this);
+		
+		this.getServer().getPluginManager().registerEvents(new humine.events.stock.ClickArrowButton(), this);
+		this.getServer().getPluginManager().registerEvents(new humine.events.stock.ClickCosmetique(), this);
+		this.getServer().getPluginManager().registerEvents(new QuitStock(), this);
+		this.getServer().getPluginManager().registerEvents(new humine.events.stock.ClickQuitButton(), this);
+		this.getServer().getPluginManager().registerEvents(new ClickDisableButton(), this);
 	}
 
 	public static MainShop getInstance() {
