@@ -86,12 +86,9 @@ public class RandomShop extends Shop{
 		if(shop.isEmpty() || !shop.containsPlayer(player))
 			return;
 		
-		Bukkit.broadcastMessage("DEBUG 3");
 		
 		if((shop.getPlayersOnShop().get(player) + 1) > shop.getPages().size())
 			return;
-		
-		Bukkit.broadcastMessage("DEBUG 3");
 		
 		int page = shop.getPlayersOnShop().get(player) + 1;
 		
@@ -103,8 +100,6 @@ public class RandomShop extends Shop{
 			}
 		}
 		
-		Bukkit.broadcastMessage("DEBUG 3");
-		
 		inv.setItem(inv.getSize() - 9, Utils.addArrow("Retour"));
 		inv.setItem(inv.getSize() - 5, Utils.itemQuit());
 		inv.setItem(inv.getSize() - 1, Utils.addArrow("Suivant"));
@@ -112,7 +107,6 @@ public class RandomShop extends Shop{
 		shop.getPlayersOnShop().replace(player, page);
 		player.openInventory(inv);
 		
-		Bukkit.broadcastMessage("DEBUG 4");
 	}
 	
 	/**

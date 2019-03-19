@@ -35,13 +35,13 @@ public class ClickPresentationCosmetique implements Listener
 			else if(event.getCurrentItem().getItemMeta().getLore() != null && event.getCurrentItem().getItemMeta().getLore().contains("Buy")) {
 				Cosmetique c = getCosmetique(event.getInventory().getName().split("#")[1]);
 				if(c != null) {
-					if(MainShop.getInstance().getBank().getMoney(player) >= c.getPrice()) {
+					if(MainShop.getInstance().getBankHumis().getMoney(player) >= c.getPrice()) {
 						Stock stock = MainShop.getInstance().getInventories().getStockOfPlayer(player.getName());
 						if(stock != null) {
 							Utils.addCosmetique(stock, c);
 							player.closeInventory();
 							MainShop.sendMessage(player, "Cosmetique acheté !");
-							MainShop.getInstance().getBank().removeMoney(player, c.getPrice());
+							MainShop.getInstance().getBankHumis().removeMoney(player, c.getPrice());
 						}
 					}
 				}

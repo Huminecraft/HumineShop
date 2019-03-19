@@ -9,7 +9,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 
-public class Bank {
+public class BankHumis {
 
 	private String name;
 	private HashMap<String, Integer> players;
@@ -18,7 +18,7 @@ public class Bank {
 	 * constructeur de la banque 
 	 * @param name nom de la valeur monetaire
 	 */
-	public Bank(String nameValue) {
+	public BankHumis(String nameValue) {
 		this.name = nameValue;
 		this.players = new HashMap<String, Integer>();
 	}

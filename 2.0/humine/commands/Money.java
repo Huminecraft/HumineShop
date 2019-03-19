@@ -17,9 +17,11 @@ public class Money implements CommandExecutor{
 			Player target = Bukkit.getPlayer(args[0]);
 			
 			if(target != null) {
-				if(MainShop.getInstance().getBank().containsPlayer(target)) {
-					int money = MainShop.getInstance().getBank().getMoney(target);
-					MainShop.sendMessage(sender, target.getName() + ": " + money + " " + MainShop.getInstance().getBank().getNameValue());
+				if(MainShop.getInstance().getBankHumis().containsPlayer(target) && MainShop.getInstance().getBankPixel().containsPlayer(target)) {
+					int moneyHumis = MainShop.getInstance().getBankHumis().getMoney(target);
+					int moneyPixel = MainShop.getInstance().getBankPixel().getMoney(target);
+					MainShop.sendMessage(sender, target.getName() + ": " + moneyHumis + " " + MainShop.getInstance().getBankHumis().getNameValue());
+					MainShop.sendMessage(sender, target.getName() + ": " + moneyPixel + " " + MainShop.getInstance().getBankPixel().getNameValue());
 					return true;
 				}
 				else
@@ -32,9 +34,9 @@ public class Money implements CommandExecutor{
 			if(sender instanceof Player) {
 				Player player = (Player) sender;
 				
-				if(MainShop.getInstance().getBank().containsPlayer(player)) {
-					int money = MainShop.getInstance().getBank().getMoney(player);
-					MainShop.sendMessage(sender, player.getName() + ": " + money + " " + MainShop.getInstance().getBank().getNameValue());
+				if(MainShop.getInstance().getBankHumis().containsPlayer(player)) {
+					int money = MainShop.getInstance().getBankHumis().getMoney(player);
+					MainShop.sendMessage(sender, player.getName() + ": " + money + " " + MainShop.getInstance().getBankHumis().getNameValue());
 					return true;
 				}
 				else

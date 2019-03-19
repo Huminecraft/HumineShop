@@ -110,13 +110,13 @@ public abstract class Utils {
 			}
 		}
 		
-		if (MainShop.getInstance().getBank().getMoney(player) >= cosmetique.getPrice())
+		if (MainShop.getInstance().getBankHumis().getMoney(player) >= cosmetique.getPrice())
 			lores.add(ChatColor.BOLD + "" + ChatColor.GREEN + "Acheter !");
 		else
-			lores.add(ChatColor.BOLD + "" + ChatColor.RED + "Vous n'avez pas assez de "+MainShop.getInstance().getBank().getNameValue()+" !");
+			lores.add(ChatColor.BOLD + "" + ChatColor.RED + "Vous n'avez pas assez de "+MainShop.getInstance().getBankHumis().getNameValue()+" !");
 
 		lores.add("Prix: " + ChatColor.GREEN + cosmetique.getPrice());
-		lores.add("Vous avez " + MainShop.getInstance().getBank().getMoney(player) + " " + MainShop.getInstance().getBank().getNameValue());
+		lores.add("Vous avez " + MainShop.getInstance().getBankHumis().getMoney(player) + " " + MainShop.getInstance().getBankHumis().getNameValue());
 		lores.add("Buy");
 
 		meta.setLore(lores);
