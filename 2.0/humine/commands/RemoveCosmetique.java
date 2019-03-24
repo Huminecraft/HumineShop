@@ -19,6 +19,7 @@ public class RemoveCosmetique implements CommandExecutor{
 		if(args.length != 1) {
 			MainShop.sendMessage(sender, "Argument insuffisant");
 			MainShop.sendMessage(sender, command);
+			return false;
 		}
 		
 		for(Page page : MainShop.getInstance().getShop().getPages()) {

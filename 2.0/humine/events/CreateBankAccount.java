@@ -13,8 +13,12 @@ public class CreateBankAccount implements Listener{
 	public void onJoin(PlayerJoinEvent event) {
 		Player player = event.getPlayer();
 		
-		if(!MainShop.getInstance().getBank().containsPlayer(player)) {
-			MainShop.getInstance().getBank().addPlayer(player);
+		if(!MainShop.getInstance().getBankHumis().containsPlayer(player)) {
+			MainShop.getInstance().getBankHumis().addPlayer(player);
+		}
+		
+		if(!MainShop.getInstance().getBankPixel().containsPlayer(player)) {
+			MainShop.getInstance().getBankPixel().addPlayer(player);
 		}
 	}
 }

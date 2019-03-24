@@ -17,13 +17,13 @@ import humine.utils.randomshop.TemporaryParticleCosmetique;
 
 public class CreateTemporaryParticleCosmetique implements CommandExecutor {
 
-	private static String command = "/tccp <name> <material> <price> <particle> <date> <prestige>";
+	private static String command = "/tccp <name> <material> <humis> <pixel> <particle> <date> <prestige>";
 	
-	// /tccp <name> <material> <price> <particle> <date> <prestige> 
+	// /tccp <name> <material> <humis> <pixel> <particle> <date> <prestige> 
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
 		
-		if(args.length < 6) {
+		if(args.length < 7) {
 			MainShop.sendMessage(sender, "Argument insuffisant");
 			MainShop.sendMessage(sender, command);
 			return false;
@@ -36,26 +36,26 @@ public class CreateTemporaryParticleCosmetique implements CommandExecutor {
 			return false;
 		}
 		
-		if(!isNumber(args[2])) {
+		if(!isNumber(args[2]) || !isNumber(args[3])) {
 			MainShop.sendMessage(sender, "Prix invalide");
 			MainShop.sendMessage(sender, command);
 			return false;
 		}
 		
-		int ordinalParticle = getParticle(args[3]);
+		int ordinalParticle = getParticle(args[4]);
 		if(ordinalParticle == -1) {
 			MainShop.sendMessage(sender, "Particle introuvable");
 			MainShop.sendMessage(sender, command);
 			return false;
 		}
 		
-		if(!dateValid(args[4])) {
+		if(!dateValid(args[5])) {
 			MainShop.sendMessage(sender, "Date invalide: JJ/MM/AAAA");
 			MainShop.sendMessage(sender, command);
 			return false;
 		}
 		
-		int ordinalPrestige = getPrestige(args[5]);
+		int ordinalPrestige = getPrestige(args[6]);
 		if(ordinalPrestige == -1) {
 			MainShop.sendMessage(sender, "Prestige introuvable");
 			MainShop.sendMessage(sender, command);
@@ -63,12 +63,13 @@ public class CreateTemporaryParticleCosmetique implements CommandExecutor {
 		}
 		
 		Material material = Material.values()[ordinalMaterial];
-		int price = Integer.parseInt(args[2]);
+		int humisPrice = Integer.parseInt(args[2]);
+		int pixelPrice = Integer.parseInt(args[3]);
 		Particle particle = Particle.values()[ordinalParticle];
 		LocalDate date = getDate(args[4]);
 		Prestige prestige = Prestige.values()[ordinalPrestige];
 		
-		TemporaryParticleCosmetique cosmetique = new TemporaryParticleCosmetique(args[0], material, price, date, prestige, particle);
+		TemporaryParticleCosmetique cosmetique = new TemporaryParticleCosmetique(args[0], material, humisPrice, pixelPrice, date, prestige, particle);
 		
 		
 		if(date.isEqual(LocalDate.now())) {
@@ -86,7 +87,8 @@ public class CreateTemporaryParticleCosmetique implements CommandExecutor {
 		MainShop.sendMessage(sender, "cosmetique de particule créée !");
 		MainShop.sendMessage(sender, "nom: " + cosmetique.getName());
 		MainShop.sendMessage(sender, "id: #" + cosmetique.getId());
-		MainShop.sendMessage(sender, "prix: " + cosmetique.getPrice());
+		MainShop.sendMessage(sender, "prix humis: " + cosmetique.getHumisPrice());
+		MainShop.sendMessage(sender, "prix pixel: " + cosmetique.getPixelPrice());
 		MainShop.sendMessage(sender, "item presentation: " + cosmetique.getItemShop());
 		MainShop.sendMessage(sender, "effet particule: " + cosmetique.getParticle());
 		MainShop.sendMessage(sender, "date de presentation: " + args[4]);

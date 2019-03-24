@@ -25,23 +25,42 @@ public class ClickPresentationCosmetique implements Listener
 			
 			Player player = (Player) event.getWhoClicked();
 			if(event.getCurrentItem().getItemMeta().getLore() != null && event.getCurrentItem().getItemMeta().getLore().contains("Try")) {
+				
 				Cosmetique c = getCosmetique(event.getInventory().getName().split("#")[1]);
+				
 				if(c != null) {
 					Utils.lauchTryCosmetique(player, c, MainShop.getInstance());
 				}
+				
 				player.closeInventory();
-				MainShop.getInstance().getShop().getPlayersOnShop().remove(player);
 			}
-			else if(event.getCurrentItem().getItemMeta().getLore() != null && event.getCurrentItem().getItemMeta().getLore().contains("Buy")) {
+			else if(event.getCurrentItem().getItemMeta().getLore() != null && event.getCurrentItem().getItemMeta().getLore().contains("Buy with humis")) {
+				
 				Cosmetique c = getCosmetique(event.getInventory().getName().split("#")[1]);
 				if(c != null) {
-					if(MainShop.getInstance().getBank().getMoney(player) >= c.getPrice()) {
+					if(MainShop.getInstance().getBankHumis().getMoney(player) >= c.getHumisPrice()) {
 						Stock stock = MainShop.getInstance().getInventories().getStockOfPlayer(player.getName());
 						if(stock != null) {
 							Utils.addCosmetique(stock, c);
 							player.closeInventory();
 							MainShop.sendMessage(player, "Cosmetique acheté !");
-							MainShop.getInstance().getBank().removeMoney(player, c.getPrice());
+							MainShop.getInstance().getBankHumis().removeMoney(player, c.getHumisPrice());
+						}
+					}
+				}
+				
+			}
+			else if(event.getCurrentItem().getItemMeta().getLore() != null && event.getCurrentItem().getItemMeta().getLore().contains("Buy with pixel")) {
+				
+				Cosmetique c = getCosmetique(event.getInventory().getName().split("#")[1]);
+				if(c != null) {
+					if(MainShop.getInstance().getBankPixel().getMoney(player) >= c.getPixelPrice()) {
+						Stock stock = MainShop.getInstance().getInventories().getStockOfPlayer(player.getName());
+						if(stock != null) {
+							Utils.addCosmetique(stock, c);
+							player.closeInventory();
+							MainShop.sendMessage(player, "Cosmetique acheté !");
+							MainShop.getInstance().getBankPixel().removeMoney(player, c.getPixelPrice());
 						}
 					}
 				}

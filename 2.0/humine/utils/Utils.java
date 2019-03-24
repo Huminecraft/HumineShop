@@ -85,6 +85,7 @@ public abstract class Utils {
 
 		
 		inv.setItem(14, blockHumisBuy(cosmetique, player));
+		inv.setItem(15, blockPixelBuy(cosmetique, player));
 		inv.setItem(12, blockTest(cosmetique));
 		inv.setItem(18, addArrow("Retour"));
 
@@ -109,14 +110,14 @@ public abstract class Utils {
 			}
 		}
 		
-		if (MainShop.getInstance().getBank().getMoney(player) >= cosmetique.getHumisPrice())
-			lores.add(ChatColor.BOLD + "" + ChatColor.GREEN + "Acheter !");
+		if (MainShop.getInstance().getBankHumis().getMoney(player) >= cosmetique.getHumisPrice())
+			lores.add(ChatColor.BOLD + "" + ChatColor.GREEN + "Acheter ! (Humis)");
 		else
-			lores.add(ChatColor.BOLD + "" + ChatColor.RED + "Vous n'avez pas assez de "+MainShop.getInstance().getBank().getNameValue()+" !");
+			lores.add(ChatColor.BOLD + "" + ChatColor.RED + "Vous n'avez pas assez de "+MainShop.getInstance().getBankHumis().getNameValue()+" !");
 
 		lores.add("Prix: " + ChatColor.GREEN + cosmetique.getHumisPrice());
-		lores.add("Vous avez " + MainShop.getInstance().getBank().getMoney(player) + " " + MainShop.getInstance().getBank().getNameValue());
-		lores.add("Buy");
+		lores.add("Vous avez " + MainShop.getInstance().getBankHumis().getMoney(player) + " " + MainShop.getInstance().getBankHumis().getNameValue());
+		lores.add("Buy with humis");
 
 		meta.setLore(lores);
 
@@ -143,14 +144,14 @@ public abstract class Utils {
 			}
 		}
 		
-		if (MainShop.getInstance().getBank().getMoney(player) >= cosmetique.getHumisPrice())
-			lores.add(ChatColor.BOLD + "" + ChatColor.GREEN + "Acheter !");
+		if (MainShop.getInstance().getBankPixel().getMoney(player) >= cosmetique.getPixelPrice())
+			lores.add(ChatColor.BOLD + "" + ChatColor.GREEN + "Acheter ! (Pixel)");
 		else
-			lores.add(ChatColor.BOLD + "" + ChatColor.RED + "Vous n'avez pas assez de "+MainShop.getInstance().getBank().getNameValue()+" !");
+			lores.add(ChatColor.BOLD + "" + ChatColor.RED + "Vous n'avez pas assez de "+MainShop.getInstance().getBankPixel().getNameValue()+" !");
 
 		lores.add("Prix: " + ChatColor.GREEN + cosmetique.getHumisPrice());
-		lores.add("Vous avez " + MainShop.getInstance().getBank().getMoney(player) + " " + MainShop.getInstance().getBank().getNameValue());
-		lores.add("Buy");
+		lores.add("Vous avez " + MainShop.getInstance().getBankPixel().getMoney(player) + " " + MainShop.getInstance().getBankPixel().getNameValue());
+		lores.add("Buy with pixel");
 
 		meta.setLore(lores);
 
@@ -194,6 +195,15 @@ public abstract class Utils {
 		return item;
 	}
 	
+	public static ItemStack itemDisable() {
+		ItemStack item = new ItemStack(Material.MILK_BUCKET);
+		ItemMeta meta = item.getItemMeta();
+		meta.setDisplayName(ChatColor.AQUA + "" + ChatColor.ITALIC + "Desactiver");
+		item.setItemMeta(meta);
+
+		return item;
+	}
+	
 	public static ItemStack itemStock() {
 		ItemStack item = new ItemStack(Material.ENDER_PEARL);
 		ItemMeta meta = item.getItemMeta();
@@ -229,9 +239,7 @@ public abstract class Utils {
 	}
 	
 	public static void lauchBuyCosmetique(Player player, Cosmetique cosmetique) {
-		if(cosmetique instanceof ParticleCosmetique) {
-			BuyList.put(player, cosmetique);
-		}
+		BuyList.put(player, cosmetique);
 	}
 	
 	public static void disableParticleCosmetique(Player player) {
@@ -256,7 +264,7 @@ public abstract class Utils {
 		Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, new Runnable() {
 			public void run()
 			{
-				for(Entry<Player, Cosmetique> entry : tryList.entrySet()) {
+				for(Entry<Player, Cosmetique> entry : BuyList.entrySet()) {
 					ParticleCosmetique c = (ParticleCosmetique) entry.getValue();
 					entry.getKey().getWorld().spawnParticle(c.getParticleEffect(), entry.getKey().getLocation().getX(), entry.getKey().getLocation().getY()+1.0, entry.getKey().getLocation().getZ(), 30, 0.3, 0.3, 0.3, 1.0, null);
 				}

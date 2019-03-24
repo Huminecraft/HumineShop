@@ -10,7 +10,6 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import humine.utils.Prestige;
-import humine.utils.TemporaryCosmetique;
 
 public class TemporaryParticleCosmetique extends TemporaryCosmetique{
 

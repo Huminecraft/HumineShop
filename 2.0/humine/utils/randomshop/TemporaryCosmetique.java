@@ -1,4 +1,4 @@
-package humine.utils;
+package humine.utils.randomshop;
 
 import java.io.File;
 import java.io.IOException;
@@ -7,6 +7,9 @@ import java.time.LocalDate;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+
+import humine.utils.Cosmetique;
+import humine.utils.Prestige;
 
 public class TemporaryCosmetique extends Cosmetique{
 

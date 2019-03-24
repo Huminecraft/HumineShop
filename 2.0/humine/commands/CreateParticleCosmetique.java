@@ -14,48 +14,51 @@ import humine.utils.Utils;
 
 public class CreateParticleCosmetique implements CommandExecutor{
 
-	// /ccp <name> <material> <price> <particle>
+	private static String command = "/ccp <name> <material> <humis> <pixel> <particle>";
+	// /ccp <name> <material> <humis> <pixel> <particle>
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
 		
-		if(args.length < 4) {
+		if(args.length < 5) {
 			MainShop.sendMessage(sender, "Argument insuffisant");
-			MainShop.sendMessage(sender, "/ccp <name> <material> <price> <particle>");
+			MainShop.sendMessage(sender, command);
 			return false;
 		}
 		
 		int ordinalMaterial = getMaterial(args[1]);
 		if(ordinalMaterial == -1) {
 			MainShop.sendMessage(sender, "Material introuvable");
-			MainShop.sendMessage(sender, "/ccp <name> <material> <price> <particle>");
+			MainShop.sendMessage(sender, command);
 			return false;
 		}
 		
-		if(!isNumber(args[2])) {
+		if(!isNumber(args[2]) || !isNumber(args[3])) {
 			MainShop.sendMessage(sender, "Prix invalide");
-			MainShop.sendMessage(sender, "/ccp <name> <material> <price> <particle>");
+			MainShop.sendMessage(sender, command);
 			return false;
 		}
 		
-		int ordinalParticle = getParticle(args[3]);
+		int ordinalParticle = getParticle(args[4]);
 		if(ordinalParticle == -1) {
 			MainShop.sendMessage(sender, "Particle introuvable");
-			MainShop.sendMessage(sender, "/ccp <name> <material> <price> <particle>");
+			MainShop.sendMessage(sender, command);
 			return false;
 		}
 		
 		Material material = Material.values()[ordinalMaterial];
-		int price = Integer.parseInt(args[2]);
+		int humisPrice = Integer.parseInt(args[2]);
+		int pixelPrice = Integer.parseInt(args[3]);
 		Particle particle = Particle.values()[ordinalParticle];
 		
-		ParticleCosmetique cosmetique = new ParticleCosmetique(args[0], material, price, particle);
+		ParticleCosmetique cosmetique = new ParticleCosmetique(args[0], material, humisPrice, pixelPrice, particle);
 		
 		Utils.addCosmetique(MainShop.getInstance().getShop(), cosmetique);
 		
 		MainShop.sendMessage(sender, "Cosmetique de Particule créée !");
 		MainShop.sendMessage(sender, "nom: " + cosmetique.getName());
 		MainShop.sendMessage(sender, "id: #" + cosmetique.getId());
-		MainShop.sendMessage(sender, "prix: " + cosmetique.getPrice());
+		MainShop.sendMessage(sender, "prix humis: " + cosmetique.getHumisPrice());
+		MainShop.sendMessage(sender, "prix pixel: " + cosmetique.getPixelPrice());
 		MainShop.sendMessage(sender, "Item presentation: " + cosmetique.getItemShop());
 		MainShop.sendMessage(sender, "effet particule: " + cosmetique.getParticleEffect());
 		

@@ -20,15 +20,23 @@ import humine.events.BlockMoveCosmetique;
 import humine.events.ClickPresentationCosmetique;
 import humine.events.CreateBankAccount;
 import humine.events.CreateStockAccount;
+import humine.events.PlayerQuit;
+import humine.events.randomshop.ClickArrowButton;
+import humine.events.randomshop.ClickQuitButton;
+import humine.events.randomshop.QuitRandomShop;
 import humine.events.shop.ClickCosmetique;
 import humine.events.shop.ClickRandomShop;
 import humine.events.shop.ClickStock;
+import humine.events.shop.QuitShop;
+import humine.events.stock.ClickDisableButton;
+import humine.events.stock.QuitStock;
 import humine.utils.Cosmetique;
 import humine.utils.Inventories;
 import humine.utils.Page;
 import humine.utils.Shop;
 import humine.utils.Utils;
-import humine.utils.economy.Bank;
+import humine.utils.economy.BankHumis;
+import humine.utils.economy.BankPixel;
 import humine.utils.randomshop.RandomShop;
 
 public class MainShop extends JavaPlugin {
@@ -36,12 +44,14 @@ public class MainShop extends JavaPlugin {
 	private static MainShop instance;
 	private Shop shop;
 	private RandomShop randomShop;
-	private Bank bank;
+	private BankHumis bankHumis;
+	private BankPixel bankPixel;
 	private Inventories inventories;
 
 	private final File shopFolder = new File(getDataFolder(), "Shop");
 	private final File randomShopFolder = new File(getDataFolder(), "RandomShop");
-	private final File bankFile = new File(getDataFolder(), "Bank.yml");
+	private final File bankHumisFile = new File(getDataFolder(), "BankHumis.yml");
+	private final File bankPixelFile = new File(getDataFolder(), "BankPixel.yml");
 	private final File inventoriesFolder = new File(getDataFolder(), "Inventories");
 	private final File IDFile = new File(getDataFolder(), "ID.yml");
 	
@@ -52,12 +62,14 @@ public class MainShop extends JavaPlugin {
 
 		this.shop = new Shop("Shop");
 		this.randomShop = new RandomShop("RandomShop");
-		this.bank = new Bank("Humins");
+		this.bankHumis = new BankHumis("Humis");
+		this.bankPixel = new BankPixel("Pixel");
 		this.inventories = new Inventories();
 
 		this.shop.load(this.shopFolder);
 		this.randomShop.load(this.randomShopFolder);
-		this.bank.load(this.bankFile);
+		this.bankHumis.load(this.bankHumisFile);
+		this.bankPixel.load(this.bankPixelFile);
 		this.inventories.load(this.inventoriesFolder);
 
 		Utils.schedulerBuyCosmetique(this);
@@ -81,7 +93,8 @@ public class MainShop extends JavaPlugin {
 	{
 		this.shop.save(this.shopFolder);
 		this.randomShop.save(this.randomShopFolder);
-		this.bank.save(this.bankFile);
+		this.bankHumis.save(this.bankHumisFile);
+		this.bankPixel.save(this.bankPixelFile);
 		this.inventories.save(this.inventoriesFolder);
 		
 		if(!this.IDFile.exists()) {
@@ -120,13 +133,28 @@ public class MainShop extends JavaPlugin {
 	}
 	
 	private void initializeEvents() {
-		this.getServer().getPluginManager().registerEvents(new BlockMoveCosmetique(), this);
+		this.getServer().getPluginManager().registerEvents(new ClickArrowButton(), this);
+		this.getServer().getPluginManager().registerEvents(new humine.events.randomshop.ClickCosmetique(), this);
+		this.getServer().getPluginManager().registerEvents(new ClickQuitButton(), this);
+		this.getServer().getPluginManager().registerEvents(new QuitRandomShop(), this);
+		
+		this.getServer().getPluginManager().registerEvents(new humine.events.shop.ClickArrowButton(), this);
 		this.getServer().getPluginManager().registerEvents(new ClickCosmetique(), this);
+		this.getServer().getPluginManager().registerEvents(new ClickRandomShop(), this);
+		this.getServer().getPluginManager().registerEvents(new ClickStock(), this);
+		this.getServer().getPluginManager().registerEvents(new QuitShop(), this);
+		
+		this.getServer().getPluginManager().registerEvents(new BlockMoveCosmetique(), this);
 		this.getServer().getPluginManager().registerEvents(new ClickPresentationCosmetique(), this);
 		this.getServer().getPluginManager().registerEvents(new CreateBankAccount(), this);
 		this.getServer().getPluginManager().registerEvents(new CreateStockAccount(), this);
-		this.getServer().getPluginManager().registerEvents(new ClickStock(), this);
-		this.getServer().getPluginManager().registerEvents(new ClickRandomShop(), this);
+		this.getServer().getPluginManager().registerEvents(new PlayerQuit(), this);
+		
+		this.getServer().getPluginManager().registerEvents(new humine.events.stock.ClickArrowButton(), this);
+		this.getServer().getPluginManager().registerEvents(new humine.events.stock.ClickCosmetique(), this);
+		this.getServer().getPluginManager().registerEvents(new QuitStock(), this);
+		this.getServer().getPluginManager().registerEvents(new humine.events.stock.ClickQuitButton(), this);
+		this.getServer().getPluginManager().registerEvents(new ClickDisableButton(), this);
 	}
 
 	public static MainShop getInstance() {
@@ -145,14 +173,24 @@ public class MainShop extends JavaPlugin {
 		this.shop = shop;
 	}
 
-	public Bank getBank() {
-		return bank;
+	public BankHumis getBankHumis() {
+		return bankHumis;
 	}
 
-	public void setBank(Bank bank) {
-		this.bank = bank;
+	public void setBankHumis(BankHumis bankHumis) {
+		this.bankHumis = bankHumis;
 	}
 
+	public BankPixel getBankPixel()
+	{
+		return bankPixel;
+	}
+	
+	public void setBankPixel(BankPixel bankPixel)
+	{
+		this.bankPixel = bankPixel;
+	}
+	
 	public Inventories getInventories() {
 		return inventories;
 	}
@@ -166,11 +204,16 @@ public class MainShop extends JavaPlugin {
 		return shopFolder;
 	}
 
-	public File getBankFile()
+	public File getBankHumisFile()
 	{
-		return bankFile;
+		return bankHumisFile;
 	}
 
+	public File getBankPixelFile()
+	{
+		return bankPixelFile;
+	}
+	
 	public File getInventoriesFolder()
 	{
 		return inventoriesFolder;
