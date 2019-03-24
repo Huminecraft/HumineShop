@@ -8,6 +8,8 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import humine.main.MainShop;
+import humine.utils.randomshop.TemporaryMaterialHatCosmetique;
+import humine.utils.randomshop.TemporaryParticleCosmetique;
 
 public class Page
 {
@@ -371,11 +373,30 @@ public class Page
 		for (int i = 0; i < folder.listFiles().length; i++)
 		{
 			config = YamlConfiguration.loadConfiguration(folder.listFiles()[i]);
-			if (config.contains("particle"))
-			{
-				ParticleCosmetique c = new ParticleCosmetique("", null, 0, 0, null);
-				c.load(folder.listFiles()[i]);
-				this.cosmetiques[i] = c;
+			
+			if (config.contains("particle")) {
+				if(config.contains("date")) {
+					TemporaryParticleCosmetique c = new TemporaryParticleCosmetique("", null, 0, 0, LocalDate.now(), null, null);
+					c.load(folder.listFiles()[i]);
+					this.cosmetiques[i] = c;
+				}
+				else {
+					ParticleCosmetique c = new ParticleCosmetique("", null, 0, 0, null);
+					c.load(folder.listFiles()[i]);
+					this.cosmetiques[i] = c;
+				}
+			}
+			else if(config.contains("materialHat")) {
+				if(config.contains("date")) {
+					TemporaryMaterialHatCosmetique c = new TemporaryMaterialHatCosmetique("", null, 0, 0, LocalDate.now(), null, null);
+					c.load(folder.listFiles()[i]);
+					this.cosmetiques[i] = c;
+				}
+				else {
+					MaterialHatCosmetique c = new MaterialHatCosmetique("", null, 0, 0, null);
+					c.load(folder.listFiles()[i]);
+					this.cosmetiques[i] = c;
+				}
 			}
 		}
 	}

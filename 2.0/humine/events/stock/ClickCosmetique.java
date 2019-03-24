@@ -8,9 +8,13 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 
 import humine.main.MainShop;
 import humine.utils.Cosmetique;
+import humine.utils.MaterialHatCosmetique;
 import humine.utils.Page;
+import humine.utils.ParticleCosmetique;
 import humine.utils.Stock;
 import humine.utils.Utils;
+import humine.utils.randomshop.TemporaryMaterialHatCosmetique;
+import humine.utils.randomshop.TemporaryParticleCosmetique;
 
 public class ClickCosmetique implements Listener
 {
@@ -34,8 +38,15 @@ public class ClickCosmetique implements Listener
 					if (cosmetique != null)
 					{
 						Utils.disableParticleCosmetique(player);
-						Utils.lauchBuyCosmetique(player, cosmetique);
-						player.closeInventory();
+						if(cosmetique instanceof ParticleCosmetique || cosmetique instanceof TemporaryParticleCosmetique) {
+							Utils.lauchBuyCosmetique(player, cosmetique);
+							player.closeInventory();
+						}
+						else if(cosmetique instanceof MaterialHatCosmetique || cosmetique instanceof TemporaryMaterialHatCosmetique) {
+							Utils.swearHatCosmetique(player, cosmetique);
+							player.closeInventory();
+						}
+						
 					}
 				}
 			}

@@ -1,11 +1,14 @@
 package humine.utils.randomshop;
 
 import java.io.File;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -25,12 +28,51 @@ public class RandomShop extends Shop{
 	}
 	
 	public void update() {
-		File folder = new File(MainShop.getInstance().getRandomShopFolder(), LocalDate.now().toString() + ".yml");
+		File folder = new File(MainShop.getInstance().getRandomShopFolder(), LocalDate.now().toString());
 		if(!folder.exists())
 			return;
 
 		super.load(folder);
 		this.currentDate = LocalDate.now();
+	}
+	
+	@Override
+	public void save(File folder)
+	{
+		super.save(folder);
+		
+		File index = new File(folder, "date.yml");
+		FileConfiguration config = YamlConfiguration.loadConfiguration(index);
+		config.set("currentDate", this.currentDate.toString());
+		
+		try {
+			config.save(index);
+		} catch (IOException e) {
+			System.err.println("Erreur enregistrement index.yml");
+			e.printStackTrace();
+			return;
+		}
+	}
+	
+	@Override
+	public void load(File folder)
+	{
+		super.load(folder);
+
+		File index = new File(folder, "date.yml");
+		
+		
+		if(!index.exists()) {
+			System.err.println("Erreur fichier introuvable index.yml");
+			return;
+		}
+		
+		FileConfiguration config = YamlConfiguration.loadConfiguration(index);
+		
+		String date = config.getString("currentDate");
+		
+		this.currentDate = LocalDate.of(Integer.parseInt(date.split("-")[0]), Integer.parseInt(date.split("-")[1]), Integer.parseInt(date.split("-")[2]));
+		index.delete();
 	}
 	
 	public void resetShop() {
@@ -162,6 +204,8 @@ public class RandomShop extends Shop{
 	}
 	
 	private static ItemStack cosmetiqueToItem(TemporaryCosmetique cosmetique) {
+		
+		
 		ItemStack item = new ItemStack(cosmetique.getItemShop());
 		ChatColor color = ChatColor.valueOf(cosmetique.getPrestige().getColor());
 		
@@ -174,6 +218,10 @@ public class RandomShop extends Shop{
 		lores.add(color + "Prestige: " + cosmetique.getPrestige().toString().toLowerCase());
 		if(cosmetique instanceof TemporaryParticleCosmetique) {
 			lores.add(color + "Effet particule: " + ((TemporaryParticleCosmetique) cosmetique).getParticle().name().toLowerCase());
+		}
+		
+		if(cosmetique instanceof TemporaryMaterialHatCosmetique) {
+			lores.add(color + "Effet chapeau: " + ((TemporaryMaterialHatCosmetique) cosmetique).getMaterialHat().name().toLowerCase());
 		}
 		
 		meta.setLore(lores);

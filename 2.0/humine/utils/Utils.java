@@ -18,6 +18,7 @@ import com.aypi.utils.Timer;
 import com.aypi.utils.inter.TimerFinishListener;
 
 import humine.main.MainShop;
+import humine.utils.randomshop.TemporaryMaterialHatCosmetique;
 
 
 
@@ -60,14 +61,23 @@ public abstract class Utils {
 	 */
 	public static ItemStack CosmetiqueToItem(Cosmetique c) {
 		ItemStack item = new ItemStack(c.getItemShop());
+		
+		if(c instanceof MaterialHatCosmetique) {
+			item = new ItemStack(((MaterialHatCosmetique) c).getMaterialHat());
+		}
+		
 		ItemMeta meta = item.getItemMeta();
 		meta.setDisplayName(c.getName() + " #" + c.getId());
 		
 		ArrayList<String> lores = new ArrayList<String>();
 		lores.add("Prix Humis: " + c.getHumisPrice());
 		lores.add("Prix Pixel: " + c.getPixelPrice());
+		
 		if(c instanceof ParticleCosmetique) {
 			lores.add("Effet particule: " + ((ParticleCosmetique) c).getParticleEffect().name().toLowerCase());
+		}
+		else if(c instanceof MaterialHatCosmetique) {
+			lores.add("Effet chapeau: " + ((MaterialHatCosmetique) c).getMaterialHat().name().toLowerCase());
 		}
 		
 		meta.setLore(lores);
@@ -149,7 +159,7 @@ public abstract class Utils {
 		else
 			lores.add(ChatColor.BOLD + "" + ChatColor.RED + "Vous n'avez pas assez de "+MainShop.getInstance().getBankPixel().getNameValue()+" !");
 
-		lores.add("Prix: " + ChatColor.GREEN + cosmetique.getHumisPrice());
+		lores.add("Prix: " + ChatColor.GREEN + cosmetique.getPixelPrice());
 		lores.add("Vous avez " + MainShop.getInstance().getBankPixel().getMoney(player) + " " + MainShop.getInstance().getBankPixel().getNameValue());
 		lores.add("Buy with pixel");
 
@@ -240,6 +250,16 @@ public abstract class Utils {
 	
 	public static void lauchBuyCosmetique(Player player, Cosmetique cosmetique) {
 		BuyList.put(player, cosmetique);
+	}
+	
+	public static void swearHatCosmetique(Player player, Cosmetique cosmetique) {
+		
+		if(cosmetique instanceof MaterialHatCosmetique) {
+			player.getInventory().setHelmet(CosmetiqueToItem(cosmetique));
+		}
+		else if(cosmetique instanceof TemporaryMaterialHatCosmetique) {
+			player.getInventory().setHelmet(CosmetiqueToItem(cosmetique));
+		}
 	}
 	
 	public static void disableParticleCosmetique(Player player) {

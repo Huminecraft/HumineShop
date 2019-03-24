@@ -28,4 +28,11 @@ commands:
     usage:
     description:
     permission:
-  
+  ccmh:
+    usage:
+    description:
+    permission:
+  tccmh:
+    usage:
+    description:
+    permission:

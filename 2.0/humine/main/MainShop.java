@@ -10,7 +10,9 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import humine.commands.CreateMaterialHatCosmetique;
 import humine.commands.CreateParticleCosmetique;
+import humine.commands.CreateTemporaryMaterialHatCosmetique;
 import humine.commands.CreateTemporaryParticleCosmetique;
 import humine.commands.HelpList;
 import humine.commands.Money;
@@ -67,7 +69,9 @@ public class MainShop extends JavaPlugin {
 		this.inventories = new Inventories();
 
 		this.shop.load(this.shopFolder);
-		this.randomShop.load(this.randomShopFolder);
+		
+		File dateFolder = new File(this.randomShopFolder, LocalDate.now().toString());
+		this.randomShop.load(dateFolder);
 		this.bankHumis.load(this.bankHumisFile);
 		this.bankPixel.load(this.bankPixelFile);
 		this.inventories.load(this.inventoriesFolder);
@@ -92,7 +96,9 @@ public class MainShop extends JavaPlugin {
 	public void onDisable()
 	{
 		this.shop.save(this.shopFolder);
-		this.randomShop.save(this.randomShopFolder);
+		
+		File dateFolder = new File(this.randomShopFolder, LocalDate.now().toString());
+		this.randomShop.save(dateFolder);
 		this.bankHumis.save(this.bankHumisFile);
 		this.bankPixel.save(this.bankPixelFile);
 		this.inventories.save(this.inventoriesFolder);
@@ -127,8 +133,10 @@ public class MainShop extends JavaPlugin {
 		this.getCommand("money").setExecutor(new Money());
 		this.getCommand("shop").setExecutor(new OpenShop());
 		this.getCommand("ccp").setExecutor(new CreateParticleCosmetique());
+		this.getCommand("ccmh").setExecutor(new CreateMaterialHatCosmetique());
 		this.getCommand("chelp").setExecutor(new HelpList());
 		this.getCommand("tccp").setExecutor(new CreateTemporaryParticleCosmetique());
+		this.getCommand("tccmh").setExecutor(new CreateTemporaryMaterialHatCosmetique());
 		this.getCommand("rc").setExecutor(new RemoveCosmetique());
 	}
 	

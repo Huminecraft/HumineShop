@@ -271,6 +271,7 @@ public class Shop {
 			page.load(file);
 			this.pages.add(page);
 		}
+		
 	}
 	
 	/**

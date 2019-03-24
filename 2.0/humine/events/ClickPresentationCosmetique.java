@@ -43,7 +43,7 @@ public class ClickPresentationCosmetique implements Listener
 						if(stock != null) {
 							Utils.addCosmetique(stock, c);
 							player.closeInventory();
-							MainShop.sendMessage(player, "Cosmetique acheté !");
+							MainShop.sendMessage(player, "Cosmetique achete !");
 							MainShop.getInstance().getBankHumis().removeMoney(player, c.getHumisPrice());
 						}
 					}
@@ -59,7 +59,7 @@ public class ClickPresentationCosmetique implements Listener
 						if(stock != null) {
 							Utils.addCosmetique(stock, c);
 							player.closeInventory();
-							MainShop.sendMessage(player, "Cosmetique acheté !");
+							MainShop.sendMessage(player, "Cosmetique achete !");
 							MainShop.getInstance().getBankPixel().removeMoney(player, c.getPixelPrice());
 						}
 					}
@@ -82,6 +82,15 @@ public class ClickPresentationCosmetique implements Listener
 				}
 			}
 		}
+		
+		for(Page page : MainShop.getInstance().getRandomShop().getPages()) {
+			for(int i = 0; i < page.getSize(); i++) {
+				if(page.getCosmetiques()[i] != null && page.getCosmetiques()[i].getId().equals(id)) {
+					return page.getCosmetiques()[i];
+				}
+			}
+		}
+		
 		return null;
 	}
 }

@@ -1,6 +1,5 @@
 package humine.commands;
 
-import java.io.File;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -26,23 +25,18 @@ public class RemoveCosmetique implements CommandExecutor{
 			for(int i = 0; i < page.getCosmetiques().length; i++) {
 				if(page.getCosmetiques()[i] != null && page.getCosmetiques()[i].getId().equals(args[0])) {
 					page.getCosmetiques()[i] = null;
-					MainShop.sendMessage(sender, "Cosmetique #" + args[0] + " supprimé !");
+					MainShop.sendMessage(sender, "Cosmetique #" + args[0] + " supprime !");
 					return true;
 				}
 			}
 		}
 		
-		Page page = new Page("", 0);
-		for(File dateFolder : MainShop.getInstance().getRandomShopFolder().listFiles()) {
-			for(File pageFolder : dateFolder.listFiles()) {
-				page.load(pageFolder);
-				for(int i = 0; i < page.getCosmetiques().length; i++) {
-					if(page.getCosmetiques()[i] != null && page.getCosmetiques()[i].getId().equals(args[0])) {
-						page.getCosmetiques()[i] = null;
-						MainShop.sendMessage(sender, "Cosmetique #" + args[0] + " supprimé !");
-						page.save(pageFolder);
-						return true;
-					}
+		for(Page page : MainShop.getInstance().getRandomShop().getPages()) {
+			for(int i = 0; i < page.getCosmetiques().length; i++) {
+				if(page.getCosmetiques()[i] != null && page.getCosmetiques()[i].getId().equals(args[0])) {
+					page.getCosmetiques()[i] = null;
+					MainShop.sendMessage(sender, "Cosmetique #" + args[0] + " supprime !");
+					return true;
 				}
 			}
 		}
