@@ -373,7 +373,7 @@ public class Page
 			config = YamlConfiguration.loadConfiguration(folder.listFiles()[i]);
 			if (config.contains("particle"))
 			{
-				ParticleCosmetique c = new ParticleCosmetique("", null, 0, null);
+				ParticleCosmetique c = new ParticleCosmetique("", null, 0, 0, null);
 				c.load(folder.listFiles()[i]);
 				this.cosmetiques[i] = c;
 			}

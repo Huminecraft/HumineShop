@@ -11,7 +11,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import humine.utils.Page;
+import humine.main.MainShop;
 import humine.utils.Shop;
 import humine.utils.TemporaryCosmetique;
 import humine.utils.Utils;
@@ -25,21 +25,12 @@ public class RandomShop extends Shop{
 		this.currentDate = LocalDate.now();
 	}
 	
-	public void update(File folder) {
+	public void update() {
+		File folder = new File(MainShop.getInstance().getRandomShopFolder(), LocalDate.now().toString() + ".yml");
 		if(!folder.exists())
 			return;
-		
-		File file = new File(folder, LocalDate.now().toString());
-		if(!file.exists())
-			return;
 
-		resetShop();
-		for(File f : file.listFiles()) {
-			Page page = new Page("", 0);
-			page.load(f);
-			this.addPage(page);
-		}
-		
+		super.load(folder);
 		this.currentDate = LocalDate.now();
 	}
 	
@@ -181,7 +172,8 @@ public class RandomShop extends Shop{
 		meta.setDisplayName(color + cosmetique.getName() + " #" + cosmetique.getId());
 		
 		ArrayList<String> lores = new ArrayList<String>();
-		lores.add(color + "Prix: " + cosmetique.getPrice());
+		lores.add(color + "Prix Humis: " + cosmetique.getHumisPrice());
+		lores.add(color + "Prix Pixel: " + cosmetique.getPixelPrice());
 		lores.add(color + "Prestige: " + cosmetique.getPrestige().toString().toLowerCase());
 		if(cosmetique instanceof TemporaryParticleCosmetique) {
 			lores.add(color + "Effet particule: " + ((TemporaryParticleCosmetique) cosmetique).getParticle().name().toLowerCase());

@@ -15,7 +15,8 @@ public abstract class Cosmetique {
 	private String id;
 	private String name;
 	private Material itemShop;
-	private int price;
+	private int humisPrice;
+	private int PixelPrice;
 	
 	public static int NumId = 0;
 	
@@ -44,10 +45,11 @@ public abstract class Cosmetique {
 	 * @param name le nom du cosmetique
 	 * @param itemShop Le material servant a representer le cosmetique dans le shop
 	 */
-	public Cosmetique(String name, Material itemShop, int price) {
+	public Cosmetique(String name, Material itemShop, int humisPrice, int pixelPrice) {
 		this.name = name;
 		this.itemShop = itemShop;
-		this.price = price;
+		this.humisPrice = humisPrice;
+		this.PixelPrice = pixelPrice;
 		
 		this.id = "" + LocalDate.now().getYear();
 		this.id = this.id.substring(2);
@@ -78,12 +80,21 @@ public abstract class Cosmetique {
 		return itemShop;
 	}
 	
-	public int getPrice() {
-		return price;
+
+	public int getHumisPrice() {
+		return humisPrice;
 	}
 
-	public void setPrice(int price) {
-		this.price = price;
+	public void setHumisPrice(int humisPrice) {
+		this.humisPrice = humisPrice;
+	}
+
+	public int getPixelPrice() {
+		return PixelPrice;
+	}
+
+	public void setPixelPrice(int pixelPrice) {
+		PixelPrice = pixelPrice;
 	}
 
 	public void setId(String id) {
@@ -117,6 +128,8 @@ public abstract class Cosmetique {
 		config.set("id", this.id);
 		config.set("name", this.name);
 		config.set("itemshop", this.itemShop.toString());
+		config.set("humisPrice", this.humisPrice);
+		config.set("pixelPrice", this.PixelPrice);
 		try {
 			config.save(file);
 		} catch (IOException e) {
@@ -136,7 +149,7 @@ public abstract class Cosmetique {
 		
 		FileConfiguration config = YamlConfiguration.loadConfiguration(file);
 
-		if(!config.contains("id") || !config.contains("name") || !config.contains("itemshop")) {
+		if(!config.contains("id") || !config.contains("name") || !config.contains("itemshop") || !config.contains("humisPrice") || !config.contains("pixelPrice")) {
 			System.err.println("Erreur parametre manquant dans le fichier " + file.getName());
 			return;
 		}
@@ -144,6 +157,8 @@ public abstract class Cosmetique {
 		this.id = config.getString("id");
 		this.name = config.getString("name");
 		this.itemShop = Material.matchMaterial(config.getString("itemshop"));
+		this.humisPrice = config.getInt("humisPrice");
+		this.PixelPrice = config.getInt("pixelPrice");
 	}
 	
 	public static int getNumId() {

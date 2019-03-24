@@ -1,7 +1,5 @@
 package humine.utils;
 
-import java.io.File;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -66,7 +64,8 @@ public abstract class Utils {
 		meta.setDisplayName(c.getName() + " #" + c.getId());
 		
 		ArrayList<String> lores = new ArrayList<String>();
-		lores.add("Prix: " + c.getPrice());
+		lores.add("Prix Humis: " + c.getHumisPrice());
+		lores.add("Prix Pixel: " + c.getPixelPrice());
 		if(c instanceof ParticleCosmetique) {
 			lores.add("Effet particule: " + ((ParticleCosmetique) c).getParticleEffect().name().toLowerCase());
 		}
@@ -85,14 +84,14 @@ public abstract class Utils {
 		Inventory inv = Bukkit.createInventory(player, (9 * 3), "Presentation #" + cosmetique.getId());
 
 		
-		inv.setItem(14, blockBuy(cosmetique, player));
+		inv.setItem(14, blockHumisBuy(cosmetique, player));
 		inv.setItem(12, blockTest(cosmetique));
 		inv.setItem(18, addArrow("Retour"));
 
 		player.openInventory(inv);
 	}
 	
-	private static ItemStack blockBuy(Cosmetique cosmetique, Player player) {
+	public static ItemStack blockHumisBuy(Cosmetique cosmetique, Player player) {
 		ItemStack item = new ItemStack(Material.GREEN_WOOL);
 		ItemMeta meta = item.getItemMeta();
 		meta.setDisplayName(cosmetique.getName());
@@ -110,12 +109,12 @@ public abstract class Utils {
 			}
 		}
 		
-		if (MainShop.getInstance().getBank().getMoney(player) >= cosmetique.getPrice())
+		if (MainShop.getInstance().getBank().getMoney(player) >= cosmetique.getHumisPrice())
 			lores.add(ChatColor.BOLD + "" + ChatColor.GREEN + "Acheter !");
 		else
 			lores.add(ChatColor.BOLD + "" + ChatColor.RED + "Vous n'avez pas assez de "+MainShop.getInstance().getBank().getNameValue()+" !");
 
-		lores.add("Prix: " + ChatColor.GREEN + cosmetique.getPrice());
+		lores.add("Prix: " + ChatColor.GREEN + cosmetique.getHumisPrice());
 		lores.add("Vous avez " + MainShop.getInstance().getBank().getMoney(player) + " " + MainShop.getInstance().getBank().getNameValue());
 		lores.add("Buy");
 
@@ -126,6 +125,40 @@ public abstract class Utils {
 
 	}
 
+	public static ItemStack blockPixelBuy(Cosmetique cosmetique, Player player) {
+		ItemStack item = new ItemStack(Material.ORANGE_WOOL);
+		ItemMeta meta = item.getItemMeta();
+		meta.setDisplayName(cosmetique.getName());
+		
+		List<String> lores = new ArrayList<String>();
+		
+		if(MainShop.getInstance().getInventories().containsStockOfPlayer(player.getName())) {
+			for(Page page : MainShop.getInstance().getInventories().getStockOfPlayer(player.getName()).getPages()) {
+				if(page.containsCosmetique(cosmetique)) {
+					lores.add("Vous avez deja ce cosmetique");
+					meta.setLore(lores);
+					item.setItemMeta(meta);
+					return item;
+				}
+			}
+		}
+		
+		if (MainShop.getInstance().getBank().getMoney(player) >= cosmetique.getHumisPrice())
+			lores.add(ChatColor.BOLD + "" + ChatColor.GREEN + "Acheter !");
+		else
+			lores.add(ChatColor.BOLD + "" + ChatColor.RED + "Vous n'avez pas assez de "+MainShop.getInstance().getBank().getNameValue()+" !");
+
+		lores.add("Prix: " + ChatColor.GREEN + cosmetique.getHumisPrice());
+		lores.add("Vous avez " + MainShop.getInstance().getBank().getMoney(player) + " " + MainShop.getInstance().getBank().getNameValue());
+		lores.add("Buy");
+
+		meta.setLore(lores);
+
+		item.setItemMeta(meta);
+		return item;
+
+	}
+	
 	private static ItemStack blockTest(Cosmetique cosmetique) {
 		ItemStack item = new ItemStack(Material.PURPLE_WOOL);
 		ItemMeta meta = item.getItemMeta();
@@ -247,27 +280,5 @@ public abstract class Utils {
 		}
 		
 		stock.getLastPage().addCosmetique(cosmetique);
-	}
-	
-	
-	public static void registerTemporaryCosmetique(Cosmetique cosmetique, LocalDate date) {
-		File file = new File(MainShop.getInstance().getRandomShopFolder(), date.toString());
-		
-		Page page;
-		if(!file.exists()) {
-			file.mkdirs();
-			page = new Page("Page 1", size);
-			page.addCosmetique(cosmetique);
-			page.save(file);
-		}
-		else {
-			for(File f : file.listFiles()) {
-				if(f.listFiles().length < size) {
-					cosmetique.save(new File(f, cosmetique.getId() + ".yml"));
-					break;
-				}
-			}
-		}
-		
 	}
 }

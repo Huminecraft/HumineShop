@@ -2,6 +2,7 @@ package humine.main;
 
 import java.io.File;
 import java.io.IOException;
+import java.time.LocalDate;
 
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
@@ -64,6 +65,14 @@ public class MainShop extends JavaPlugin {
 		
 		initializeCommands();
 		initializeEvents();
+		
+		this.getServer().getScheduler().scheduleSyncRepeatingTask(this, new Runnable() {
+			public void run() {
+				if(LocalDate.now().isAfter(randomShop.getCurrentDate())) {
+					randomShop.update();
+				}
+			}
+		}, 0L, (60 * 20));
 		
 	}
 	

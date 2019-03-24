@@ -21,8 +21,8 @@ public class ParticleCosmetique extends Cosmetique{
 	 * @param price le prix du cosmetique
 	 * @param particle la particule qui sera utilisee
 	 */
-	public ParticleCosmetique(String name, Material itemShop, int price, Particle particle) {
-		super(name, itemShop, price);
+	public ParticleCosmetique(String name, Material itemShop, int humisPrice, int pixelPrice, Particle particle) {
+		super(name, itemShop, humisPrice, pixelPrice);
 		this.particleEffect = particle;
 	}
 
@@ -46,21 +46,9 @@ public class ParticleCosmetique extends Cosmetique{
 	 */
 	@Override
 	public void save(File file) {
-		if(!file.exists()) {
-			try {
-				file.createNewFile();
-			} catch (IOException e) {
-				System.err.println("Erreur dans la creation du fichier");
-				e.printStackTrace();
-				return;
-			}
-		}
+		super.save(file);
 		
 		FileConfiguration config = YamlConfiguration.loadConfiguration(file);
-		config.set("id", this.getId());
-		config.set("name", this.getName());
-		config.set("prix", this.getPrice());
-		config.set("itemshop", this.getItemShop().toString());
 		config.set("particle", this.particleEffect.toString());
 		try {
 			config.save(file);
@@ -77,20 +65,15 @@ public class ParticleCosmetique extends Cosmetique{
 	 */
 	@Override
 	public void load(File file) {
-		if(!file.exists())
-			return;
+		super.load(file);
 		
 		FileConfiguration config = YamlConfiguration.loadConfiguration(file);
 
-		if(!config.contains("id") || !config.contains("name") || !config.contains("itemshop") || !config.contains("particle")) {
+		if(!config.contains("particle")) {
 			System.err.println("Erreur parametre manquant dans le fichier " + file.getName());
 			return;
 		}
 		
-		this.setId(config.getString("id"));
-		this.setName(config.getString("name"));
-		this.setPrice(config.getInt("prix"));
-		this.setItemShop(Material.matchMaterial(config.getString("itemshop")));
 		this.particleEffect = Particle.valueOf(config.getString("particle"));
 	}
 

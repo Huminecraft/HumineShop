@@ -16,8 +16,8 @@ public class TemporaryParticleCosmetique extends TemporaryCosmetique{
 
 	private Particle particle;
 	
-	public TemporaryParticleCosmetique(String name, Material itemShop, int price, LocalDate date, Prestige prestige, Particle particle) {
-		super(name, itemShop, price, date, prestige);
+	public TemporaryParticleCosmetique(String name, Material itemShop, int humisPrice, int pixelPrice, LocalDate date, Prestige prestige, Particle particle) {
+		super(name, itemShop, humisPrice, pixelPrice, date, prestige);
 		this.particle = particle;
 	}
 	

@@ -1,5 +1,6 @@
 package humine.commands;
 
+import java.io.File;
 import java.time.LocalDate;
 
 import org.bukkit.Material;
@@ -11,6 +12,7 @@ import org.bukkit.command.CommandSender;
 import humine.main.MainShop;
 import humine.utils.Prestige;
 import humine.utils.Utils;
+import humine.utils.randomshop.RandomShop;
 import humine.utils.randomshop.TemporaryParticleCosmetique;
 
 public class CreateTemporaryParticleCosmetique implements CommandExecutor {
@@ -68,10 +70,17 @@ public class CreateTemporaryParticleCosmetique implements CommandExecutor {
 		
 		TemporaryParticleCosmetique cosmetique = new TemporaryParticleCosmetique(args[0], material, price, date, prestige, particle);
 		
-		Utils.registerTemporaryCosmetique(cosmetique, date);
 		
 		if(date.isEqual(LocalDate.now())) {
 			Utils.addCosmetique(MainShop.getInstance().getRandomShop(), cosmetique);
+		}
+		else {
+			RandomShop rs = new RandomShop("partiel");
+			File file = new File(MainShop.getInstance().getRandomShopFolder(), date  + ".yml");
+			rs.load(file);
+			Utils.addCosmetique(rs, cosmetique);
+			rs.save(file);
+			
 		}
 		
 		MainShop.sendMessage(sender, "cosmetique de particule créée !");

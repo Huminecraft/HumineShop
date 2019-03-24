@@ -13,8 +13,8 @@ public class TemporaryCosmetique extends Cosmetique{
 	private LocalDate date;
 	private Prestige prestige;
 	
-	public TemporaryCosmetique(String name, Material itemShop, int price, LocalDate date, Prestige prestige) {
-		super(name, itemShop, price);
+	public TemporaryCosmetique(String name, Material itemShop, int humisPrice, int pixelPrice, LocalDate date, Prestige prestige) {
+		super(name, itemShop, humisPrice, pixelPrice);
 		this.date = date;
 		this.prestige = prestige;
 	}
