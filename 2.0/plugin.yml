@@ -1,6 +1,6 @@
 name: HumineShop
 main: humine.main.MainShop
-version: 1.2
+version: 2.1
 author: MizakiGaming
 api-version: 1.13
 commands:

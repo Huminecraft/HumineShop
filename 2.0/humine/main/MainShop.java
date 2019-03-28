@@ -23,6 +23,7 @@ import humine.events.ClickPresentationCosmetique;
 import humine.events.CreateBankAccount;
 import humine.events.CreateStockAccount;
 import humine.events.PlayerQuit;
+import humine.events.inventory.ClickMaterialInventory;
 import humine.events.randomshop.ClickArrowButton;
 import humine.events.randomshop.ClickQuitButton;
 import humine.events.randomshop.QuitRandomShop;
@@ -163,6 +164,8 @@ public class MainShop extends JavaPlugin {
 		this.getServer().getPluginManager().registerEvents(new QuitStock(), this);
 		this.getServer().getPluginManager().registerEvents(new humine.events.stock.ClickQuitButton(), this);
 		this.getServer().getPluginManager().registerEvents(new ClickDisableButton(), this);
+		
+		this.getServer().getPluginManager().registerEvents(new ClickMaterialInventory(), this);
 	}
 
 	public static MainShop getInstance() {
