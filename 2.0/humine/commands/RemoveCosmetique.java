@@ -6,7 +6,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 
 import humine.main.MainShop;
-import humine.utils.Page;
+import humine.utils.shop.Page;
 
 public class RemoveCosmetique implements CommandExecutor{
 

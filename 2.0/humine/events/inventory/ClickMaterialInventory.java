@@ -7,6 +7,8 @@ public class ClickMaterialInventory implements Listener
 {
 
 	public void onclick(InventoryClickEvent event) {
-		//TODO
+		if(event.getInventory().equals(event.getWhoClicked().getInventory())) {
+			
+		}
 	}
 }

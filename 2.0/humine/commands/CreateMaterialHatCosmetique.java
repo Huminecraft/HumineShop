@@ -4,10 +4,10 @@ import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.inventory.ItemStack;
 
 import humine.main.MainShop;
-import humine.utils.MaterialHatCosmetique;
-import humine.utils.Utils;
+import humine.utils.cosmetiques.MaterialHatCosmetique;
 
 public class CreateMaterialHatCosmetique implements CommandExecutor
 {
@@ -49,9 +49,9 @@ public class CreateMaterialHatCosmetique implements CommandExecutor
 		int pixelPrice = Integer.parseInt(args[3]);
 		Material materialHat = Material.values()[ordinalMaterialHat];
 		
-		MaterialHatCosmetique cosmetique = new MaterialHatCosmetique(args[0], material, humisPrice, pixelPrice, materialHat);
+		MaterialHatCosmetique cosmetique = new MaterialHatCosmetique(args[0], new ItemStack(material), humisPrice, pixelPrice, materialHat);
 		
-		Utils.addCosmetique(MainShop.getInstance().getShop(), cosmetique);
+		MainShop.getInstance().getShop().addCosmetique(cosmetique);
 		
 		MainShop.sendMessage(sender, "Cosmetique de Material Hat cree !");
 		MainShop.sendMessage(sender, "nom: " + cosmetique.getName());

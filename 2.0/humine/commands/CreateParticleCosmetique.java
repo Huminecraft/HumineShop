@@ -7,10 +7,10 @@ import org.bukkit.Particle;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.inventory.ItemStack;
 
 import humine.main.MainShop;
-import humine.utils.ParticleCosmetique;
-import humine.utils.Utils;
+import humine.utils.cosmetiques.ParticleCosmetique;
 
 public class CreateParticleCosmetique implements CommandExecutor{
 
@@ -50,9 +50,9 @@ public class CreateParticleCosmetique implements CommandExecutor{
 		int pixelPrice = Integer.parseInt(args[3]);
 		Particle particle = Particle.values()[ordinalParticle];
 		
-		ParticleCosmetique cosmetique = new ParticleCosmetique(args[0], material, humisPrice, pixelPrice, particle);
+		ParticleCosmetique cosmetique = new ParticleCosmetique(args[0], new ItemStack(material), humisPrice, pixelPrice, particle);
 		
-		Utils.addCosmetique(MainShop.getInstance().getShop(), cosmetique);
+		MainShop.getInstance().getShop().addCosmetique(cosmetique);
 		
 		MainShop.sendMessage(sender, "Cosmetique de Particule cree !");
 		MainShop.sendMessage(sender, "nom: " + cosmetique.getName());

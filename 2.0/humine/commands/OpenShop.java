@@ -6,7 +6,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import humine.main.MainShop;
-import humine.utils.Shop;
 
 public class OpenShop implements CommandExecutor{
 
@@ -19,7 +18,7 @@ public class OpenShop implements CommandExecutor{
 		}
 		
 		Player player = (Player) sender;
-		Shop.openShop(MainShop.getInstance().getShop(), player);
+		MainShop.getInstance().getMenuAccueil().openMenu(player);
 		return true;
 	}
 }

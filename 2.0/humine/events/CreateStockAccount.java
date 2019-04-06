@@ -6,7 +6,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 
 import humine.main.MainShop;
-import humine.utils.Stock;
+import humine.utils.shop.Stock;
 
 public class CreateStockAccount implements Listener{
 

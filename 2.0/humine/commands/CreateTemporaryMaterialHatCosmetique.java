@@ -7,12 +7,12 @@ import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.inventory.ItemStack;
 
 import humine.main.MainShop;
 import humine.utils.Prestige;
-import humine.utils.Utils;
-import humine.utils.randomshop.RandomShop;
-import humine.utils.randomshop.TemporaryMaterialHatCosmetique;
+import humine.utils.cosmetiques.temporary.TemporaryMaterialHatCosmetique;
+import humine.utils.shop.RandomShop;
 
 public class CreateTemporaryMaterialHatCosmetique implements CommandExecutor
 {
@@ -69,17 +69,17 @@ public class CreateTemporaryMaterialHatCosmetique implements CommandExecutor
 		LocalDate date = getDate(args[5]);
 		Prestige prestige = Prestige.values()[ordinalPrestige];
 		
-		TemporaryMaterialHatCosmetique cosmetique = new TemporaryMaterialHatCosmetique(args[0], material, humisPrice, pixelPrice, date, prestige, materialHat);
+		TemporaryMaterialHatCosmetique cosmetique = new TemporaryMaterialHatCosmetique(args[0], new ItemStack(material), humisPrice, pixelPrice, date, prestige, materialHat);
 		
 		
 		if(date.isEqual(LocalDate.now())) {
-			Utils.addCosmetique(MainShop.getInstance().getRandomShop(), cosmetique);
+			MainShop.getInstance().getRandomShop().addCosmetique(cosmetique);
 		}
 		else {
 			RandomShop rs = new RandomShop("partiel");
 			File file = new File(MainShop.getInstance().getRandomShopFolder(), date.toString());
 			rs.load(file);
-			Utils.addCosmetique(rs, cosmetique);
+			rs.addCosmetique(cosmetique);
 			rs.save(file);
 			
 		}

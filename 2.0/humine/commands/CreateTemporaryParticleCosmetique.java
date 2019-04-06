@@ -8,12 +8,12 @@ import org.bukkit.Particle;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.inventory.ItemStack;
 
 import humine.main.MainShop;
 import humine.utils.Prestige;
-import humine.utils.Utils;
-import humine.utils.randomshop.RandomShop;
-import humine.utils.randomshop.TemporaryParticleCosmetique;
+import humine.utils.cosmetiques.temporary.TemporaryParticleCosmetique;
+import humine.utils.shop.RandomShop;
 
 public class CreateTemporaryParticleCosmetique implements CommandExecutor {
 
@@ -69,17 +69,17 @@ public class CreateTemporaryParticleCosmetique implements CommandExecutor {
 		LocalDate date = getDate(args[5]);
 		Prestige prestige = Prestige.values()[ordinalPrestige];
 		
-		TemporaryParticleCosmetique cosmetique = new TemporaryParticleCosmetique(args[0], material, humisPrice, pixelPrice, date, prestige, particle);
+		TemporaryParticleCosmetique cosmetique = new TemporaryParticleCosmetique(args[0], new ItemStack(material), humisPrice, pixelPrice, date, prestige, particle);
 		
 		
 		if(date.isEqual(LocalDate.now())) {
-			Utils.addCosmetique(MainShop.getInstance().getRandomShop(), cosmetique);
+			MainShop.getInstance().getRandomShop().addCosmetique(cosmetique);
 		}
 		else {
 			RandomShop rs = new RandomShop("partiel");
 			File file = new File(MainShop.getInstance().getRandomShopFolder(), date.toString());
 			rs.load(file);
-			Utils.addCosmetique(rs, cosmetique);
+			rs.addCosmetique(cosmetique);
 			rs.save(file);
 			
 		}
