@@ -275,8 +275,11 @@ public class Page
 	 */
 	public void save(File folder)
 	{
-		if(folder.exists())
+		if(folder.exists()) {
+			for(File f : folder.listFiles())
+				f.delete();
 			folder.delete();
+		}
 		
 		folder.mkdirs();
 

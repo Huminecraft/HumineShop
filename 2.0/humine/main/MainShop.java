@@ -150,7 +150,6 @@ public class MainShop extends JavaPlugin {
 	}
 	
 	private void initializeEvents() {
-		
 	}
 
 	public static MainShop getInstance() {
