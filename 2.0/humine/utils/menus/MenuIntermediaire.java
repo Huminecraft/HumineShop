@@ -2,12 +2,12 @@ package humine.utils.menus;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import humine.utils.ItemShop;
+import net.md_5.bungee.api.ChatColor;
 
 public class MenuIntermediaire implements Menu{
 
@@ -24,11 +24,11 @@ public class MenuIntermediaire implements Menu{
 
 	@Override
 	public Inventory initInventory(Player player) {
-		Inventory inv = Bukkit.createInventory(null, InventoryType.CHEST, this.name);
+		Inventory inv = Bukkit.createInventory(null, (9 * 4), this.name);
 
 		inv.setItem(11, itemParticleShop());
 		inv.setItem(13, itemHatShop());
-		inv.setItem(15, itemCustomHeadShop(player));
+		inv.setItem(15, itemCustomHeadShop());
 		
 		inv.setItem(inv.getSize() - 9, ItemShop.itemQuit());
 		inv.setItem(inv.getSize() - 1, ItemShop.itemQuit());
@@ -41,7 +41,7 @@ public class MenuIntermediaire implements Menu{
 	public ItemStack itemParticleShop() {
 		ItemStack item = ItemShop.itemParticleStock();
 		ItemMeta meta = item.getItemMeta();
-		meta.setDisplayName("Boutique particule");
+		meta.setDisplayName(ChatColor.WHITE + "Particules");
 		item.setItemMeta(meta);
 		
 		return item;
@@ -50,16 +50,16 @@ public class MenuIntermediaire implements Menu{
 	public ItemStack itemHatShop() {
 		ItemStack item = ItemShop.itemHatStock();
 		ItemMeta meta = item.getItemMeta();
-		meta.setDisplayName("Boutique de tete");
+		meta.setDisplayName(ChatColor.WHITE + "Chapeaux");
 		item.setItemMeta(meta);
 		
 		return item;
 	}
 	
-	public ItemStack itemCustomHeadShop(Player player) {
-		ItemStack item = ItemShop.itemCustomHeadStock(player);
+	public ItemStack itemCustomHeadShop() {
+		ItemStack item = ItemShop.itemCustomHeadStock();
 		ItemMeta meta = item.getItemMeta();
-		meta.setDisplayName("Boutique de tete personnalisee");
+		meta.setDisplayName(ChatColor.WHITE + "Têtes decoratives");
 		item.setItemMeta(meta);
 		
 		return item;

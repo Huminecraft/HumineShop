@@ -8,6 +8,7 @@ import java.util.Arrays;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
+import humine.utils.Prestige;
 import humine.utils.cosmetiques.Cosmetique;
 import humine.utils.cosmetiques.MaterialHatCosmetique;
 import humine.utils.cosmetiques.ParticleCosmetique;
@@ -342,7 +343,7 @@ public class Page
 		}
 
 		FileConfiguration config = YamlConfiguration.loadConfiguration(index);
-		if (!config.contains("id") || !config.contains("name") || !config.contains("size"))
+		if (!config.contains("name") || !config.contains("size"))
 		{
 			System.err.println("Erreur parametre manquant dans le fichier " + index.getName());
 			return;
@@ -364,7 +365,7 @@ public class Page
 					this.cosmetiques[i] = c;
 				}
 				else {
-					ParticleCosmetique c = new ParticleCosmetique("", null, 0, 0, null);
+					ParticleCosmetique c = new ParticleCosmetique("", null, 0, 0, null, Prestige.COMMUN);
 					c.load(folder.listFiles()[i]);
 					this.cosmetiques[i] = c;
 				}
@@ -376,7 +377,7 @@ public class Page
 					this.cosmetiques[i] = c;
 				}
 				else {
-					MaterialHatCosmetique c = new MaterialHatCosmetique("", null, 0, 0, null);
+					MaterialHatCosmetique c = new MaterialHatCosmetique("", null, 0, 0, null, Prestige.COMMUN);
 					c.load(folder.listFiles()[i]);
 					this.cosmetiques[i] = c;
 				}

@@ -1,6 +1,6 @@
 name: HumineShop
 main: humine.main.MainShop
-version: 2.1
+version: 3.0
 author: MizakiGaming
 api-version: 1.13
 commands:
@@ -33,6 +33,14 @@ commands:
     description:
     permission:
   tccmh:
+    usage:
+    description:
+    permission:
+  store:
+    usage:
+    description:
+    permission:
+  storedelete:
     usage:
     description:
     permission:

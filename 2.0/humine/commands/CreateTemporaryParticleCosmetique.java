@@ -17,13 +17,13 @@ import humine.utils.shop.RandomShop;
 
 public class CreateTemporaryParticleCosmetique implements CommandExecutor {
 
-	private static String command = "/tccp <name> <material> <humis> <pixel> <particle> <date> <prestige>";
+	private static String command = "/tccp <name> <material> <humis> <pixel> <particle> <date> [prestige]";
 	
 	// /tccp <name> <material> <humis> <pixel> <particle> <date> <prestige> 
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
 		
-		if(args.length < 7) {
+		if(args.length < 6) {
 			MainShop.sendMessage(sender, "Argument insuffisant");
 			MainShop.sendMessage(sender, command);
 			return false;
@@ -55,11 +55,9 @@ public class CreateTemporaryParticleCosmetique implements CommandExecutor {
 			return false;
 		}
 		
-		int ordinalPrestige = getPrestige(args[6]);
-		if(ordinalPrestige == -1) {
-			MainShop.sendMessage(sender, "Prestige introuvable");
-			MainShop.sendMessage(sender, command);
-			return false;
+		Prestige prestige = Prestige.COMMUN;
+		if(args.length >= 7) {
+			prestige = getPrestige(args[6]);
 		}
 		
 		Material material = Material.values()[ordinalMaterial];
@@ -67,10 +65,8 @@ public class CreateTemporaryParticleCosmetique implements CommandExecutor {
 		int pixelPrice = Integer.parseInt(args[3]);
 		Particle particle = Particle.values()[ordinalParticle];
 		LocalDate date = getDate(args[5]);
-		Prestige prestige = Prestige.values()[ordinalPrestige];
 		
 		TemporaryParticleCosmetique cosmetique = new TemporaryParticleCosmetique(args[0], new ItemStack(material), humisPrice, pixelPrice, date, prestige, particle);
-		
 		
 		if(date.isEqual(LocalDate.now())) {
 			MainShop.getInstance().getRandomShop().addCosmetique(cosmetique);
@@ -81,29 +77,32 @@ public class CreateTemporaryParticleCosmetique implements CommandExecutor {
 			rs.load(file);
 			rs.addCosmetique(cosmetique);
 			rs.save(file);
-			
 		}
+		
+		
 		
 		MainShop.sendMessage(sender, "cosmetique de particule créée !");
 		MainShop.sendMessage(sender, "nom: " + cosmetique.getName());
 		MainShop.sendMessage(sender, "id: #" + cosmetique.getId());
 		MainShop.sendMessage(sender, "prix humis: " + cosmetique.getHumisPrice());
 		MainShop.sendMessage(sender, "prix pixel: " + cosmetique.getPixelPrice());
+		MainShop.sendMessage(sender, "prestige: " + cosmetique.getPrestige());
 		MainShop.sendMessage(sender, "item presentation: " + cosmetique.getItemShop());
 		MainShop.sendMessage(sender, "effet particule: " + cosmetique.getParticle());
 		MainShop.sendMessage(sender, "date de presentation: " + args[5]);
-		MainShop.sendMessage(sender, "prestige: " + cosmetique.getPrestige().toString());
+		MainShop.sendMessage(sender, "prestige: " + cosmetique.getPrestige().name().toLowerCase());
 		
 		return true;
 	}
 	
-	private int getPrestige(String prestige) {
-		for(int i = 0; i < Prestige.values().length; i++) {
-			if(Prestige.values()[i].name().equalsIgnoreCase(prestige)) {
-				return i;
-			}
+	private Prestige getPrestige(String particle)
+	{
+		for(Prestige p : Prestige.values()) {
+			if(p.name().equalsIgnoreCase(particle))
+				return p;
 		}
-		return -1;
+		
+		return Prestige.COMMUN;
 	}
 	
 	private int getMaterial(String material) {

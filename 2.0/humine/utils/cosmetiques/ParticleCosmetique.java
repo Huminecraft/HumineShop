@@ -8,6 +8,8 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.inventory.ItemStack;
 
+import humine.utils.Prestige;
+
 public class ParticleCosmetique extends Cosmetique{
 
 	
@@ -21,8 +23,8 @@ public class ParticleCosmetique extends Cosmetique{
 	 * @param price le prix du cosmetique
 	 * @param particle la particule qui sera utilisee
 	 */
-	public ParticleCosmetique(String name, ItemStack itemShop, int humisPrice, int pixelPrice, Particle particle) {
-		super(name, itemShop, humisPrice, pixelPrice);
+	public ParticleCosmetique(String name, ItemStack itemShop, int humisPrice, int pixelPrice, Particle particle, Prestige prestige) {
+		super(name, itemShop, humisPrice, pixelPrice, prestige);
 		this.particleEffect = particle;
 	}
 

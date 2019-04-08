@@ -3,6 +3,7 @@ package humine.main;
 import java.io.File;
 import java.io.IOException;
 import java.time.LocalDate;
+import java.util.HashMap;
 
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
@@ -10,14 +11,39 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import humine.commands.AddMoney;
 import humine.commands.CreateMaterialHatCosmetique;
 import humine.commands.CreateParticleCosmetique;
 import humine.commands.CreateTemporaryMaterialHatCosmetique;
 import humine.commands.CreateTemporaryParticleCosmetique;
 import humine.commands.HelpList;
-import humine.commands.Money;
+import humine.commands.ShowMoney;
 import humine.commands.OpenShop;
 import humine.commands.RemoveCosmetique;
+import humine.commands.RemoveMoney;
+import humine.events.BlockMoveCosmetique;
+import humine.events.ClickPresentationCosmetique;
+import humine.events.CreateBankAccount;
+import humine.events.CreateStockAccount;
+import humine.events.ExitInventory;
+import humine.events.PlayerQuit;
+import humine.events.inventory.ClickMaterialInventory;
+import humine.events.menuaccueil.ClickCustomHeadButton;
+import humine.events.menuaccueil.ClickHatStockButton;
+import humine.events.menuaccueil.ClickLinkButton;
+import humine.events.menuaccueil.ClickParticleStockButton;
+import humine.events.menuaccueil.ClickPermanentShopButton;
+import humine.events.menuaccueil.ClickQuitButton;
+import humine.events.menuaccueil.ClickTemporaryShopButton;
+import humine.events.menuintermediaire.ClickEmpereurButton;
+import humine.events.menuintermediaire.ClickHatShopButton;
+import humine.events.menuintermediaire.ClickParticleShopButton;
+import humine.events.presentation.ClickHumisBuyButton;
+import humine.events.presentation.ClickPixelBuyButton;
+import humine.events.shops.ClickCosmetiqueButton;
+import humine.events.shops.ClickNextButton;
+import humine.events.shops.ClickPreviousButton;
+import humine.events.stocks.ClickDisableButton;
 import humine.utils.ParticleScheduler;
 import humine.utils.cosmetiques.Cosmetique;
 import humine.utils.economy.BankHumis;
@@ -25,8 +51,10 @@ import humine.utils.economy.BankPixel;
 import humine.utils.menus.MenuAccueil;
 import humine.utils.menus.MenuIntermediaire;
 import humine.utils.shop.HatShop;
+import humine.utils.shop.HatStock;
 import humine.utils.shop.Inventories;
 import humine.utils.shop.ParticleShop;
+import humine.utils.shop.ParticleStock;
 import humine.utils.shop.RandomShop;
 import humine.utils.shop.Shop;
 
@@ -47,6 +75,9 @@ public class MainShop extends JavaPlugin {
 	private ParticleShop particleShop;
 	private HatShop hatShop;
 	private Shop emperorShop;
+	
+	private HashMap<String, ParticleStock> particleStockList;
+	private HashMap<String, HatStock> HatStockList;
 	
 	private final File shopFolder = new File(getDataFolder(), "Shop");
 	private final File emperorShopFolder = new File(getDataFolder(), "EmperorShop");
@@ -78,6 +109,9 @@ public class MainShop extends JavaPlugin {
 		this.shop.load(this.shopFolder);
 		this.particleShop.filter(this.shop);
 		this.hatShop.filter(this.shop);
+		
+		this.particleStockList = new HashMap<String, ParticleStock>();
+		this.HatStockList = new HashMap<String, HatStock>();
 		
 		File dateFolder = new File(this.randomShopFolder, LocalDate.now().toString());
 		this.randomShop.load(dateFolder);
@@ -139,7 +173,7 @@ public class MainShop extends JavaPlugin {
 	}
 
 	private void initializeCommands() {
-		this.getCommand("money").setExecutor(new Money());
+		this.getCommand("money").setExecutor(new ShowMoney());
 		this.getCommand("shop").setExecutor(new OpenShop());
 		this.getCommand("ccp").setExecutor(new CreateParticleCosmetique());
 		this.getCommand("ccmh").setExecutor(new CreateMaterialHatCosmetique());
@@ -147,9 +181,49 @@ public class MainShop extends JavaPlugin {
 		this.getCommand("tccp").setExecutor(new CreateTemporaryParticleCosmetique());
 		this.getCommand("tccmh").setExecutor(new CreateTemporaryMaterialHatCosmetique());
 		this.getCommand("rc").setExecutor(new RemoveCosmetique());
+		this.getCommand("store").setExecutor(new AddMoney());
+		this.getCommand("storedelete").setExecutor(new RemoveMoney());
 	}
 	
 	private void initializeEvents() {
+		this.getServer().getPluginManager().registerEvents(new BlockMoveCosmetique(), this);
+		this.getServer().getPluginManager().registerEvents(new ClickPresentationCosmetique(), this);
+		this.getServer().getPluginManager().registerEvents(new CreateBankAccount(), this);
+		this.getServer().getPluginManager().registerEvents(new CreateStockAccount(), this);
+		this.getServer().getPluginManager().registerEvents(new PlayerQuit(), this);
+		this.getServer().getPluginManager().registerEvents(new ExitInventory(), this);
+		
+		this.getServer().getPluginManager().registerEvents(new ClickMaterialInventory(), this);
+		
+		this.getServer().getPluginManager().registerEvents(new ClickCustomHeadButton(), this);
+		this.getServer().getPluginManager().registerEvents(new ClickHatStockButton(), this);
+		this.getServer().getPluginManager().registerEvents(new ClickLinkButton(), this);
+		this.getServer().getPluginManager().registerEvents(new ClickParticleStockButton(), this);
+		this.getServer().getPluginManager().registerEvents(new ClickPermanentShopButton(), this);
+		this.getServer().getPluginManager().registerEvents(new ClickQuitButton(), this);
+		this.getServer().getPluginManager().registerEvents(new ClickTemporaryShopButton(), this);
+		
+		this.getServer().getPluginManager().registerEvents(new humine.events.menuintermediaire.ClickCustomHeadButton(), this);
+		this.getServer().getPluginManager().registerEvents(new ClickEmpereurButton(), this);
+		this.getServer().getPluginManager().registerEvents(new ClickHatShopButton(), this);
+		this.getServer().getPluginManager().registerEvents(new ClickParticleShopButton(), this);
+		this.getServer().getPluginManager().registerEvents(new humine.events.menuintermediaire.ClickQuitButton(), this);
+		
+		this.getServer().getPluginManager().registerEvents(new ClickCosmetiqueButton(), this);
+		this.getServer().getPluginManager().registerEvents(new ClickNextButton(), this);
+		this.getServer().getPluginManager().registerEvents(new ClickPreviousButton(), this);
+		this.getServer().getPluginManager().registerEvents(new humine.events.shops.ClickQuitButton(), this);
+		
+		this.getServer().getPluginManager().registerEvents(new ClickHumisBuyButton(), this);
+		this.getServer().getPluginManager().registerEvents(new humine.events.presentation.ClickLinkButton(), this);
+		this.getServer().getPluginManager().registerEvents(new ClickPixelBuyButton(), this);
+		this.getServer().getPluginManager().registerEvents(new humine.events.presentation.ClickQuitButton(), this);
+		
+		this.getServer().getPluginManager().registerEvents(new humine.events.stocks.ClickCosmetiqueButton(), this);
+		this.getServer().getPluginManager().registerEvents(new ClickDisableButton(), this);
+		this.getServer().getPluginManager().registerEvents(new humine.events.stocks.ClickNextButton(), this);
+		this.getServer().getPluginManager().registerEvents(new humine.events.stocks.ClickPreviousButton(), this);
+		this.getServer().getPluginManager().registerEvents(new humine.events.stocks.ClickQuitButton(), this);
 	}
 
 	public static MainShop getInstance() {
@@ -249,6 +323,16 @@ public class MainShop extends JavaPlugin {
 	
 	public Shop getEmperorShop() {
 		return emperorShop;
+	}
+	
+	public HashMap<String, ParticleStock> getParticleStockList()
+	{
+		return particleStockList;
+	}
+	
+	public HashMap<String, HatStock> getHatStockList()
+	{
+		return HatStockList;
 	}
 }
 

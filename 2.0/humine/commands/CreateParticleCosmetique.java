@@ -10,12 +10,13 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.inventory.ItemStack;
 
 import humine.main.MainShop;
+import humine.utils.Prestige;
 import humine.utils.cosmetiques.ParticleCosmetique;
 
 public class CreateParticleCosmetique implements CommandExecutor{
 
-	private static String command = "/ccp <name> <material> <humis> <pixel> <particle>";
-	// /ccp <name> <material> <humis> <pixel> <particle>
+	private static String command = "/ccp <name> <material> <humis> <pixel> <particle> [prestige] [empereur]";
+	
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
 		
@@ -45,14 +46,32 @@ public class CreateParticleCosmetique implements CommandExecutor{
 			return false;
 		}
 		
+		Prestige prestige = Prestige.COMMUN;
+		if(args.length >= 6) {
+			prestige = getPrestige(args[5]);
+		}
+		
+		boolean emperor = false;
+		if(args.length >= 7) {
+			if(args[6].equalsIgnoreCase("true"))
+				emperor = true;
+		}
+		
+		
 		Material material = Material.values()[ordinalMaterial];
 		int humisPrice = Integer.parseInt(args[2]);
 		int pixelPrice = Integer.parseInt(args[3]);
 		Particle particle = Particle.values()[ordinalParticle];
 		
-		ParticleCosmetique cosmetique = new ParticleCosmetique(args[0], new ItemStack(material), humisPrice, pixelPrice, particle);
+		ParticleCosmetique cosmetique = new ParticleCosmetique(args[0], new ItemStack(material), humisPrice, pixelPrice, particle, prestige);
 		
-		MainShop.getInstance().getShop().addCosmetique(cosmetique);
+		if(emperor) {
+			MainShop.getInstance().getEmperorShop().addCosmetique(cosmetique);
+		}
+		else {
+			MainShop.getInstance().getShop().addCosmetique(cosmetique);
+			MainShop.getInstance().getParticleShop().addCosmetique(cosmetique);
+		}
 		
 		MainShop.sendMessage(sender, "Cosmetique de Particule cree !");
 		MainShop.sendMessage(sender, "nom: " + cosmetique.getName());
@@ -61,8 +80,19 @@ public class CreateParticleCosmetique implements CommandExecutor{
 		MainShop.sendMessage(sender, "prix pixel: " + cosmetique.getPixelPrice());
 		MainShop.sendMessage(sender, "Item presentation: " + cosmetique.getItemShop());
 		MainShop.sendMessage(sender, "effet particule: " + cosmetique.getParticleEffect());
+		MainShop.sendMessage(sender, "prestige: " + cosmetique.getPrestige().name().toLowerCase());
 		
 		return true;
+	}
+	
+	private Prestige getPrestige(String particle)
+	{
+		for(Prestige p : Prestige.values()) {
+			if(p.name().equalsIgnoreCase(particle))
+				return p;
+		}
+		
+		return Prestige.COMMUN;
 	}
 	
 	private int getMaterial(String material) {

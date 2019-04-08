@@ -8,7 +8,7 @@ import org.bukkit.entity.Player;
 
 import humine.main.MainShop;
 
-public class Money implements CommandExecutor{
+public class ShowMoney implements CommandExecutor{
 
 	@Override
 	public boolean onCommand(CommandSender sender, Command arg1, String arg2, String[] args) {
@@ -20,8 +20,10 @@ public class Money implements CommandExecutor{
 				if(MainShop.getInstance().getBankHumis().containsPlayer(target) && MainShop.getInstance().getBankPixel().containsPlayer(target)) {
 					int moneyHumis = MainShop.getInstance().getBankHumis().getMoney(target);
 					int moneyPixel = MainShop.getInstance().getBankPixel().getMoney(target);
-					MainShop.sendMessage(sender, target.getName() + ": " + moneyHumis + " " + MainShop.getInstance().getBankHumis().getNameValue());
-					MainShop.sendMessage(sender, target.getName() + ": " + moneyPixel + " " + MainShop.getInstance().getBankPixel().getNameValue());
+					String humisValue = MainShop.getInstance().getBankHumis().getNameValue();
+					String pixelValue = MainShop.getInstance().getBankPixel().getNameValue();
+					
+					MainShop.sendMessage(sender, target.getName() + ": " + moneyHumis + " " + humisValue + " / " + moneyPixel + " " + pixelValue);
 					return true;
 				}
 				else
@@ -35,8 +37,12 @@ public class Money implements CommandExecutor{
 				Player player = (Player) sender;
 				
 				if(MainShop.getInstance().getBankHumis().containsPlayer(player)) {
-					int money = MainShop.getInstance().getBankHumis().getMoney(player);
-					MainShop.sendMessage(sender, player.getName() + ": " + money + " " + MainShop.getInstance().getBankHumis().getNameValue());
+					int moneyHumis = MainShop.getInstance().getBankHumis().getMoney(player);
+					int moneyPixel = MainShop.getInstance().getBankPixel().getMoney(player);
+					String humisValue = MainShop.getInstance().getBankHumis().getNameValue();
+					String pixelValue = MainShop.getInstance().getBankPixel().getNameValue();
+					
+					MainShop.sendMessage(sender, player.getName() + ": " + moneyHumis + " " + humisValue + " / " + moneyPixel + " " + pixelValue);
 					return true;
 				}
 				else

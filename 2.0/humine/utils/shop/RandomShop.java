@@ -43,7 +43,7 @@ public class RandomShop extends Shop {
 		try {
 			config.save(index);
 		} catch (IOException e) {
-			System.err.println("Erreur enregistrement index.yml");
+			System.err.println("Erreur enregistrement date.yml");
 			e.printStackTrace();
 			return;
 		}
@@ -56,7 +56,7 @@ public class RandomShop extends Shop {
 		File index = new File(folder, "date.yml");
 
 		if (!index.exists()) {
-			System.err.println("Erreur fichier introuvable index.yml");
+			System.err.println("Erreur fichier introuvable date.yml");
 			return;
 		}
 

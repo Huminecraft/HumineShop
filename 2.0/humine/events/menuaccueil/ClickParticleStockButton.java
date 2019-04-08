@@ -7,6 +7,8 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 
 import humine.main.MainShop;
 import humine.utils.ItemShop;
+import humine.utils.shop.ParticleStock;
+import humine.utils.shop.Stock;
 
 public class ClickParticleStockButton implements Listener{
 
@@ -16,9 +18,27 @@ public class ClickParticleStockButton implements Listener{
 			if(event.getCurrentItem() != null) {
 				if(event.getCurrentItem().isSimilar(ItemShop.itemParticleStock())) {
 					Player player = (Player) event.getWhoClicked();
-					player.sendMessage("Particle stock indisponible");
+					openStock(player);
 				}
 			}
 		}
+	}
+
+	private void openStock(Player player)
+	{
+		Stock stock = MainShop.getInstance().getInventories().getStockOfPlayer(player.getName());
+		
+		if(stock != null) {
+			ParticleStock pStock = new ParticleStock(player.getName());
+			pStock.filter(stock);
+			
+			MainShop.getInstance().getParticleStockList().put(player.getName(), pStock);
+			
+			if(pStock.isEmpty())
+				MainShop.sendMessage(player, "Particle Stock vide");
+			else
+				pStock.openShop(player);
+		}
+		
 	}
 }

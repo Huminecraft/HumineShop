@@ -6,6 +6,8 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 
 import humine.main.MainShop;
 import humine.utils.Presentation;
+import humine.utils.shop.HatStock;
+import humine.utils.shop.ParticleStock;
 
 public class BlockMoveCosmetique implements Listener{
 
@@ -16,15 +18,23 @@ public class BlockMoveCosmetique implements Listener{
 			event.setCancelled(true);
 		}
 		
+		else if(event.getInventory().getName().equals(MainShop.getInstance().getParticleShop().getName())) {
+			event.setCancelled(true);
+		}
+		
+		else if(event.getInventory().getName().startsWith(ParticleStock.getParticleStockName())) {
+			event.setCancelled(true);
+		}
+		
+		else if(event.getInventory().getName().startsWith(HatStock.getHatStockName())) {
+			event.setCancelled(true);
+		}
+		
 		else if(event.getInventory().getName().startsWith(Presentation.getName())) {
 			event.setCancelled(true);
 		}
 		
 		else if(event.getInventory().getName().equals(MainShop.getInstance().getRandomShop().getName())) {
-			event.setCancelled(true);
-		}
-		
-		else if(event.getInventory().getName().startsWith("Inventaire")) {
 			event.setCancelled(true);
 		}
 		

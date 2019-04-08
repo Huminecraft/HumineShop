@@ -1,5 +1,6 @@
 package humine.events.shops;
 
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -32,7 +33,7 @@ public class ClickCosmetiqueButton implements Listener{
 	}
 	
 	public void clickCosmetique(Shop shop, ItemStack item, Player player) {
-		if(item != null) {
+		if(item != null && item.getType() != Material.AIR) {
 			if(item.getItemMeta().getDisplayName().contains("#")) {
 				Cosmetique c = shop.getCosmetique(item.getItemMeta().getDisplayName().split("#")[1]);
 				

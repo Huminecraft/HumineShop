@@ -1,5 +1,6 @@
 package humine.events.shops;
 
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -31,8 +32,8 @@ public class ClickNextButton implements Listener{
 	}
 	
 	public void openShop(Shop shop, ItemStack item, Player player) {
-		if(item != null) {
-			if(item.isSimilar(ItemShop.itemNextArrow())) {
+		if(item != null && item.getType() != Material.AIR) {
+			if(item.getItemMeta().getDisplayName().equals(ItemShop.itemNextArrow().getItemMeta().getDisplayName())) {
 				shop.nextPage(player);
 			}
 		}

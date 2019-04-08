@@ -8,14 +8,16 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.inventory.ItemStack;
 
+import humine.utils.Prestige;
+
 public class MaterialHatCosmetique extends Cosmetique
 {
 	
 	private Material materialHat;
 	
-	public MaterialHatCosmetique(String name, ItemStack itemShop, int humisPrice, int pixelPrice, Material materialHat)
+	public MaterialHatCosmetique(String name, ItemStack itemShop, int humisPrice, int pixelPrice, Material materialHat, Prestige prestige)
 	{
-		super(name, itemShop, humisPrice, pixelPrice);
+		super(name, itemShop, humisPrice, pixelPrice, prestige);
 		this.materialHat = materialHat;
 	}
 	

@@ -9,6 +9,8 @@ import org.bukkit.configuration.file.YamlConfiguration;
 
 public class Stock extends Shop {
 
+	private static String stockName = "Stock";
+	
 	private String owner;
 
 	public Stock(String owner) {
@@ -16,7 +18,7 @@ public class Stock extends Shop {
 	}
 
 	public Stock(String owner, boolean multiPage) {
-		super(owner, multiPage);
+		super(stockName, multiPage);
 		this.owner = owner;
 
 	}
@@ -82,5 +84,9 @@ public class Stock extends Shop {
 
 	public static int getNumId() {
 		return getNumId();
+	}
+	
+	public static String getStockName() {
+		return stockName;
 	}
 }

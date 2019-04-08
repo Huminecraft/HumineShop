@@ -12,36 +12,32 @@ import org.bukkit.inventory.meta.SkullMeta;
 
 import humine.main.MainShop;
 import humine.utils.cosmetiques.Cosmetique;
-import humine.utils.shop.Page;
 
 public abstract class ItemShop {
 
 	public static ItemStack blockHumisBuy(Cosmetique cosmetique, Player player) {
 		ItemStack item = new ItemStack(Material.GOLD_BLOCK);
 		ItemMeta meta = item.getItemMeta();
-		meta.setDisplayName(cosmetique.getName());
+		meta.setDisplayName(ChatColor.WHITE + cosmetique.getName());
 		
 		List<String> lores = new ArrayList<String>();
 		
 		if(MainShop.getInstance().getInventories().containsStockOfPlayer(player.getName())) {
-			for(Page page : MainShop.getInstance().getInventories().getStockOfPlayer(player.getName()).getPages()) {
-				if(page.containsCosmetique(cosmetique)) {
-					lores.add("Vous avez deja ce cosmetique");
-					meta.setLore(lores);
-					item.setItemMeta(meta);
-					return item;
-				}
+			if(MainShop.getInstance().getInventories().getStockOfPlayer(player.getName()).getCosmetique(cosmetique.getId()) != null) {
+				lores.add("Vous avez deja ce cosmetique");
+				meta.setLore(lores);
+				item.setItemMeta(meta);
+				return item;
 			}
 		}
 		
 		if (MainShop.getInstance().getBankHumis().getMoney(player) >= cosmetique.getHumisPrice())
 			lores.add(ChatColor.BOLD + "" + ChatColor.GREEN + "Acheter ! (Humis)");
 		else
-			lores.add(ChatColor.BOLD + "" + ChatColor.RED + "Vous n'avez pas assez de "+MainShop.getInstance().getBankHumis().getNameValue()+" !");
+			lores.add(ChatColor.BOLD + "" + ChatColor.RED + "Obtenir plus de " + MainShop.getInstance().getBankHumis().getNameValue()+" !");
 
 		lores.add("Prix: " + ChatColor.GREEN + cosmetique.getHumisPrice());
 		lores.add("Vous avez " + MainShop.getInstance().getBankHumis().getMoney(player) + " " + MainShop.getInstance().getBankHumis().getNameValue());
-		lores.add("Buy with humis");
 
 		meta.setLore(lores);
 
@@ -53,59 +49,64 @@ public abstract class ItemShop {
 	public static ItemStack blockPixelBuy(Cosmetique cosmetique, Player player) {
 		ItemStack item = new ItemStack(Material.PURPLE_WOOL);
 		ItemMeta meta = item.getItemMeta();
-		meta.setDisplayName(cosmetique.getName());
+		meta.setDisplayName(ChatColor.WHITE + cosmetique.getName());
 		
 		List<String> lores = new ArrayList<String>();
 		
 		if(MainShop.getInstance().getInventories().containsStockOfPlayer(player.getName())) {
-			for(Page page : MainShop.getInstance().getInventories().getStockOfPlayer(player.getName()).getPages()) {
-				if(page.containsCosmetique(cosmetique)) {
-					lores.add("Vous avez deja ce cosmetique");
-					meta.setLore(lores);
-					item.setItemMeta(meta);
-					return item;
-				}
+			if(MainShop.getInstance().getInventories().getStockOfPlayer(player.getName()).getCosmetique(cosmetique.getId()) != null) {
+				lores.add("Vous avez deja ce cosmetique");
+				meta.setLore(lores);
+				item.setItemMeta(meta);
+				return item;
 			}
 		}
 		
 		if (MainShop.getInstance().getBankPixel().getMoney(player) >= cosmetique.getPixelPrice())
 			lores.add(ChatColor.BOLD + "" + ChatColor.GREEN + "Acheter ! (Pixel)");
 		else
-			lores.add(ChatColor.BOLD + "" + ChatColor.RED + "Vous n'avez pas assez de "+MainShop.getInstance().getBankPixel().getNameValue()+" !");
+			lores.add(ChatColor.BOLD + "" + ChatColor.RED + "Obtenir plus de " + MainShop.getInstance().getBankPixel().getNameValue()+" !");
 
 		lores.add("Prix: " + ChatColor.GREEN + cosmetique.getPixelPrice());
 		lores.add("Vous avez " + MainShop.getInstance().getBankPixel().getMoney(player) + " " + MainShop.getInstance().getBankPixel().getNameValue());
-		lores.add("Buy with pixel");
 
 		meta.setLore(lores);
 
 		item.setItemMeta(meta);
-		return item;
 
+		return item;
 	}
 	
+	@SuppressWarnings("deprecation")
 	public static ItemStack itemNextArrow() {
-		ItemStack item = new ItemStack(Material.ARROW);
-		ItemMeta meta = item.getItemMeta();
-		meta.setDisplayName(ChatColor.AQUA + "" + ChatColor.ITALIC + "Suivant");
+		ItemStack item = new ItemStack(Material.PLAYER_HEAD);
+		
+		SkullMeta meta = (SkullMeta) item.getItemMeta();
+		meta.setOwner("MHF_ArrowRight");
+		meta.setDisplayName(ChatColor.WHITE + "Suivant");
+		
 		item.setItemMeta(meta);
-
+		
 		return item;
 	}
 	
+	@SuppressWarnings("deprecation")
 	public static ItemStack itemPreviousArrow() {
-		ItemStack item = new ItemStack(Material.ARROW);
-		ItemMeta meta = item.getItemMeta();
-		meta.setDisplayName(ChatColor.AQUA + "" + ChatColor.ITALIC + "Precedent");
+		ItemStack item = new ItemStack(Material.PLAYER_HEAD);
+		
+		SkullMeta meta = (SkullMeta) item.getItemMeta();
+		meta.setOwner("MHF_ArrowLeft");
+		meta.setDisplayName(ChatColor.WHITE + "Precedent");
+		
 		item.setItemMeta(meta);
-
+		
 		return item;
 	}
 	
 	public static ItemStack itemDisable() {
 		ItemStack item = new ItemStack(Material.MILK_BUCKET);
 		ItemMeta meta = item.getItemMeta();
-		meta.setDisplayName(ChatColor.AQUA + "" + ChatColor.ITALIC + "Desactiver");
+		meta.setDisplayName(ChatColor.AQUA + "Desactiver");
 		item.setItemMeta(meta);
 
 		return item;
@@ -114,7 +115,7 @@ public abstract class ItemShop {
 	public static ItemStack itemStock() {
 		ItemStack item = new ItemStack(Material.ENDER_PEARL);
 		ItemMeta meta = item.getItemMeta();
-		meta.setDisplayName(ChatColor.AQUA + "" + ChatColor.ITALIC + "Vos cosmetiques");
+		meta.setDisplayName(ChatColor.AQUA + "Vos cosmetiques");
 		item.setItemMeta(meta);
 
 		return item;
@@ -123,7 +124,7 @@ public abstract class ItemShop {
 	public static ItemStack itemRandomShop() {
 		ItemStack item = new ItemStack(Material.BOOK);
 		ItemMeta meta = item.getItemMeta();
-		meta.setDisplayName(ChatColor.AQUA + "" + ChatColor.ITALIC + "Boutique Aleatoire");
+		meta.setDisplayName(ChatColor.WHITE + "Boutique Aleatoire");
 		item.setItemMeta(meta);
 
 		return item;
@@ -132,7 +133,7 @@ public abstract class ItemShop {
 	public static ItemStack itemQuit() {
 		ItemStack item = new ItemStack(Material.BARRIER);
 		ItemMeta meta = item.getItemMeta();
-		meta.setDisplayName(ChatColor.AQUA + "" + ChatColor.ITALIC + "Quittez");
+		meta.setDisplayName(ChatColor.WHITE + "Quitter");
 		item.setItemMeta(meta);
 
 		return item;
@@ -141,7 +142,7 @@ public abstract class ItemShop {
 	public static ItemStack itemLink() {
 		ItemStack item = new ItemStack(Material.BOOK);
 		ItemMeta meta = item.getItemMeta();
-		meta.setDisplayName(ChatColor.AQUA + "" + ChatColor.ITALIC + "galerie des cosmetiques");
+		meta.setDisplayName(ChatColor.WHITE + "Galerie des cosmetiques");
 		item.setItemMeta(meta);
 
 		return item;
@@ -158,7 +159,7 @@ public abstract class ItemShop {
 		ItemStack item = new ItemStack(Material.BLAZE_ROD);
 		
 		ItemMeta meta = item.getItemMeta();
-		meta.setDisplayName(ChatColor.AQUA + "Inventaire de particule");
+		meta.setDisplayName(ChatColor.WHITE + "Inventaire de particules");
 		
 		item.setItemMeta(meta);
 		
@@ -169,19 +170,20 @@ public abstract class ItemShop {
 		ItemStack item = new ItemStack(Material.TURTLE_HELMET);
 		
 		ItemMeta meta = item.getItemMeta();
-		meta.setDisplayName(ChatColor.AQUA + "Inventaire de chapeau");
+		meta.setDisplayName(ChatColor.WHITE + "Inventaire de chapeaux");
 		
 		item.setItemMeta(meta);
 		
 		return item;
 	}
 	
-	public static ItemStack itemCustomHeadStock(Player player) {
+	@SuppressWarnings("deprecation")
+	public static ItemStack itemCustomHeadStock() {
 		ItemStack item = new ItemStack(Material.PLAYER_HEAD);
 		
 		SkullMeta meta = (SkullMeta) item.getItemMeta();
-		meta.setDisplayName(ChatColor.AQUA + "Inventaire de tete decorative");
-		meta.setOwningPlayer(player);
+		meta.setOwner("MHF_Present2");
+		meta.setDisplayName(ChatColor.WHITE + "Inventaire de tetes decoratives");
 		
 		item.setItemMeta(meta);
 		
@@ -192,7 +194,7 @@ public abstract class ItemShop {
 		ItemStack item = new ItemStack(Material.DRAGON_EGG);
 		
 		ItemMeta meta = item.getItemMeta();
-		meta.setDisplayName(ChatColor.AQUA + "Inventaire d'empereur");
+		meta.setDisplayName(ChatColor.GOLD + "Boutique Empereur");
 		
 		item.setItemMeta(meta);
 		
@@ -200,10 +202,10 @@ public abstract class ItemShop {
 	}
 	
 	public static ItemStack itemPermanentShop() {
-		ItemStack item = new ItemStack(Material.CHEST);
+		ItemStack item = new ItemStack(Material.GLOWSTONE_DUST);
 		
 		ItemMeta meta = item.getItemMeta();
-		meta.setDisplayName(ChatColor.AQUA + "Boutique");
+		meta.setDisplayName(ChatColor.WHITE + "Boutique");
 		
 		item.setItemMeta(meta);
 		
@@ -214,7 +216,7 @@ public abstract class ItemShop {
 		ItemStack item = new ItemStack(Material.ENDER_CHEST);
 		
 		ItemMeta meta = item.getItemMeta();
-		meta.setDisplayName(ChatColor.AQUA + "Boutique aleatoire");
+		meta.setDisplayName(ChatColor.WHITE + "Boutique aleatoire");
 		
 		item.setItemMeta(meta);
 		

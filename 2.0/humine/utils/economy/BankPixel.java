@@ -78,6 +78,17 @@ public class BankPixel {
 	}
 	
 	/**
+	 * ajouter de l'argent a un joueur
+	 * @param player le joueur en question
+	 * @param amount le montant a ajouter
+	 */
+	public void addMoney(String player, int amount) {
+		if(this.players.containsKey(player)) {
+			this.players.replace(player, (this.players.get(player) + amount));
+		}
+	}
+	
+	/**
 	 * retirer de l'argent a un joueur
 	 * @param player le joueur en question
 	 * @param amount le montant a retirer
@@ -85,6 +96,17 @@ public class BankPixel {
 	public void removeMoney(Player player , int amount) {
 		if(this.players.containsKey(player.getName())) {
 			this.players.replace(player.getName(), (this.players.get(player.getName()) - amount));
+		}
+	}
+	
+	/**
+	 * retirer de l'argent a un joueur
+	 * @param player le joueur en question
+	 * @param amount le montant a retirer
+	 */
+	public void removeMoney(String player , int amount) {
+		if(this.players.containsKey(player)) {
+			this.players.replace(player, (this.players.get(player) - amount));
 		}
 	}
 	

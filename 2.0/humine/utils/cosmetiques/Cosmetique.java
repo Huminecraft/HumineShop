@@ -12,7 +12,8 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import humine.main.MainShop;
-import humine.utils.cosmetiques.temporary.TemporaryCosmetique;
+import humine.utils.Prestige;
+import humine.utils.cosmetiques.temporary.TemporaryMaterialHatCosmetique;
 import humine.utils.cosmetiques.temporary.TemporaryParticleCosmetique;
 
 public abstract class Cosmetique {
@@ -20,6 +21,8 @@ public abstract class Cosmetique {
 	private String id;
 	private String name;
 	private ItemStack itemShop;
+	private Prestige prestige;
+	
 	private int humisPrice;
 	private int PixelPrice;
 	
@@ -50,11 +53,12 @@ public abstract class Cosmetique {
 	 * @param name le nom du cosmetique
 	 * @param itemShop Le material servant a representer le cosmetique dans le shop
 	 */
-	public Cosmetique(String name, ItemStack itemShop, int humisPrice, int pixelPrice) {
+	public Cosmetique(String name, ItemStack itemShop, int humisPrice, int pixelPrice, Prestige prestige) {
 		this.name = name;
 		this.itemShop = itemShop;
 		this.humisPrice = humisPrice;
 		this.PixelPrice = pixelPrice;
+		this.prestige = prestige;
 		
 		this.id = "" + LocalDate.now().getYear();
 		this.id = this.id.substring(2);
@@ -113,6 +117,10 @@ public abstract class Cosmetique {
 	public void setItemShop(ItemStack itemShop) {
 		this.itemShop = itemShop;
 	}
+	
+	public Prestige getPrestige() {
+		return prestige;
+	}
 
 	/**
 	 * sauvegarder le cosmetique dans un fichier
@@ -170,8 +178,12 @@ public abstract class Cosmetique {
 		return NumId;
 	}
 
+	
+	
+	
 	@Override
-	public int hashCode() {
+	public int hashCode()
+	{
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + PixelPrice;
@@ -179,41 +191,50 @@ public abstract class Cosmetique {
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		result = prime * result + ((itemShop == null) ? 0 : itemShop.hashCode());
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		result = prime * result + ((prestige == null) ? 0 : prestige.hashCode());
 		return result;
 	}
 
 	@Override
-	public boolean equals(Object obj) {
+	public boolean equals(Object obj)
+	{
 		if (this == obj)
 			return true;
 		if (obj == null)
 			return false;
-		if (!(obj instanceof Cosmetique))
+		if (getClass() != obj.getClass())
 			return false;
 		Cosmetique other = (Cosmetique) obj;
 		if (PixelPrice != other.PixelPrice)
 			return false;
 		if (humisPrice != other.humisPrice)
 			return false;
-		if (id == null) {
+		if (id == null)
+		{
 			if (other.id != null)
 				return false;
-		} else if (!id.equals(other.id))
+		}
+		else if (!id.equals(other.id))
 			return false;
-		if (itemShop == null) {
+		if (itemShop == null)
+		{
 			if (other.itemShop != null)
 				return false;
-		} else if (!itemShop.equals(other.itemShop))
+		}
+		else if (!itemShop.equals(other.itemShop))
 			return false;
-		if (name == null) {
+		if (name == null)
+		{
 			if (other.name != null)
 				return false;
-		} else if (!name.equals(other.name))
+		}
+		else if (!name.equals(other.name))
+			return false;
+		if (prestige != other.prestige)
 			return false;
 		return true;
 	}
-	
-	
+
 	/**
 	 * Convertir un cosmetique en itemStack
 	 * @param c le cosmetique
@@ -221,29 +242,28 @@ public abstract class Cosmetique {
 	public static ItemStack cosmetiqueToItem(Cosmetique cosmetique) {
 
 		ItemStack item = new ItemStack(cosmetique.getItemShop());
+		ChatColor color = ChatColor.valueOf(cosmetique.getPrestige().getColor());
 		
 		ArrayList<String> lores = new ArrayList<String>();
-		lores.add("Prix Humis: " + cosmetique.getHumisPrice());
-		lores.add("Prix Pixel: " + cosmetique.getPixelPrice());
-
+		lores.add(" ");
+		lores.add(color + "" + ChatColor.BOLD + cosmetique.getPrestige().name().toUpperCase());
+		lores.add(" ");
+		
 		ItemMeta meta = item.getItemMeta();
-		meta.setDisplayName(cosmetique.getName() + " #" + cosmetique.getId());
+		meta.setDisplayName(color + "" + ChatColor.UNDERLINE + cosmetique.getName() + " #" + cosmetique.getId());
 
 		
-		if(cosmetique instanceof TemporaryCosmetique) {
-			TemporaryCosmetique tc = (TemporaryCosmetique) cosmetique;
-			ChatColor color = ChatColor.valueOf(tc.getPrestige().getColor());
-			
-			meta.setDisplayName(color + meta.getDisplayName());
-			
-			for(int i = 0; i < lores.size(); i++)
-				lores.set(i, color + lores.get(i));
-			
-			lores.add(color + "Prestige: " + tc.getPrestige().toString().toLowerCase());
-			
-			if (cosmetique instanceof TemporaryParticleCosmetique) {
-				lores.add(color + "Effet particule: " + ((TemporaryParticleCosmetique) tc).getParticle().name().toLowerCase());
-			}
+		if(cosmetique instanceof TemporaryParticleCosmetique) {
+			lores.add(color + "Particules: " + ((TemporaryParticleCosmetique) cosmetique).getParticle().name().toLowerCase());
+		}
+		else if(cosmetique instanceof TemporaryMaterialHatCosmetique) {
+			lores.add(color + "Chapeau: " + ((TemporaryMaterialHatCosmetique) cosmetique).getMaterialHat().name().toLowerCase());
+		}
+		else if(cosmetique instanceof ParticleCosmetique) {
+			lores.add(color + "Particules: " + ((ParticleCosmetique) cosmetique).getParticleEffect().name().toLowerCase());
+		}
+		else if(cosmetique instanceof MaterialHatCosmetique) {
+			lores.add(color + "Chapeau: " + ((MaterialHatCosmetique) cosmetique).getMaterialHat().name().toLowerCase());
 		}
 
 		meta.setLore(lores);

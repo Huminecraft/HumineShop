@@ -2,7 +2,6 @@ package humine.utils.menus;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
 
 import humine.utils.ItemShop;
@@ -22,7 +21,7 @@ public class MenuAccueil implements Menu{
 
 	@Override
 	public Inventory initInventory(Player player) {
-		Inventory inv = Bukkit.createInventory(null, InventoryType.CHEST, this.name);
+		Inventory inv = Bukkit.createInventory(null, (9 * 4), this.name);
 
 		inv.setItem(11, ItemShop.itemPermanentShop());
 		inv.setItem(13, ItemShop.itemLink());
@@ -33,7 +32,7 @@ public class MenuAccueil implements Menu{
 		
 		inv.setItem(inv.getSize() - 6, ItemShop.itemParticleStock());
 		inv.setItem(inv.getSize() - 5, ItemShop.itemHatStock());
-		inv.setItem(inv.getSize() - 4, ItemShop.itemCustomHeadStock(player));
+		inv.setItem(inv.getSize() - 4, ItemShop.itemCustomHeadStock());
 		
 		return inv;
 	}

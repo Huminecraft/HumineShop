@@ -300,12 +300,14 @@ public class Shop {
 		}
 		
 		if(multiPage) {
-			inv.setItem(inv.getSize() - 9, ItemShop.itemPreviousArrow());
-			inv.setItem(inv.getSize() - 1, ItemShop.itemNextArrow());
+			inv.setItem(inv.getSize() - 6, ItemShop.itemPreviousArrow());
+			inv.setItem(inv.getSize() - 4, ItemShop.itemNextArrow());
 		}
 		
-		inv.setItem(inv.getSize() - 5, ItemShop.itemStock());
-		inv.setItem(inv.getSize() - 4, ItemShop.itemRandomShop());
+		inv.setItem(inv.getSize() - 9, ItemShop.itemQuit());
+		inv.setItem(inv.getSize() - 1, ItemShop.itemQuit());
+		
+		
 		
 		this.getPlayersOnShop().put(player, 1);
 		player.openInventory(inv);
@@ -334,12 +336,12 @@ public class Shop {
 		}
 		
 		if(multiPage) {
-			inv.setItem(inv.getSize() - 9, ItemShop.itemPreviousArrow());
-			inv.setItem(inv.getSize() - 1, ItemShop.itemNextArrow());
+			inv.setItem(inv.getSize() - 6, ItemShop.itemPreviousArrow());
+			inv.setItem(inv.getSize() - 4, ItemShop.itemNextArrow());
 		}
-
-		inv.setItem(inv.getSize() - 5, ItemShop.itemStock());
-		inv.setItem(inv.getSize() - 4, ItemShop.itemRandomShop());
+		
+		inv.setItem(inv.getSize() - 9, ItemShop.itemQuit());
+		inv.setItem(inv.getSize() - 1, ItemShop.itemQuit());
 		
 		this.getPlayersOnShop().replace(player, page);
 		player.openInventory(inv);
@@ -368,12 +370,12 @@ public class Shop {
 		}
 		
 		if(multiPage) {
-			inv.setItem(inv.getSize() - 9, ItemShop.itemPreviousArrow());
-			inv.setItem(inv.getSize() - 1, ItemShop.itemNextArrow());
+			inv.setItem(inv.getSize() - 6, ItemShop.itemPreviousArrow());
+			inv.setItem(inv.getSize() - 4, ItemShop.itemNextArrow());
 		}
 		
-		inv.setItem(inv.getSize() - 5, ItemShop.itemStock());
-		inv.setItem(inv.getSize() - 4, ItemShop.itemRandomShop());
+		inv.setItem(inv.getSize() - 9, ItemShop.itemQuit());
+		inv.setItem(inv.getSize() - 1, ItemShop.itemQuit());
 		
 		this.getPlayersOnShop().replace(player, page);
 		player.openInventory(inv);
