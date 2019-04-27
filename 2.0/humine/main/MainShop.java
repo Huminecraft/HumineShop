@@ -53,6 +53,7 @@ import humine.utils.economy.BankPixel;
 import humine.utils.menus.MenuAccueil;
 import humine.utils.menus.MenuIntermediaire;
 import humine.utils.shop.CustomHeadShop;
+import humine.utils.shop.CustomHeadStock;
 import humine.utils.shop.HatShop;
 import humine.utils.shop.HatStock;
 import humine.utils.shop.Inventories;
@@ -82,6 +83,7 @@ public class MainShop extends JavaPlugin {
 	
 	private HashMap<String, ParticleStock> particleStockList;
 	private HashMap<String, HatStock> HatStockList;
+	private HashMap<String, CustomHeadStock> customHeadStockList;
 	
 	private final File shopFolder = new File(getDataFolder(), "Shop");
 	private final File emperorShopFolder = new File(getDataFolder(), "EmperorShop");
@@ -118,6 +120,7 @@ public class MainShop extends JavaPlugin {
 		
 		this.particleStockList = new HashMap<String, ParticleStock>();
 		this.HatStockList = new HashMap<String, HatStock>();
+		this.customHeadStockList = new HashMap<String, CustomHeadStock>();
 		
 		File dateFolder = new File(this.randomShopFolder, LocalDate.now().toString());
 		this.randomShop.load(dateFolder);
@@ -346,6 +349,10 @@ public class MainShop extends JavaPlugin {
 	public HashMap<String, HatStock> getHatStockList()
 	{
 		return HatStockList;
+	}
+	
+	public HashMap<String, CustomHeadStock> getCustomHeadStockList() {
+		return customHeadStockList;
 	}
 }
 
