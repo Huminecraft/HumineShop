@@ -18,7 +18,8 @@ public class ClickQuitButton implements Listener{
 		
 		if(event.getInventory().getName().equals(MainShop.getInstance().getParticleShop().getName()) ||
 				event.getInventory().getName().equals(MainShop.getInstance().getHatShop().getName()) ||
-					event.getInventory().getName().equals(MainShop.getInstance().getEmperorShop().getName())) {
+					event.getInventory().getName().equals(MainShop.getInstance().getCustomHeadShop().getName()) ||
+						event.getInventory().getName().equals(MainShop.getInstance().getEmperorShop().getName())) {
 			
 			returnToIntermediaire(MainShop.getInstance().getParticleShop(), event.getCurrentItem(), player);
 		}

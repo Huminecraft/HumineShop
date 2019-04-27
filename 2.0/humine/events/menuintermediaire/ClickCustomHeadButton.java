@@ -16,7 +16,6 @@ public class ClickCustomHeadButton implements Listener {
 			if(event.getCurrentItem() != null && event.getCurrentItem().getType() != Material.AIR) {
 				if(event.getCurrentItem().getItemMeta().getDisplayName().equals(MainShop.getInstance().getMenuIntermediaire().itemCustomHeadShop().getItemMeta().getDisplayName())) {
 					Player player = (Player) event.getWhoClicked();
-					MainShop.sendMessage(player, "Custom head Shop indisponible");
 					openCustomHeadShop(player);
 				}
 			}
@@ -24,6 +23,9 @@ public class ClickCustomHeadButton implements Listener {
 	}
 	
 	private void openCustomHeadShop(Player player) {
-		//TODO
+		if(MainShop.getInstance().getCustomHeadShop().isEmpty())
+			player.sendMessage("Custom Head Shop indisponible");
+		else
+			MainShop.getInstance().getCustomHeadShop().openShop(player);
 	}
 }

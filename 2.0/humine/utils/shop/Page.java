@@ -10,8 +10,10 @@ import org.bukkit.configuration.file.YamlConfiguration;
 
 import humine.utils.Prestige;
 import humine.utils.cosmetiques.Cosmetique;
+import humine.utils.cosmetiques.CustomHeadCosmetique;
 import humine.utils.cosmetiques.MaterialHatCosmetique;
 import humine.utils.cosmetiques.ParticleCosmetique;
+import humine.utils.cosmetiques.temporary.TemporaryCustomHeadCosmetique;
 import humine.utils.cosmetiques.temporary.TemporaryMaterialHatCosmetique;
 import humine.utils.cosmetiques.temporary.TemporaryParticleCosmetique;
 
@@ -378,6 +380,18 @@ public class Page
 				}
 				else {
 					MaterialHatCosmetique c = new MaterialHatCosmetique("", null, 0, 0, null, Prestige.COMMUN);
+					c.load(folder.listFiles()[i]);
+					this.cosmetiques[i] = c;
+				}
+			}
+			else if(config.contains("libelle")) {
+				if(config.contains("date")) {
+					TemporaryCustomHeadCosmetique c = new TemporaryCustomHeadCosmetique("", null, 0, 0, LocalDate.now(), Prestige.COMMUN, null);
+					c.load(folder.listFiles()[i]);
+					this.cosmetiques[i] = c;
+				}
+				else {
+					CustomHeadCosmetique c = new CustomHeadCosmetique("", null, 0, 0, Prestige.COMMUN, null);
 					c.load(folder.listFiles()[i]);
 					this.cosmetiques[i] = c;
 				}

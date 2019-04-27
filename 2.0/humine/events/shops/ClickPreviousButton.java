@@ -23,6 +23,9 @@ public class ClickPreviousButton implements Listener{
 		else if(event.getInventory().getName().equals(MainShop.getInstance().getHatShop().getName())) {
 			openShop(MainShop.getInstance().getHatShop(), event.getCurrentItem(), player);
 		}
+		else if(event.getInventory().getName().equals(MainShop.getInstance().getCustomHeadShop().getName())) {
+			openShop(MainShop.getInstance().getCustomHeadShop(), event.getCurrentItem(), player);
+		}
 		else if(event.getInventory().getName().equals(MainShop.getInstance().getRandomShop().getName())) {
 			openShop(MainShop.getInstance().getRandomShop(), event.getCurrentItem(), player);
 		}

@@ -12,8 +12,10 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import humine.commands.AddMoney;
+import humine.commands.CreateCustomHeadCosmetique;
 import humine.commands.CreateMaterialHatCosmetique;
 import humine.commands.CreateParticleCosmetique;
+import humine.commands.CreateTemporaryCustomHeadCosmetique;
 import humine.commands.CreateTemporaryMaterialHatCosmetique;
 import humine.commands.CreateTemporaryParticleCosmetique;
 import humine.commands.HelpList;
@@ -50,6 +52,7 @@ import humine.utils.economy.BankHumis;
 import humine.utils.economy.BankPixel;
 import humine.utils.menus.MenuAccueil;
 import humine.utils.menus.MenuIntermediaire;
+import humine.utils.shop.CustomHeadShop;
 import humine.utils.shop.HatShop;
 import humine.utils.shop.HatStock;
 import humine.utils.shop.Inventories;
@@ -74,6 +77,7 @@ public class MainShop extends JavaPlugin {
 	private RandomShop randomShop;
 	private ParticleShop particleShop;
 	private HatShop hatShop;
+	private CustomHeadShop customHeadShop;
 	private Shop emperorShop;
 	
 	private HashMap<String, ParticleStock> particleStockList;
@@ -95,6 +99,7 @@ public class MainShop extends JavaPlugin {
 		this.shop = new Shop("Shop");
 		this.randomShop = new RandomShop("RandomShop");
 		this.particleShop = new ParticleShop("Boutique de particule");
+		this.customHeadShop = new CustomHeadShop("Boutique de tete personnalisee");
 		this.hatShop = new HatShop("Boutique de Chapeau");
 		this.emperorShop = new Shop("Boutique Empereur", false);
 		
@@ -109,6 +114,7 @@ public class MainShop extends JavaPlugin {
 		this.shop.load(this.shopFolder);
 		this.particleShop.filter(this.shop);
 		this.hatShop.filter(this.shop);
+		this.customHeadShop.filter(this.shop);
 		
 		this.particleStockList = new HashMap<String, ParticleStock>();
 		this.HatStockList = new HashMap<String, HatStock>();
@@ -131,6 +137,7 @@ public class MainShop extends JavaPlugin {
 			public void run() {
 				if(LocalDate.now().isAfter(randomShop.getCurrentDate())) {
 					randomShop.update();
+					Cosmetique.NumId = 0;
 				}
 			}
 		}, 0L, (60 * 20));
@@ -183,6 +190,8 @@ public class MainShop extends JavaPlugin {
 		this.getCommand("rc").setExecutor(new RemoveCosmetique());
 		this.getCommand("store").setExecutor(new AddMoney());
 		this.getCommand("storedelete").setExecutor(new RemoveMoney());
+		this.getCommand("ccch").setExecutor(new CreateCustomHeadCosmetique());
+		this.getCommand("tccch").setExecutor(new CreateTemporaryCustomHeadCosmetique());
 	}
 	
 	private void initializeEvents() {
@@ -319,6 +328,10 @@ public class MainShop extends JavaPlugin {
 	
 	public HatShop getHatShop() {
 		return hatShop;
+	}
+	
+	public CustomHeadShop getCustomHeadShop() {
+		return customHeadShop;
 	}
 	
 	public Shop getEmperorShop() {
