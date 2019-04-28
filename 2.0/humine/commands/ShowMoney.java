@@ -42,7 +42,7 @@ public class ShowMoney implements CommandExecutor{
 					String humisValue = MainShop.getInstance().getBankHumis().getNameValue();
 					String pixelValue = MainShop.getInstance().getBankPixel().getNameValue();
 					
-					MainShop.sendMessage(sender, player.getName() + ": " + moneyHumis + " " + humisValue + " / " + moneyPixel + " " + pixelValue);
+					MainShop.sendMessage(sender, player.getName() + ": " + moneyHumis + " " + humisValue + " / " + moneyPixel + " " + pixelValue + "s");
 					return true;
 				}
 				else

@@ -143,6 +143,8 @@ public abstract class Cosmetique {
 		config.set("itemshop", this.itemShop);
 		config.set("humisPrice", this.humisPrice);
 		config.set("pixelPrice", this.PixelPrice);
+		config.set("prestige", this.prestige.toString());
+		
 		try {
 			config.save(file);
 		} catch (IOException e) {
@@ -162,7 +164,7 @@ public abstract class Cosmetique {
 		
 		FileConfiguration config = YamlConfiguration.loadConfiguration(file);
 
-		if(!config.contains("id") || !config.contains("name") || !config.contains("itemshop") || !config.contains("humisPrice") || !config.contains("pixelPrice")) {
+		if(!config.contains("id") || !config.contains("name") || !config.contains("itemshop") || !config.contains("humisPrice") || !config.contains("pixelPrice") || !config.contains("prestige")) {
 			System.err.println("Erreur parametre manquant dans le fichier " + file.getName());
 			return;
 		}
@@ -172,6 +174,7 @@ public abstract class Cosmetique {
 		this.itemShop = config.getItemStack("itemshop");
 		this.humisPrice = config.getInt("humisPrice");
 		this.PixelPrice = config.getInt("pixelPrice");
+		this.prestige = Prestige.valueOf(config.getString("prestige"));
 	}
 	
 	public static int getNumId() {
@@ -272,10 +275,13 @@ public abstract class Cosmetique {
 	}
 
 	@Override
-	public String toString() {
-		return "Cosmetique [id=" + id + ", name=" + name + ", itemShop=" + itemShop + ", humisPrice=" + humisPrice
-				+ ", PixelPrice=" + PixelPrice + "]";
+	public String toString()
+	{
+		return "Cosmetique [id=" + id + ", name=" + name + ", itemShop=" + itemShop.toString() + ", prestige=" + prestige.toString()
+				+ ", humisPrice=" + humisPrice + ", PixelPrice=" + PixelPrice + "]";
 	}
+
+	
 	
 	
 }

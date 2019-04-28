@@ -1,5 +1,6 @@
 package humine.events.presentation;
 
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -31,7 +32,7 @@ public class ClickPixelBuyButton implements Listener
 						
 						if(c.getPixelPrice() <= pixel) {
 							stock.addCosmetique(c);
-							MainShop.getInstance().getBankPixel().removeMoney(player, c.getHumisPrice());
+							MainShop.getInstance().getBankPixel().removeMoney(player, c.getPixelPrice());
 							player.closeInventory();
 							MainShop.sendMessage(player, "Cosmetique achete !");
 						}
@@ -46,6 +47,6 @@ public class ClickPixelBuyButton implements Listener
 	}
 	
 	private void sendLink(Player player) {
-		MainShop.sendMessage(player, "t'es fauche mon vieu (pixel)");
+		MainShop.sendMessage(player, ChatColor.LIGHT_PURPLE + "Tu n’as pas assez de pixels. Pour en obtenir tu dois compléter les défis quotidiens et hebdomadaires. /showmissions");
 	}
 }

@@ -59,11 +59,13 @@ public class TemporaryCosmetique extends Cosmetique{
 	}
 
 	@Override
-	public String toString() {
-		return "TemporaryCosmetique [getId()=" + getId() + ", getName()=" + getName() + ", getItemShop()="
-				+ getItemShop() + ", getHumisPrice()=" + getHumisPrice() + ", getPixelPrice()=" + getPixelPrice()
-				+ ", date=" + date + "]";
+	public String toString()
+	{
+		return "TemporaryCosmetique [id=" + getId() + ", name=" + getName() + ", itemShop="
+				+ getItemShop() + ", HumisPrice=" + getHumisPrice() + ", PixelPrice=" + getPixelPrice()
+				+ ", Prestige=" + getPrestige() + ", Date=" + date + "]";
 	}
+
 	
 	
 	

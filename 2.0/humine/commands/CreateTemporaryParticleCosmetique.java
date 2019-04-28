@@ -3,6 +3,7 @@ package humine.commands;
 import java.io.File;
 import java.time.LocalDate;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.command.Command;
@@ -70,6 +71,7 @@ public class CreateTemporaryParticleCosmetique implements CommandExecutor {
 		
 		if(date.isEqual(LocalDate.now())) {
 			MainShop.getInstance().getRandomShop().addCosmetique(cosmetique);
+			Bukkit.broadcastMessage("DEBUG NOW");
 		}
 		else {
 			RandomShop rs = new RandomShop("partiel");
@@ -77,11 +79,12 @@ public class CreateTemporaryParticleCosmetique implements CommandExecutor {
 			rs.load(file);
 			rs.addCosmetique(cosmetique);
 			rs.save(file);
+			Bukkit.broadcastMessage("DEBUG NOT NOW");
 		}
 		
 		
 		
-		MainShop.sendMessage(sender, "cosmetique de particule créée !");
+		MainShop.sendMessage(sender, "cosmetique de particule cree !");
 		MainShop.sendMessage(sender, "nom: " + cosmetique.getName());
 		MainShop.sendMessage(sender, "id: #" + cosmetique.getId());
 		MainShop.sendMessage(sender, "prix humis: " + cosmetique.getHumisPrice());
@@ -153,10 +156,6 @@ public class CreateTemporaryParticleCosmetique implements CommandExecutor {
 		
 		// 24/03/2019
 		private LocalDate getDate(String date) {
-			LocalDate d = LocalDate.now();
-			d = d.withYear(Integer.parseInt(date.split("/")[2]));
-			d = d.withMonth(Integer.parseInt(date.split("/")[1]));
-			d = d.withDayOfMonth(Integer.parseInt(date.split("/")[0]));
-			return d;
+			return LocalDate.of(Integer.parseInt(date.split("/")[2]), Integer.parseInt(date.split("/")[1]), Integer.parseInt(date.split("/")[0]));
 		}
 }

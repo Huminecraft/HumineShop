@@ -10,6 +10,12 @@ import humine.utils.ItemShop;
 import humine.utils.Presentation;
 import humine.utils.cosmetiques.Cosmetique;
 import humine.utils.shop.Stock;
+import net.md_5.bungee.api.ChatColor;
+import net.md_5.bungee.api.chat.ClickEvent;
+import net.md_5.bungee.api.chat.ComponentBuilder;
+import net.md_5.bungee.api.chat.HoverEvent;
+import net.md_5.bungee.api.chat.TextComponent;
+import net.md_5.bungee.api.chat.HoverEvent.Action;
 
 public class ClickHumisBuyButton implements Listener
 {
@@ -46,6 +52,13 @@ public class ClickHumisBuyButton implements Listener
 	}
 	
 	private void sendLink(Player player) {
-		MainShop.sendMessage(player, "t'es fauche mon vieu (humis)");
+		TextComponent text = new TextComponent("Huminecraft");
+		text.setColor(ChatColor.GOLD);
+		text.setBold(true);
+		text.setHoverEvent(new HoverEvent(Action.SHOW_TEXT, new ComponentBuilder("Clique ici").create()));
+		text.setClickEvent(new ClickEvent(net.md_5.bungee.api.chat.ClickEvent.Action.OPEN_URL, "https://playecorentin.wixsite.com/huminecraft"));
+		
+		MainShop.sendMessage(player, ChatColor.YELLOW + "Tu n’as pas assez de Humis. Pour en obtenir clic sur ce lien :");
+		player.spigot().sendMessage(text);
 	}
 }

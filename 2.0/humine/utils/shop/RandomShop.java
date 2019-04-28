@@ -1,11 +1,8 @@
 package humine.utils.shop;
 
 import java.io.File;
-import java.io.IOException;
 import java.time.LocalDate;
 
-import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.configuration.file.YamlConfiguration;
 
 import humine.main.MainShop;
 
@@ -24,48 +21,13 @@ public class RandomShop extends Shop {
 	}
 
 	public void update() {
+		this.resetShop();
 		File folder = new File(MainShop.getInstance().getRandomShopFolder(), LocalDate.now().toString());
 		if (!folder.exists())
 			return;
 
-		this.load(folder);
-		this.currentDate = LocalDate.now();
-	}
-
-	@Override
-	public void save(File folder) {
-		super.save(folder);
-
-		File index = new File(folder, "date.yml");
-		FileConfiguration config = YamlConfiguration.loadConfiguration(index);
-		config.set("currentDate", this.currentDate.toString());
-
-		try {
-			config.save(index);
-		} catch (IOException e) {
-			System.err.println("Erreur enregistrement date.yml");
-			e.printStackTrace();
-			return;
-		}
-	}
-
-	@Override
-	public void load(File folder) {
 		super.load(folder);
-
-		File index = new File(folder, "date.yml");
-
-		if (!index.exists()) {
-			System.err.println("Erreur fichier introuvable date.yml");
-			return;
-		}
-
-		FileConfiguration config = YamlConfiguration.loadConfiguration(index);
-
-		String date = config.getString("currentDate");
-
-		this.currentDate = LocalDate.of(Integer.parseInt(date.split("-")[0]), Integer.parseInt(date.split("-")[1]), Integer.parseInt(date.split("-")[2]));
-		index.delete();
+		this.currentDate = LocalDate.now();
 	}
 
 	public LocalDate getCurrentDate() {

@@ -44,3 +44,4 @@ commands:
     usage:
     description:
     permission:
+  localdate:

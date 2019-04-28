@@ -113,8 +113,7 @@ public class MainShop extends JavaPlugin {
 		this.particleStockList = new HashMap<String, ParticleStock>();
 		this.HatStockList = new HashMap<String, HatStock>();
 		
-		File dateFolder = new File(this.randomShopFolder, LocalDate.now().toString());
-		this.randomShop.load(dateFolder);
+		this.randomShop.update();
 		
 		this.bankHumis.load(this.bankHumisFile);
 		this.bankPixel.load(this.bankPixelFile);
@@ -129,9 +128,8 @@ public class MainShop extends JavaPlugin {
 		
 		this.getServer().getScheduler().scheduleSyncRepeatingTask(this, new Runnable() {
 			public void run() {
-				if(LocalDate.now().isAfter(randomShop.getCurrentDate())) {
+				if(randomShop.getCurrentDate().isBefore(LocalDate.now()))
 					randomShop.update();
-				}
 			}
 		}, 0L, (60 * 20));
 		
@@ -183,6 +181,7 @@ public class MainShop extends JavaPlugin {
 		this.getCommand("rc").setExecutor(new RemoveCosmetique());
 		this.getCommand("store").setExecutor(new AddMoney());
 		this.getCommand("storedelete").setExecutor(new RemoveMoney());
+		
 	}
 	
 	private void initializeEvents() {
