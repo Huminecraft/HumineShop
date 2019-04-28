@@ -13,6 +13,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import humine.main.MainShop;
 import humine.utils.Prestige;
+import humine.utils.cosmetiques.temporary.TemporaryCustomHeadCosmetique;
 import humine.utils.cosmetiques.temporary.TemporaryMaterialHatCosmetique;
 import humine.utils.cosmetiques.temporary.TemporaryParticleCosmetique;
 
@@ -262,11 +263,17 @@ public abstract class Cosmetique {
 		else if(cosmetique instanceof TemporaryMaterialHatCosmetique) {
 			lores.add(color + "Chapeau: " + ((TemporaryMaterialHatCosmetique) cosmetique).getMaterialHat().name().toLowerCase());
 		}
+		else if(cosmetique instanceof TemporaryCustomHeadCosmetique) {
+			lores.add(color + "Custom head: " + ((TemporaryCustomHeadCosmetique) cosmetique).getLibelle());
+		}
 		else if(cosmetique instanceof ParticleCosmetique) {
 			lores.add(color + "Particules: " + ((ParticleCosmetique) cosmetique).getParticleEffect().name().toLowerCase());
 		}
 		else if(cosmetique instanceof MaterialHatCosmetique) {
 			lores.add(color + "Chapeau: " + ((MaterialHatCosmetique) cosmetique).getMaterialHat().name().toLowerCase());
+		}
+		else if(cosmetique instanceof CustomHeadCosmetique) {
+			lores.add(color + "Custom head: " + ((CustomHeadCosmetique) cosmetique).getLibelle());
 		}
 
 		meta.setLore(lores);

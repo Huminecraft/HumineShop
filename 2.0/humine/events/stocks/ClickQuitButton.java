@@ -7,6 +7,7 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 
 import humine.main.MainShop;
 import humine.utils.ItemShop;
+import humine.utils.shop.CustomHeadStock;
 import humine.utils.shop.HatStock;
 import humine.utils.shop.ParticleStock;
 
@@ -15,7 +16,8 @@ public class ClickQuitButton implements Listener{
 	@EventHandler
 	public void onClick(InventoryClickEvent event) {
 		if(event.getInventory().getName().startsWith(ParticleStock.getParticleStockName()) ||
-				event.getInventory().getName().startsWith(HatStock.getHatStockName())) {
+				event.getInventory().getName().startsWith(HatStock.getHatStockName()) ||
+					event.getInventory().getName().startsWith(CustomHeadStock.getCustomHeadStockName())) {
 			
 			if(event.getCurrentItem() != null) {
 				if(event.getCurrentItem().isSimilar(ItemShop.itemQuit())) {

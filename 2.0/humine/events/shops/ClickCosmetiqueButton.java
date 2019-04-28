@@ -24,6 +24,9 @@ public class ClickCosmetiqueButton implements Listener{
 		else if(event.getInventory().getName().equals(MainShop.getInstance().getHatShop().getName())) {
 			clickCosmetique(MainShop.getInstance().getHatShop(), event.getCurrentItem(), player);
 		}
+		else if(event.getInventory().getName().equals(MainShop.getInstance().getCustomHeadShop().getName())) {
+			clickCosmetique(MainShop.getInstance().getCustomHeadShop(), event.getCurrentItem(), player);
+		}
 		else if(event.getInventory().getName().equals(MainShop.getInstance().getRandomShop().getName())) {
 			clickCosmetique(MainShop.getInstance().getRandomShop(), event.getCurrentItem(), player);
 		}

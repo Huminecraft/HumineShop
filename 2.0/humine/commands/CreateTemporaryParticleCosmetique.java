@@ -89,7 +89,6 @@ public class CreateTemporaryParticleCosmetique implements CommandExecutor {
 		MainShop.sendMessage(sender, "id: #" + cosmetique.getId());
 		MainShop.sendMessage(sender, "prix humis: " + cosmetique.getHumisPrice());
 		MainShop.sendMessage(sender, "prix pixel: " + cosmetique.getPixelPrice());
-		MainShop.sendMessage(sender, "prestige: " + cosmetique.getPrestige());
 		MainShop.sendMessage(sender, "item presentation: " + cosmetique.getItemShop());
 		MainShop.sendMessage(sender, "effet particule: " + cosmetique.getParticle());
 		MainShop.sendMessage(sender, "date de presentation: " + args[5]);

@@ -44,4 +44,11 @@ commands:
     usage:
     description:
     permission:
-  localdate:
+  ccch:
+    usage:
+    description:
+    permission:
+  tccch:
+    usage:
+    description:
+    permission:
