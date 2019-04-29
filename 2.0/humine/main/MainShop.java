@@ -99,7 +99,7 @@ public class MainShop extends JavaPlugin {
 		saveDefaultConfig();
 
 		this.shop = new Shop("Shop");
-		this.randomShop = new RandomShop("RandomShop");
+		this.randomShop = new RandomShop("RandomShop", false);
 		this.particleShop = new ParticleShop("Boutique de particule");
 		this.customHeadShop = new CustomHeadShop("Boutique de tete personnalisee");
 		this.hatShop = new HatShop("Boutique de Chapeau");
@@ -138,8 +138,8 @@ public class MainShop extends JavaPlugin {
 		this.getServer().getScheduler().scheduleSyncRepeatingTask(this, new Runnable() {
 			public void run()
 			{
-				randomShop.update();
-				Cosmetique.NumId = 0;
+				if(randomShop.getCurrentDate().isBefore(LocalDate.now()))
+					randomShop.update();
 			}
 		}, 0L, (60 * 20));
 	}

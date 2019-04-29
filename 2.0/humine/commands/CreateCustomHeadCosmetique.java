@@ -1,9 +1,13 @@
 package humine.commands;
 
+import java.util.Collection;
+
 import org.bukkit.Material;
+import org.bukkit.command.BlockCommandSender;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -18,33 +22,45 @@ public class CreateCustomHeadCosmetique implements CommandExecutor{
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
 		
-		if(!(sender instanceof Player)) {
-			MainShop.sendMessage(sender, "Vous devez etre un joueur");
+		if(!(sender instanceof BlockCommandSender)) {
+			MainShop.sendMessage(sender, "Vous devez utiliser un command block");
 			return false;
 		}
 		
-		Player player = (Player) sender;
+		BlockCommandSender command_block = (BlockCommandSender) sender;
+		Collection<Entity> entities = command_block.getBlock().getWorld().getNearbyEntities(command_block.getBlock().getLocation(), 2.0, 2.0, 2.0);
+		Player player = null;
+		
+		for(Entity e : entities) {
+			if(e instanceof Player)
+				player = (Player) e;
+		}
+		
+		if(player == null) {
+			MainShop.sendMessage(sender, "joueur non trouve");
+			return false;
+		}
 		
 		if(!hasAFreeSlot(player)) {
-			MainShop.sendMessage(sender, "Vous n'avez aucune place libre dans votre inventaire");
+			MainShop.sendMessage(player, "Vous n'avez aucune place libre dans votre inventaire");
 			return false;
 		}
 		
 		if(args.length < 5) {
-			MainShop.sendMessage(sender, "Argument insuffisant");
-			MainShop.sendMessage(sender, command);
+			MainShop.sendMessage(player, "Argument insuffisant");
+			MainShop.sendMessage(player, command);
 			return false;
 		}
 		
 		if(!verification(args[2])) {
-			MainShop.sendMessage(sender, "Custom head invalide");
-			MainShop.sendMessage(sender, command);
+			MainShop.sendMessage(player, "Custom head invalide");
+			MainShop.sendMessage(player, command);
 			return false;
 		}
 		
 		if(!isNumber(args[3]) || !isNumber(args[4])) {
-			MainShop.sendMessage(sender, "Prix invalide");
-			MainShop.sendMessage(sender, command);
+			MainShop.sendMessage(player, "Prix invalide");
+			MainShop.sendMessage(player, command);
 			return false;
 		}
 		
@@ -59,33 +75,31 @@ public class CreateCustomHeadCosmetique implements CommandExecutor{
 				emperor = true;
 		}
 		
-		ItemStack item = getItemStack(player, args[1]);
+		ItemStack item = getItemStack(player, args[2]);
 		if(item == null) {
-			MainShop.sendMessage(sender, "Erreur: l'item n'a pas pu etre recupere");
+			MainShop.sendMessage(player, "Erreur: l'item n'a pas pu etre recupere");
 			return false;
 		}
 		
-		int humisPrice = Integer.parseInt(args[2]);
-		int pixelPrice = Integer.parseInt(args[3]);
+		int humisPrice = Integer.parseInt(args[3]);
+		int pixelPrice = Integer.parseInt(args[4]);
 		
 		CustomHeadCosmetique cosmetique = new CustomHeadCosmetique(args[0], item, humisPrice, pixelPrice, prestige, args[1]);
-				
+
 		if(emperor) {
 			MainShop.getInstance().getEmperorShop().addCosmetique(cosmetique);
 		}
 		else {
 			MainShop.getInstance().getShop().addCosmetique(cosmetique);
-			//TODO ajouter aussi a la customHead shop
-			//MainShop.getInstance().getParticleShop().addCosmetique(cosmetique);
+			MainShop.getInstance().getCustomHeadShop().addCosmetique(cosmetique);
 		}
-		
-		MainShop.sendMessage(sender, "Cosmetique de Custom Head cree !");
-		MainShop.sendMessage(sender, "nom: " + cosmetique.getName());
-		MainShop.sendMessage(sender, "id: #" + cosmetique.getId());
-		MainShop.sendMessage(sender, "prix humis: " + cosmetique.getHumisPrice());
-		MainShop.sendMessage(sender, "prix pixel: " + cosmetique.getPixelPrice());
-		MainShop.sendMessage(sender, "Custom Head: " + cosmetique.getLibelle());
-		MainShop.sendMessage(sender, "prestige: " + cosmetique.getPrestige().name().toLowerCase());
+		MainShop.sendMessage(player, "Cosmetique de Custom Head cree !");
+		MainShop.sendMessage(player, "nom: " + cosmetique.getName());
+		MainShop.sendMessage(player, "id: #" + cosmetique.getId());
+		MainShop.sendMessage(player, "prix humis: " + cosmetique.getHumisPrice());
+		MainShop.sendMessage(player, "prix pixel: " + cosmetique.getPixelPrice());
+		MainShop.sendMessage(player, "Custom Head: " + cosmetique.getLibelle());
+		MainShop.sendMessage(player, "prestige: " + cosmetique.getPrestige().name().toLowerCase());
 		
 		return true;
 	}
@@ -100,16 +114,19 @@ public class CreateCustomHeadCosmetique implements CommandExecutor{
 	}
 
 	private ItemStack getItemStack(Player player, String head) {
-		MainShop.getInstance().getServer().dispatchCommand(MainShop.getInstance().getServer().getConsoleSender(), "give " + player.getName() + " " + head + " 1");
-		String name = head.split("\\")[3].substring(1);
+		String command = "give " + player.getName() + " " + head + " 1";
+		String name = head.split("\"")[4].substring(0, head.split("\"")[4].length() - 1);
+		
+		MainShop.getInstance().getServer().dispatchCommand(MainShop.getInstance().getServer().getConsoleSender(), command);
+		
 		ItemStack item = null;
 
 		for(int i = 0; i < player.getInventory().getContents().length; i++) {
 			if(player.getInventory().getContents()[i] != null && player.getInventory().getContents()[i].getType() != Material.AIR) {
-				if(player.getInventory().getContents()[i].getItemMeta().getDisplayName().contains(name)) {
+				if(player.getInventory().getContents()[i].getItemMeta().getDisplayName().toLowerCase().equals(name.toLowerCase())) {
 					item = player.getInventory().getContents()[i];
 					player.getInventory().getContents()[i] = null;
-					break;
+					player.getInventory().setItem(i, null);
 				}
 			}
 		}
@@ -125,6 +142,9 @@ public class CreateCustomHeadCosmetique implements CommandExecutor{
 			return false;
 		
 		if(!head.toLowerCase().contains("name:"))
+			return false;
+		
+		if(head.split("\"")[4].substring(0, head.split("\"")[4].length() - 1).equals(""))
 			return false;
 		
 		return true;

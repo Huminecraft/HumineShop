@@ -21,11 +21,8 @@ public class RandomShop extends Shop {
 	}
 
 	public void update() {
-		this.resetShop();
+		super.resetShop();
 		File folder = new File(MainShop.getInstance().getRandomShopFolder(), LocalDate.now().toString());
-		if (!folder.exists())
-			return;
-
 		super.load(folder);
 		this.currentDate = LocalDate.now();
 	}

@@ -234,7 +234,7 @@ public class Shop {
 		
 		File index = new File(folder, "index.yml");
 		if(!index.exists()) {
-			System.err.println("Erreur fichier introuvable index.yml");
+			System.err.println("Erreur fichier introuvable index.yml: " + this.getClass().getName());
 			return;
 		}
 		

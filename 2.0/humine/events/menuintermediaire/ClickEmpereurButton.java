@@ -17,7 +17,7 @@ public class ClickEmpereurButton implements Listener{
 				if(event.getCurrentItem().isSimilar(ItemShop.itemEmpereur())) {
 					Player player = (Player) event.getWhoClicked();
 					if(MainShop.getInstance().getEmperorShop().isEmpty())
-						player.sendMessage("Emperor Shop indisponible");
+						MainShop.sendMessage(player, "Emperor Shop indisponible");
 					else
 						MainShop.getInstance().getEmperorShop().openShop(player);
 				}

@@ -3,7 +3,6 @@ package humine.commands;
 import java.io.File;
 import java.time.LocalDate;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.command.Command;
@@ -71,7 +70,6 @@ public class CreateTemporaryParticleCosmetique implements CommandExecutor {
 		
 		if(date.isEqual(LocalDate.now())) {
 			MainShop.getInstance().getRandomShop().addCosmetique(cosmetique);
-			Bukkit.broadcastMessage("DEBUG NOW");
 		}
 		else {
 			RandomShop rs = new RandomShop("partiel");
@@ -79,10 +77,7 @@ public class CreateTemporaryParticleCosmetique implements CommandExecutor {
 			rs.load(file);
 			rs.addCosmetique(cosmetique);
 			rs.save(file);
-			Bukkit.broadcastMessage("DEBUG NOT NOW");
 		}
-		
-		
 		
 		MainShop.sendMessage(sender, "cosmetique de particule cree !");
 		MainShop.sendMessage(sender, "nom: " + cosmetique.getName());

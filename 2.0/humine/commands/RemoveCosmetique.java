@@ -7,6 +7,7 @@ import org.bukkit.command.CommandSender;
 
 import humine.main.MainShop;
 import humine.utils.cosmetiques.Cosmetique;
+import humine.utils.cosmetiques.CustomHeadCosmetique;
 import humine.utils.cosmetiques.MaterialHatCosmetique;
 import humine.utils.cosmetiques.ParticleCosmetique;
 import humine.utils.shop.Page;
@@ -34,6 +35,8 @@ public class RemoveCosmetique implements CommandExecutor{
 						MainShop.getInstance().getParticleShop().filter(MainShop.getInstance().getShop());
 					else if(c instanceof MaterialHatCosmetique)
 						MainShop.getInstance().getHatShop().filter(MainShop.getInstance().getShop());
+					else if(c instanceof CustomHeadCosmetique)
+						MainShop.getInstance().getCustomHeadShop().filter(MainShop.getInstance().getShop());
 					
 					MainShop.sendMessage(sender, "Cosmetique #" + args[0] + " supprime !");
 					return true;
