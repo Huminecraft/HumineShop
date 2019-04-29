@@ -12,6 +12,7 @@ import humine.utils.ParticleScheduler;
 import humine.utils.cosmetiques.Cosmetique;
 import humine.utils.cosmetiques.MaterialHatCosmetique;
 import humine.utils.cosmetiques.temporary.TemporaryMaterialHatCosmetique;
+import humine.utils.shop.CustomHeadStock;
 import humine.utils.shop.HatStock;
 import humine.utils.shop.ParticleStock;
 import humine.utils.shop.Shop;
@@ -31,9 +32,15 @@ public class ClickCosmetiqueButton implements Listener
 			}
 		}
 		else if(event.getInventory().getName().startsWith(HatStock.getHatStockName())) {
-			HatStock pStock = MainShop.getInstance().getHatStockList().get(player.getName());
-			if(pStock != null) {
-				clickHatCosmetique(pStock, event.getCurrentItem(), player);
+			HatStock stock = MainShop.getInstance().getHatStockList().get(player.getName());
+			if(stock != null) {
+				clickHatCosmetique(stock, event.getCurrentItem(), player);
+			}
+		}
+		else if(event.getInventory().getName().startsWith(CustomHeadStock.getCustomHeadStockName())) {
+			CustomHeadStock stock = MainShop.getInstance().getCustomHeadStockList().get(player.getName());
+			if(stock != null) {
+				MainShop.sendMessage(player, "En construction");
 			}
 		}
 	}

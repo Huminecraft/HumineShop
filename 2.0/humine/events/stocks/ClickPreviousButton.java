@@ -9,6 +9,7 @@ import org.bukkit.inventory.ItemStack;
 
 import humine.main.MainShop;
 import humine.utils.ItemShop;
+import humine.utils.shop.CustomHeadStock;
 import humine.utils.shop.HatStock;
 import humine.utils.shop.ParticleStock;
 import humine.utils.shop.Shop;
@@ -28,6 +29,12 @@ public class ClickPreviousButton implements Listener
 		}
 		else if(event.getInventory().getName().startsWith(HatStock.getHatStockName())) {
 			HatStock pStock = MainShop.getInstance().getHatStockList().get(player.getName());
+			if(pStock != null) {
+				previousPage(pStock, event.getCurrentItem(), player);
+			}
+		}
+		else if(event.getInventory().getName().startsWith(CustomHeadStock.getCustomHeadStockName())) {
+			CustomHeadStock pStock = MainShop.getInstance().getCustomHeadStockList().get(player.getName());
 			if(pStock != null) {
 				previousPage(pStock, event.getCurrentItem(), player);
 			}

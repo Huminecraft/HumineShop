@@ -107,7 +107,6 @@ public class MainShop extends JavaPlugin {
 		
 		this.bankHumis = new BankHumis("Humis");
 		this.bankPixel = new BankPixel("Pixel");
-		
 		this.inventories = new Inventories();
 
 		this.menuAccueil = new MenuAccueil();
