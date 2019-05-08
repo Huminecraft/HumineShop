@@ -16,7 +16,7 @@ import humine.utils.cosmetiques.temporary.TemporaryParticleCosmetique;
 public class ParticleStock extends Shop
 {
 
-	private static String stockName = "Particle Stock";
+	private static String stockName = "Emote Stock";
 	
 	public ParticleStock(String name) {
 		super(stockName + " " + name);

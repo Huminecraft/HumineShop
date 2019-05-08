@@ -28,6 +28,7 @@ import humine.events.ClickPresentationCosmetique;
 import humine.events.CreateBankAccount;
 import humine.events.CreateStockAccount;
 import humine.events.ExitInventory;
+import humine.events.PlayerCustomHeadEvent;
 import humine.events.PlayerQuit;
 import humine.events.inventory.ClickMaterialInventory;
 import humine.events.menuaccueil.ClickCustomHeadButton;
@@ -46,6 +47,7 @@ import humine.events.shops.ClickCosmetiqueButton;
 import humine.events.shops.ClickNextButton;
 import humine.events.shops.ClickPreviousButton;
 import humine.events.stocks.ClickDisableButton;
+import humine.utils.CustomHeadBlockInfo;
 import humine.utils.ParticleScheduler;
 import humine.utils.cosmetiques.Cosmetique;
 import humine.utils.economy.BankHumis;
@@ -85,6 +87,8 @@ public class MainShop extends JavaPlugin {
 	private HashMap<String, HatStock> HatStockList;
 	private HashMap<String, CustomHeadStock> customHeadStockList;
 	
+	private HashMap<String, CustomHeadBlockInfo> playerCustomHeadList;
+	
 	private final File shopFolder = new File(getDataFolder(), "Shop");
 	private final File emperorShopFolder = new File(getDataFolder(), "EmperorShop");
 	private final File randomShopFolder = new File(getDataFolder(), "RandomShop");
@@ -92,15 +96,19 @@ public class MainShop extends JavaPlugin {
 	private final File bankPixelFile = new File(getDataFolder(), "BankPixel.yml");
 	private final File inventoriesFolder = new File(getDataFolder(), "Inventories");
 	private final File IDFile = new File(getDataFolder(), "ID.yml");
+	private final File CustomHeadBlockFile = new File(getDataFolder(), "CustomHeadBlockInfos");
 	
 	@Override
 	public void onEnable() {
 		instance = this;
 		saveDefaultConfig();
 
+		if(!CustomHeadBlockFile.exists())
+			CustomHeadBlockFile.mkdirs();
+		
 		this.shop = new Shop("Shop");
 		this.randomShop = new RandomShop("RandomShop", false);
-		this.particleShop = new ParticleShop("Boutique de particule");
+		this.particleShop = new ParticleShop("Boutique d'emote");
 		this.customHeadShop = new CustomHeadShop("Boutique de tete personnalisee");
 		this.hatShop = new HatShop("Boutique de Chapeau");
 		this.emperorShop = new Shop("Boutique Empereur", false);
@@ -120,6 +128,8 @@ public class MainShop extends JavaPlugin {
 		this.particleStockList = new HashMap<String, ParticleStock>();
 		this.HatStockList = new HashMap<String, HatStock>();
 		this.customHeadStockList = new HashMap<String, CustomHeadStock>();
+		
+		this.playerCustomHeadList = new HashMap<String, CustomHeadBlockInfo>();
 		
 		this.randomShop.update();
 		
@@ -141,6 +151,13 @@ public class MainShop extends JavaPlugin {
 					randomShop.update();
 			}
 		}, 0L, (60 * 20));
+		
+		for(File f : this.CustomHeadBlockFile.listFiles()) {
+			CustomHeadBlockInfo info = CustomHeadBlockInfo.load(f);
+			if(info != null)
+				this.playerCustomHeadList.put(info.getOwner(), info);
+		}
+		
 	}
 	
 	@Override
@@ -154,6 +171,18 @@ public class MainShop extends JavaPlugin {
 		this.bankPixel.save(this.bankPixelFile);
 		this.inventories.save(this.inventoriesFolder);
 		this.emperorShop.save(this.emperorShopFolder);
+		
+		for(CustomHeadBlockInfo chb : this.playerCustomHeadList.values()) {
+			File f = new File(this.CustomHeadBlockFile, chb.getOwner() + ".yml");
+			try
+			{
+				CustomHeadBlockInfo.save(f, chb);
+			}
+			catch (IOException e)
+			{
+				e.printStackTrace();
+			}
+		}
 		
 		if(!this.IDFile.exists()) {
 			try
@@ -200,6 +229,7 @@ public class MainShop extends JavaPlugin {
 		this.getServer().getPluginManager().registerEvents(new CreateStockAccount(), this);
 		this.getServer().getPluginManager().registerEvents(new PlayerQuit(), this);
 		this.getServer().getPluginManager().registerEvents(new ExitInventory(), this);
+		this.getServer().getPluginManager().registerEvents(new PlayerCustomHeadEvent(), this);
 		
 		this.getServer().getPluginManager().registerEvents(new ClickMaterialInventory(), this);
 		
@@ -291,6 +321,11 @@ public class MainShop extends JavaPlugin {
 		return bankPixelFile;
 	}
 	
+	public File getCustomHeadBlockFile()
+	{
+		return CustomHeadBlockFile;
+	}
+	
 	public File getInventoriesFolder()
 	{
 		return inventoriesFolder;
@@ -349,6 +384,11 @@ public class MainShop extends JavaPlugin {
 	
 	public HashMap<String, CustomHeadStock> getCustomHeadStockList() {
 		return customHeadStockList;
+	}
+	
+	public HashMap<String, CustomHeadBlockInfo> getPlayerCustomHeadList()
+	{
+		return playerCustomHeadList;
 	}
 }
 

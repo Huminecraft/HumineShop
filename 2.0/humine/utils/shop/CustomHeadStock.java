@@ -8,7 +8,7 @@ public class CustomHeadStock extends Shop{
 	private static String stockName = "Custom Head Stock";
 
 	public CustomHeadStock(String name) {
-		super(name);
+		super(stockName + " " + name);
 	}
 	
 	public void filter(Shop shop) {
