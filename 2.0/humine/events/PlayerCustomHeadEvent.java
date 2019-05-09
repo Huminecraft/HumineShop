@@ -59,7 +59,7 @@ public class PlayerCustomHeadEvent implements Listener
 		if(chb == null)
 			return;
 		
-		chb.addBlock(event.getBlock());
+		chb.addBlock(event.getBlock(), event.getItemInHand());
 	}
 	
 	@EventHandler

@@ -103,6 +103,43 @@ public abstract class ItemShop {
 		return item;
 	}
 	
+	@SuppressWarnings("deprecation")
+	public static ItemStack itemMinus() {
+		ItemStack item = new ItemStack(Material.PLAYER_HEAD);
+		
+		SkullMeta meta = (SkullMeta) item.getItemMeta();
+		meta.setOwner("MHF_ArrowDown");
+		meta.setDisplayName(ChatColor.WHITE + "Tout recuperer");
+		
+		item.setItemMeta(meta);
+		
+		return item;
+	}
+	
+	@SuppressWarnings("deprecation")
+	public static ItemStack itemPlus() {
+		ItemStack item = new ItemStack(Material.PLAYER_HEAD);
+		
+		SkullMeta meta = (SkullMeta) item.getItemMeta();
+		meta.setOwner("MHF_ArrowUp");
+		meta.setDisplayName(ChatColor.WHITE + "Prendre un custom head");
+		
+		item.setItemMeta(meta);
+		
+		return item;
+	}
+	
+	public static ItemStack itemDamiStick() {
+		ItemStack item = new ItemStack(Material.STICK);
+		
+		ItemMeta meta = item.getItemMeta();
+		meta.setDisplayName(ChatColor.WHITE + "Dami-Stick");
+		
+		item.setItemMeta(meta);
+		
+		return item;
+	}
+	
 	public static ItemStack itemDisable() {
 		ItemStack item = new ItemStack(Material.MILK_BUCKET);
 		ItemMeta meta = item.getItemMeta();
@@ -151,6 +188,13 @@ public abstract class ItemShop {
 	public static ItemStack itemCosmetiqueInfo(Cosmetique cosmetique) {
 		ItemStack item = Cosmetique.cosmetiqueToItem(cosmetique);
 		item.setType(Material.ENDER_EYE);
+		
+		return item;
+	}
+	
+	public static ItemStack itemCosmetiqueInfo(Cosmetique cosmetique, int number) {
+		ItemStack item = Cosmetique.cosmetiqueToItem(cosmetique);
+		item.setAmount(number);
 		
 		return item;
 	}

@@ -10,6 +10,8 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import humine.utils.cosmetiques.Cosmetique;
+import humine.utils.cosmetiques.CustomHeadCosmetique;
+import humine.utils.cosmetiques.temporary.TemporaryCustomHeadCosmetique;
 
 public abstract class Presentation {
 
@@ -33,6 +35,32 @@ public abstract class Presentation {
 		inv.setItem(inv.getSize() - 5, ItemShop.itemCosmetiqueInfo(cosmetique));
 		inv.setItem(inv.getSize() - 1, ItemShop.itemQuit());
 
+		player.openInventory(inv);
+		cosmetiques.put(player, cosmetique);
+	}
+	
+	public static void openCustomHeadWindow(Player player, Cosmetique cosmetique) {
+		Inventory inv = Bukkit.createInventory(player, (9 * 5), name + " #" + cosmetique.getId());
+		
+		if(!(cosmetique instanceof CustomHeadCosmetique) && !(cosmetique instanceof TemporaryCustomHeadCosmetique)) {
+			player.openInventory(inv);
+			return;
+		}
+		
+		
+		inv.setItem(11, ItemShop.itemPlus());
+		inv.setItem(13, ItemShop.itemDamiStick());
+		inv.setItem(15, ItemShop.itemMinus());
+		
+		inv.setItem(inv.getSize() - 9, ItemShop.itemQuit());
+		
+		if(cosmetique instanceof CustomHeadCosmetique)
+			inv.setItem(inv.getSize() - 1, ItemShop.itemCosmetiqueInfo(cosmetique, ((CustomHeadCosmetique) cosmetique).getAmount()));
+		else
+			inv.setItem(inv.getSize() - 1, ItemShop.itemCosmetiqueInfo(cosmetique, ((TemporaryCustomHeadCosmetique) cosmetique).getAmount()));
+		
+		inv.setItem(inv.getSize() - 1, ItemShop.itemQuit());
+		
 		player.openInventory(inv);
 		cosmetiques.put(player, cosmetique);
 	}

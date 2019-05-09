@@ -13,11 +13,13 @@ import humine.utils.Prestige;
 public class TemporaryCustomHeadCosmetique extends TemporaryCosmetique{
 
 	private String libelle;
+	private int amount;
 	
 	public TemporaryCustomHeadCosmetique(String name, ItemStack customHead, int humisPrice, int pixelPrice,
 			LocalDate date, Prestige prestige, String libelle) {
 		super(name, customHead, humisPrice, pixelPrice, date, prestige);
 		this.libelle = libelle;
+		this.amount = 1;
 	}
 
 	@Override
@@ -26,6 +28,7 @@ public class TemporaryCustomHeadCosmetique extends TemporaryCosmetique{
 
 		FileConfiguration config = YamlConfiguration.loadConfiguration(file);
 		config.set("libelle", this.libelle);
+		config.set("amount", this.amount);
 		try {
 			config.save(file);
 		} catch (IOException e) {
@@ -42,12 +45,13 @@ public class TemporaryCustomHeadCosmetique extends TemporaryCosmetique{
 
 		FileConfiguration config = YamlConfiguration.loadConfiguration(file);
 
-		if(!config.contains("libelle")) {
+		if(!config.contains("libelle") || !config.contains("amount")) {
 			System.err.println("Erreur parametre manquant dans le fichier " + file.getName());
 			return;
 		}
 		
 		this.libelle = config.getString("libelle");
+		this.amount = config.getInt("amount");
 	}
 	
 	public String getLibelle() {
@@ -56,6 +60,14 @@ public class TemporaryCustomHeadCosmetique extends TemporaryCosmetique{
 	
 	public void setLibelle(String libelle) {
 		this.libelle = libelle;
+	}
+	
+	public int getAmount() {
+		return amount;
+	}
+	
+	public void setAmount(int amount) {
+		this.amount = amount;
 	}
 	
 }

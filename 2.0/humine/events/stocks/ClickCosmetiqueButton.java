@@ -9,6 +9,7 @@ import org.bukkit.inventory.ItemStack;
 
 import humine.main.MainShop;
 import humine.utils.ParticleScheduler;
+import humine.utils.Presentation;
 import humine.utils.cosmetiques.Cosmetique;
 import humine.utils.cosmetiques.MaterialHatCosmetique;
 import humine.utils.cosmetiques.temporary.TemporaryMaterialHatCosmetique;
@@ -40,11 +41,23 @@ public class ClickCosmetiqueButton implements Listener
 		else if(event.getInventory().getName().startsWith(CustomHeadStock.getCustomHeadStockName())) {
 			CustomHeadStock stock = MainShop.getInstance().getCustomHeadStockList().get(player.getName());
 			if(stock != null) {
-				MainShop.sendMessage(player, "En construction");
+				clickCustomHeadCosmetique(stock, event.getCurrentItem(), player);
 			}
 		}
 	}
 	
+	public void clickCustomHeadCosmetique(CustomHeadStock stock, ItemStack item, Player player) {
+		if(item != null && item.getType() != Material.AIR) {
+			if(item.getItemMeta().getDisplayName().contains("#")) {
+				Cosmetique c = stock.getCosmetique(item.getItemMeta().getDisplayName().split("#")[1]);
+				
+				if(c != null) {
+					Presentation.openCustomHeadWindow(player, c);
+				}
+			}
+		}
+	}
+
 	public void clickParticleCosmetique(Shop shop, ItemStack item, Player player) {
 		if(item != null && item.getType() != Material.AIR) {
 			if(item.getItemMeta().getDisplayName().contains("#")) {

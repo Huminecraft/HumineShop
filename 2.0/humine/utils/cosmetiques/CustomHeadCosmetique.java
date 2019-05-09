@@ -12,10 +12,12 @@ import humine.utils.Prestige;
 public class CustomHeadCosmetique extends Cosmetique{
 
 	private String libelle;
+	private int amount;
 	
 	public CustomHeadCosmetique(String name, ItemStack customItem, int humisPrice, int pixelPrice, Prestige prestige, String libelle) {
 		super(name, customItem, humisPrice, pixelPrice, prestige);
 		this.libelle = libelle;
+		this.amount = 1;
 	}
 	
 	public String getLibelle() {
@@ -26,12 +28,21 @@ public class CustomHeadCosmetique extends Cosmetique{
 		this.libelle = libelle;
 	}
 	
+	public int getAmount() {
+		return amount;
+	}
+	
+	public void setAmount(int amount) {
+		this.amount = amount;
+	}
+	
 	@Override
 	public void save(File file) {
 		super.save(file);
 
 		FileConfiguration config = YamlConfiguration.loadConfiguration(file);
 		config.set("libelle", this.libelle);
+		config.set("amount", this.amount);
 		try {
 			config.save(file);
 		} catch (IOException e) {
@@ -48,11 +59,12 @@ public class CustomHeadCosmetique extends Cosmetique{
 
 		FileConfiguration config = YamlConfiguration.loadConfiguration(file);
 
-		if(!config.contains("libelle")) {
+		if(!config.contains("libelle") || !config.contains("amount")) {
 			System.err.println("Erreur parametre manquant dans le fichier " + file.getName());
 			return;
 		}
 		
 		this.libelle = config.getString("libelle");
+		this.amount = config.getInt("amount");
 	}
 }

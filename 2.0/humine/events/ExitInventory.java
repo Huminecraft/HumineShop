@@ -6,6 +6,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 
 import humine.main.MainShop;
+import humine.utils.Presentation;
 import humine.utils.shop.HatStock;
 import humine.utils.shop.ParticleStock;
 
@@ -36,5 +37,8 @@ public class ExitInventory implements Listener
 		
 		else if(event.getInventory().getName().startsWith(HatStock.getHatStockName()))
 			MainShop.getInstance().getHatStockList().remove(player.getName());
+		
+		else if(event.getInventory().getName().startsWith(Presentation.getName()))
+			Presentation.getCosmetiques().remove(player);
 	}
 }

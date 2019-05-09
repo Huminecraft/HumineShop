@@ -3,25 +3,29 @@ package humine.utils;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.inventory.ItemStack;
 
 
 public class CustomHeadBlockInfo
 {
 	private String owner;
-	private List<Block> blocks;
+	private Map<Block, ItemStack> blocks;
 	
 	public CustomHeadBlockInfo(String owner)
 	{
-		this(owner, new ArrayList<Block>());
+		this(owner, new HashMap<Block, ItemStack>());
 	}
 	
-	public CustomHeadBlockInfo(String owner, List<Block> blocks)
+	public CustomHeadBlockInfo(String owner, Map<Block, ItemStack> blocks)
 	{
 		this.owner = owner;
 		this.blocks = blocks;
@@ -37,26 +41,24 @@ public class CustomHeadBlockInfo
 		this.owner = owner;
 	}
 	
-	public List<Block> getBlocks()
-	{
+	public Map<Block, ItemStack> getBlocks() {
 		return blocks;
 	}
 	
-	public void setBlocks(List<Block> blocks)
-	{
+	public void setBlocks(Map<Block, ItemStack> blocks) {
 		this.blocks = blocks;
 	}
 	
-	public boolean addBlock(Block block) {
-		return this.blocks.add(block);
+	public void addBlock(Block block, ItemStack item) {
+		this.blocks.put(block, item);
 	}
 	
-	public boolean removeBlock(Block block) {
-		return this.blocks.remove(block);
+	public void removeBlock(Block block) {
+		this.blocks.remove(block);
 	}
 	
 	public boolean contains(Block block) {
-		for(Block b : this.blocks) {
+		for(Block b : this.blocks.keySet()) {
 			if(b.getLocation().equals(block.getLocation()))
 				return true;
 		}
@@ -64,11 +66,31 @@ public class CustomHeadBlockInfo
 	}
 	
 	public boolean contains(Location loc) {
-		for(Block b : this.blocks) {
+		for(Block b : this.blocks.keySet()) {
 			if(b.getLocation().equals(loc))
 				return true;
 		}
 		return false;
+	}
+	
+	public boolean contains(ItemStack item) {
+		for(ItemStack i : this.blocks.values()) {
+			if(i.isSimilar(item))
+				return true;
+		}
+		return false;
+	}
+	
+	public ItemStack getItemStack(Block block) {
+		return this.blocks.get(block);
+	}
+	
+	public Block getBlock(ItemStack item) {
+		for(Entry<Block, ItemStack> entry : this.blocks.entrySet()) {
+			if(entry.getValue().isSimilar(item))
+				return entry.getKey();
+		}
+		return null;
 	}
 	
 	public static void save(File file, CustomHeadBlockInfo info) throws IOException {
@@ -77,13 +99,17 @@ public class CustomHeadBlockInfo
 		}
 		
 		List<Location> loc = new ArrayList<>();
-		for(Block b : info.getBlocks())
+		for(Block b : info.getBlocks().keySet())
 			loc.add(b.getLocation());
+		
+		List<ItemStack> items = new ArrayList<>();
+		items.addAll(info.getBlocks().values());
 		
 		FileConfiguration config = YamlConfiguration.loadConfiguration(file);
 		config.set("Owner", info.getOwner());
 		config.set("Blocks", loc);
-
+		config.set("Items", items);
+		
 		config.save(file);
 	}
 	
@@ -96,12 +122,19 @@ public class CustomHeadBlockInfo
 		CustomHeadBlockInfo info = new CustomHeadBlockInfo(config.getString("Owner"));
 		
 		List<Location> loc = (List<Location>) config.getList("Blocks", new ArrayList<Location>());
+		List<ItemStack> items = (List<ItemStack>) config.getList("Items", new ArrayList<ItemStack>());
+		
 		List<Block> blocks = new ArrayList<Block>();
 		for(Location l : loc) {
 			blocks.add(l.getWorld().getBlockAt(l));
 		}
 		
-		info.setBlocks(blocks);
+		Map<Block, ItemStack> maps = new HashMap<Block, ItemStack>();
+		for(int i = 0; i < blocks.size(); i++) {
+			maps.put(blocks.get(i), items.get(i));
+		}
+		
+		info.setBlocks(maps);
 		
 		return info;
 	}
