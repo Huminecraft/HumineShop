@@ -31,6 +31,9 @@ public class ClickQuitButton implements Listener{
 		else if(MainShop.getInstance().getHatShop().getCosmetique(name.split("#")[1]) != null)
 			MainShop.getInstance().getHatShop().openShop(player);
 		
+		else if(MainShop.getInstance().getCustomHeadShop().getCosmetique(name.split("#")[1]) != null)
+			MainShop.getInstance().getCustomHeadShop().openShop(player);
+		
 		else if(MainShop.getInstance().getRandomShop().getCosmetique(name.split("#")[1]) != null)
 			MainShop.getInstance().getRandomShop().openShop(player);
 		

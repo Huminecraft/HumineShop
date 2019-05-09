@@ -63,9 +63,6 @@ public class ClickTakeAllButton implements Listener{
 			if(cosmetique == null)
 				continue;
 			
-			if(c.equals(cosmetique))
-				somme += item.getAmount();
-			
 		}
 	}
 }

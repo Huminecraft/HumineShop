@@ -44,6 +44,7 @@ import humine.events.menuintermediaire.ClickParticleShopButton;
 import humine.events.presentation.ClickHumisBuyButton;
 import humine.events.presentation.ClickPixelBuyButton;
 import humine.events.presentation.ClickPlusButton;
+import humine.events.presentation.ClickTakeAllButton;
 import humine.events.shops.ClickCosmetiqueButton;
 import humine.events.shops.ClickNextButton;
 import humine.events.shops.ClickPreviousButton;
@@ -258,12 +259,14 @@ public class MainShop extends JavaPlugin {
 		this.getServer().getPluginManager().registerEvents(new ClickPixelBuyButton(), this);
 		this.getServer().getPluginManager().registerEvents(new humine.events.presentation.ClickQuitButton(), this);
 		this.getServer().getPluginManager().registerEvents(new ClickPlusButton(), this);
+		this.getServer().getPluginManager().registerEvents(new ClickTakeAllButton(), this);
 		
 		this.getServer().getPluginManager().registerEvents(new humine.events.stocks.ClickCosmetiqueButton(), this);
 		this.getServer().getPluginManager().registerEvents(new ClickDisableButton(), this);
 		this.getServer().getPluginManager().registerEvents(new humine.events.stocks.ClickNextButton(), this);
 		this.getServer().getPluginManager().registerEvents(new humine.events.stocks.ClickPreviousButton(), this);
 		this.getServer().getPluginManager().registerEvents(new humine.events.stocks.ClickQuitButton(), this);
+		this.getServer().getPluginManager().registerEvents(new ClickDisableButton(), this);
 	}
 
 	public static MainShop getInstance() {

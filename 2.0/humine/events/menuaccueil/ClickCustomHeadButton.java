@@ -36,7 +36,7 @@ public class ClickCustomHeadButton implements Listener{
 			MainShop.getInstance().getCustomHeadStockList().put(player.getName(), pStock);
 			
 			if(pStock.isEmpty())
-				MainShop.sendMessage(player, "Hat Stock vide");
+				MainShop.sendMessage(player, "Custom Head Stock vide");
 			else
 				pStock.openShop(player);
 		}

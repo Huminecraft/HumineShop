@@ -10,6 +10,8 @@ import humine.main.MainShop;
 import humine.utils.ItemShop;
 import humine.utils.Presentation;
 import humine.utils.cosmetiques.Cosmetique;
+import humine.utils.cosmetiques.CustomHeadCosmetique;
+import humine.utils.cosmetiques.temporary.TemporaryCustomHeadCosmetique;
 import humine.utils.shop.Stock;
 
 public class ClickPixelBuyButton implements Listener
@@ -27,11 +29,28 @@ public class ClickPixelBuyButton implements Listener
 						Stock stock = MainShop.getInstance().getInventories().getStockOfPlayer(player.getName());
 						int pixel = MainShop.getInstance().getBankPixel().getMoney(player);
 						
-						if(stock.getCosmetique(c.getId()) != null)
-							return;
+						if(!(c instanceof CustomHeadCosmetique) && !(c instanceof TemporaryCustomHeadCosmetique)) {
+							if(stock.getCosmetique(c.getId()) != null)
+								return;
+						}
 						
 						if(c.getPixelPrice() <= pixel) {
-							stock.addCosmetique(c);
+							if(c instanceof CustomHeadCosmetique) {
+								Cosmetique custom = stock.getCosmetique(c.getId());
+								if(c != null) {
+									((CustomHeadCosmetique) custom).setAmount(((CustomHeadCosmetique) custom).getAmount() + 1);
+								}
+							}
+							else if(c instanceof TemporaryCustomHeadCosmetique) {
+								Cosmetique custom = stock.getCosmetique(c.getId());
+								if(c != null) {
+									((TemporaryCustomHeadCosmetique) custom).setAmount(((TemporaryCustomHeadCosmetique) custom).getAmount() + 1);
+								}
+							}
+							else {
+								stock.addCosmetique(c);
+							}
+							
 							MainShop.getInstance().getBankPixel().removeMoney(player, c.getPixelPrice());
 							player.closeInventory();
 							MainShop.sendMessage(player, "Cosmetique achete !");

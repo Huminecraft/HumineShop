@@ -55,9 +55,9 @@ public abstract class Presentation {
 		inv.setItem(inv.getSize() - 9, ItemShop.itemQuit());
 		
 		if(cosmetique instanceof CustomHeadCosmetique)
-			inv.setItem(inv.getSize() - 1, ItemShop.itemCosmetiqueInfo(cosmetique, ((CustomHeadCosmetique) cosmetique).getAmount()));
+			inv.setItem(inv.getSize() - 5, ItemShop.itemCosmetiqueInfo(cosmetique, ((CustomHeadCosmetique) cosmetique).getAmount()));
 		else
-			inv.setItem(inv.getSize() - 1, ItemShop.itemCosmetiqueInfo(cosmetique, ((TemporaryCustomHeadCosmetique) cosmetique).getAmount()));
+			inv.setItem(inv.getSize() - 5, ItemShop.itemCosmetiqueInfo(cosmetique, ((TemporaryCustomHeadCosmetique) cosmetique).getAmount()));
 		
 		inv.setItem(inv.getSize() - 1, ItemShop.itemQuit());
 		

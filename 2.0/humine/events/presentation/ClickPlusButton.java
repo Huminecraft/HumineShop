@@ -1,5 +1,6 @@
 package humine.events.presentation;
 
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -20,8 +21,8 @@ public class ClickPlusButton implements Listener{
 	@EventHandler
 	public void onClick(InventoryClickEvent event) {
 		if(event.getInventory().getName().startsWith(Presentation.getName())) {
-			if(event.getCurrentItem() != null) {
-				if(event.getCurrentItem().isSimilar(ItemShop.itemPlus())) {
+			if(event.getCurrentItem() != null && event.getCurrentItem().getType() != Material.AIR) {
+				if(event.getCurrentItem().getItemMeta().getDisplayName().equals(ItemShop.itemPlus().getItemMeta().getDisplayName())) {
 					giveToPlayer((Player) event.getWhoClicked());
 				}
 			}
@@ -34,18 +35,18 @@ public class ClickPlusButton implements Listener{
 		if(c == null || (!(c instanceof CustomHeadCosmetique) && !(c instanceof TemporaryCustomHeadCosmetique)))
 			return;
 		
+		
 		if(c instanceof CustomHeadCosmetique)
 			amountInStock = ((CustomHeadCosmetique) c).getAmount();
 		else
 			amountInStock = ((TemporaryCustomHeadCosmetique) c).getAmount();
 		
 		amountOutStock = getAmountExternToStock(player);
-		
 		if(amountOutStock == -1)
 			return;
 		
 		if(amountOutStock < amountInStock) {
-			player.getInventory().addItem(c.getItemShop());
+			player.getInventory().addItem(Cosmetique.cosmetiqueToItem(c));
 		}
 		else {
 			MainShop.sendMessage(player, "Vous ne pouvez pas prendre plus de tete");

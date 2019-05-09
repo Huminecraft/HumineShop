@@ -12,6 +12,8 @@ import org.bukkit.inventory.meta.SkullMeta;
 
 import humine.main.MainShop;
 import humine.utils.cosmetiques.Cosmetique;
+import humine.utils.cosmetiques.CustomHeadCosmetique;
+import humine.utils.cosmetiques.temporary.TemporaryCustomHeadCosmetique;
 
 public abstract class ItemShop {
 
@@ -22,12 +24,14 @@ public abstract class ItemShop {
 		
 		List<String> lores = new ArrayList<String>();
 		
-		if(MainShop.getInstance().getInventories().containsStockOfPlayer(player.getName())) {
-			if(MainShop.getInstance().getInventories().getStockOfPlayer(player.getName()).getCosmetique(cosmetique.getId()) != null) {
-				lores.add("Vous avez deja ce cosmetique");
-				meta.setLore(lores);
-				item.setItemMeta(meta);
-				return item;
+		if(!(cosmetique instanceof CustomHeadCosmetique) && !(cosmetique instanceof TemporaryCustomHeadCosmetique)) {
+			if(MainShop.getInstance().getInventories().containsStockOfPlayer(player.getName())) {
+				if(MainShop.getInstance().getInventories().getStockOfPlayer(player.getName()).getCosmetique(cosmetique.getId()) != null) {
+					lores.add("Vous avez deja ce cosmetique");
+					meta.setLore(lores);
+					item.setItemMeta(meta);
+					return item;
+				}
 			}
 		}
 		
@@ -53,12 +57,14 @@ public abstract class ItemShop {
 		
 		List<String> lores = new ArrayList<String>();
 		
-		if(MainShop.getInstance().getInventories().containsStockOfPlayer(player.getName())) {
-			if(MainShop.getInstance().getInventories().getStockOfPlayer(player.getName()).getCosmetique(cosmetique.getId()) != null) {
-				lores.add("Vous avez deja ce cosmetique");
-				meta.setLore(lores);
-				item.setItemMeta(meta);
-				return item;
+		if(!(cosmetique instanceof CustomHeadCosmetique) && !(cosmetique instanceof TemporaryCustomHeadCosmetique)) {
+			if(MainShop.getInstance().getInventories().containsStockOfPlayer(player.getName())) {
+				if(MainShop.getInstance().getInventories().getStockOfPlayer(player.getName()).getCosmetique(cosmetique.getId()) != null) {
+					lores.add("Vous avez deja ce cosmetique");
+					meta.setLore(lores);
+					item.setItemMeta(meta);
+					return item;
+				}
 			}
 		}
 		
