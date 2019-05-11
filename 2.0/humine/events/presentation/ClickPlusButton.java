@@ -16,6 +16,13 @@ import humine.utils.cosmetiques.CustomHeadCosmetique;
 import humine.utils.cosmetiques.temporary.TemporaryCustomHeadCosmetique;
 import humine.utils.shop.Stock;
 
+/**
+ * Package regroupant les evenements du menu de presentation du plugin HumineShop
+ * Classe d'evenement permettant ajouter une cosmetique custom head dans
+ * l'inventaire du joueur si il lui reste des custom heads en stock
+ * 
+ * @author miza
+ */
 public class ClickPlusButton implements Listener{
 
 	@EventHandler

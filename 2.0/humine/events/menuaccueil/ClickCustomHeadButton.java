@@ -11,6 +11,12 @@ import humine.utils.ItemShop;
 import humine.utils.shop.CustomHeadStock;
 import humine.utils.shop.Stock;
 
+/**
+ * Package regroupant les evenements du menu d'accueil du plugin HumineShop
+ * Classe d'evenement permettant d'ouvrir le stock des cosmetiques custom head
+ * 
+ * @author miza
+ */
 public class ClickCustomHeadButton implements Listener{
 
 	@EventHandler

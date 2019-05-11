@@ -14,49 +14,89 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.inventory.ItemStack;
 
-
+/**
+ * Package regroupant les outils de HumineShop
+ * Classe regroupant les informations sur les customs heads d'un joueur
+ * (tete posée, etc)
+ * 
+ * @author miza
+ */
 public class CustomHeadBlockInfo
 {
 	private String owner;
 	private Map<Block, ItemStack> blocks;
 	
+	/**
+	 * Constructeur de la classe
+	 * @param owner le nom du proprietaire
+	 */
 	public CustomHeadBlockInfo(String owner)
 	{
 		this(owner, new HashMap<Block, ItemStack>());
 	}
 	
+	/**
+	 * Constructeur de la classe
+	 * @param owner le nom du proprietaire
+	 * @param blocks la liste de blocks qu'il appartient
+	 */
 	public CustomHeadBlockInfo(String owner, Map<Block, ItemStack> blocks)
 	{
 		this.owner = owner;
 		this.blocks = blocks;
 	}
 	
+	/**
+	 * @return le proprietaire
+	 */
 	public String getOwner()
 	{
 		return owner;
 	}
 	
+	/**
+	 * @param owner le nouveau proprietaire
+	 */
 	public void setOwner(String owner)
 	{
 		this.owner = owner;
 	}
 	
+	/**
+	 * @return les blocks et les items liés au block du joueur
+	 */
 	public Map<Block, ItemStack> getBlocks() {
 		return blocks;
 	}
 	
+	/**
+	 * @param blocks mettre une nouvelle liste de block/items
+	 */
 	public void setBlocks(Map<Block, ItemStack> blocks) {
 		this.blocks = blocks;
 	}
 	
+	/**
+	 * Ajoute un nouveau block appartenant au proprietaire
+	 * @param block le block en question
+	 * @param item l'item lié au block
+	 */
 	public void addBlock(Block block, ItemStack item) {
 		this.blocks.put(block, item);
 	}
 	
+	/**
+	 * Supprime un block appartenant au proprietaire
+	 * @param block le block en question
+	 */
 	public void removeBlock(Block block) {
 		this.blocks.remove(block);
 	}
 	
+	/**
+	 * @param block le block a rechercher
+	 * @return true si le proprietaire contient ce block, sinon false
+	 */
 	public boolean contains(Block block) {
 		for(Block b : this.blocks.keySet()) {
 			if(b.getLocation().equals(block.getLocation()))
@@ -65,6 +105,11 @@ public class CustomHeadBlockInfo
 		return false;
 	}
 	
+	/**
+	 * @param loc la location a rechercher
+	 * @return true si le proprietaire contient le block se trouvant a cette
+	 * location, sinon false
+	 */
 	public boolean contains(Location loc) {
 		for(Block b : this.blocks.keySet()) {
 			if(b.getLocation().equals(loc))
@@ -73,6 +118,10 @@ public class CustomHeadBlockInfo
 		return false;
 	}
 	
+	/**
+	 * @param item l'item a rechercher
+	 * @return true si le proprietaire contient cette item, sinon false
+	 */
 	public boolean contains(ItemStack item) {
 		for(ItemStack i : this.blocks.values()) {
 			if(i.isSimilar(item))
@@ -81,10 +130,18 @@ public class CustomHeadBlockInfo
 		return false;
 	}
 	
+	/**
+	 * @param block le block en question
+	 * @return l'itemStack lié au block, return null si le block est inexistant
+	 */
 	public ItemStack getItemStack(Block block) {
 		return this.blocks.get(block);
 	}
 	
+	/**
+	 * @param item l'item en question
+	 * @return le block lié a l'item, return null si l'item est inexistant
+	 */
 	public Block getBlock(ItemStack item) {
 		for(Entry<Block, ItemStack> entry : this.blocks.entrySet()) {
 			if(entry.getValue().isSimilar(item))
@@ -93,6 +150,12 @@ public class CustomHeadBlockInfo
 		return null;
 	}
 	
+	/**
+	 * Permet de sauvegarder dans un fichier les donnees d'une classe CustomHeadBlockInfo
+	 * @param file dans le fichier a sauvegarder
+	 * @param info la classe a sauvegarder
+	 * @throws IOException si impossible de creer le fichier (si inexistant de base)
+	 */
 	public static void save(File file, CustomHeadBlockInfo info) throws IOException {
 		if(!file.exists()) {
 			file.createNewFile();
@@ -113,6 +176,11 @@ public class CustomHeadBlockInfo
 		config.save(file);
 	}
 	
+	/**
+	 * Permet de charger un fichier pour recuperer les donnees d'une de ces classes
+	 * @param file le fichier a charger
+	 * @return un CustomHeadBlockInfo, null si fichier inexistant
+	 */
 	@SuppressWarnings("unchecked")
 	public static CustomHeadBlockInfo load(File file) {
 		if(!file.exists())

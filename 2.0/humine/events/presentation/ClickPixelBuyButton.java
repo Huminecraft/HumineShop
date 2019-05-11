@@ -14,6 +14,12 @@ import humine.utils.cosmetiques.CustomHeadCosmetique;
 import humine.utils.cosmetiques.temporary.TemporaryCustomHeadCosmetique;
 import humine.utils.shop.Stock;
 
+/**
+ * Package regroupant les evenements du menu de presentation du plugin HumineShop
+ * Classe d'evenement permettant d'acheter si possible avec les pixels
+ * 
+ * @author miza
+ */
 public class ClickPixelBuyButton implements Listener
 {
 
@@ -66,6 +72,6 @@ public class ClickPixelBuyButton implements Listener
 	}
 	
 	private void sendLink(Player player) {
-		MainShop.sendMessage(player, ChatColor.LIGHT_PURPLE + "Tu n’as pas assez de pixels. Pour en obtenir tu dois compléter les défis quotidiens et hebdomadaires. /showmissions");
+		MainShop.sendMessage(player, ChatColor.LIGHT_PURPLE + "Tu nï¿½as pas assez de pixels. Pour en obtenir tu dois complï¿½ter les dï¿½fis quotidiens et hebdomadaires. /showmissions");
 	}
 }

@@ -7,6 +7,12 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 
 import humine.utils.Presentation;
 
+/**
+ * Package regroupant les evenements du menu de presentation du plugin HumineShop
+ * Classe d'evenement permettant d'acceder au site de HumineCraft (avec une ancre)
+ * 
+ * @author miza
+ */
 public class ClickLinkButton implements Listener{
 
 	@EventHandler

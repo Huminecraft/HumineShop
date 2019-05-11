@@ -9,7 +9,15 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.inventory.ItemStack;
 
 import humine.utils.Prestige;
+import humine.utils.cosmetiques.CustomHeadCosmetique;
 
+/**
+ * Package regroupant les outils de HumineShop
+ * Classe representant un cosmetique temporaire de custom head cosmetique
+ * meme chose que {@link CustomHeadCosmetique} mais avec une date d'apparition
+ * 
+ * @author miza
+ */
 public class TemporaryCustomHeadCosmetique extends TemporaryCosmetique{
 
 	private String libelle;

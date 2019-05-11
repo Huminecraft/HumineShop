@@ -1,4 +1,4 @@
-package humine.events.inventory;
+package humine.events;
 
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -10,6 +10,14 @@ import humine.main.MainShop;
 import humine.utils.cosmetiques.Cosmetique;
 import humine.utils.shop.Page;
 import humine.utils.shop.Stock;
+
+/**
+ * Package regroupant les evenements "principals" du plugin HumineShop
+ * Classe d'evenement permettant de supprimer un cosmetique material hat
+ * se trouvant sur la tete du joueur en cliquant dessus
+ * 
+ * @author miza
+ */
 public class ClickMaterialInventory implements Listener
 {
 

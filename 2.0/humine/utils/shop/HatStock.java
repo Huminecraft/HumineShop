@@ -7,6 +7,13 @@ import humine.utils.cosmetiques.Cosmetique;
 import humine.utils.cosmetiques.MaterialHatCosmetique;
 import humine.utils.cosmetiques.temporary.TemporaryMaterialHatCosmetique;
 
+/**
+ * Package regroupant les outils de HumineShop <br />
+ * Classe de sous-stock filtrant la classe mere {@link Stock} de joueur <br />
+ * en ne montrant que les {@link MaterialHatCosmetique} appartenant au joueur
+ * 
+ * @author miza
+ */
 public class HatStock extends Shop
 {
 

@@ -18,6 +18,11 @@ import humine.utils.Prestige;
 import humine.utils.cosmetiques.temporary.TemporaryCustomHeadCosmetique;
 import humine.utils.shop.RandomShop;
 
+/**
+ * Package regroupant les commandes du plugin HumineShop
+ * Classe de commande permettant de creer des cosmetiques temporaire custom head
+ * @author miza
+ */
 public class CreateTemporaryCustomHeadCosmetique implements CommandExecutor{
 
 	private static String command = "/tccch <name> <libelle> <custom head> <humis> <pixel> <date> [prestige]";

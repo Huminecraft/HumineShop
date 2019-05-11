@@ -10,6 +10,11 @@ import humine.main.MainShop;
 import humine.utils.Prestige;
 import humine.utils.cosmetiques.MaterialHatCosmetique;
 
+/**
+ * Package regroupant les commandes du plugin HumineShop
+ * Classe de commande permettant de creer des cosmetiques material hat
+ * @author miza
+ */
 public class CreateMaterialHatCosmetique implements CommandExecutor
 {
 

@@ -15,6 +15,11 @@ import humine.main.MainShop;
 import humine.utils.Prestige;
 import humine.utils.cosmetiques.CustomHeadCosmetique;
 
+/**
+ * Package regroupant les commandes du plugin HumineShop
+ * Classe de commande permettant de creer des cosmetiques custom head
+ * @author miza
+ */
 public class CreateCustomHeadCosmetique implements CommandExecutor{
 
 	private static String command = "/ccch <name> <libelle> <custom head> <humis> <pixel> [prestige] [empereur]";

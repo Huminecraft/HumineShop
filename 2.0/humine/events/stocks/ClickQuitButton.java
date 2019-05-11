@@ -11,6 +11,12 @@ import humine.utils.shop.CustomHeadStock;
 import humine.utils.shop.HatStock;
 import humine.utils.shop.ParticleStock;
 
+/**
+ * Package regroupant les evenements des stocks du plugin HumineShop
+ * Classe d'evenement permettant de retourner a la page d'accueil
+ * 
+ * @author miza
+ */
 public class ClickQuitButton implements Listener{
 
 	@EventHandler

@@ -10,6 +10,12 @@ import humine.main.MainShop;
 import humine.utils.ItemShop;
 import humine.utils.shop.Shop;
 
+/**
+ * Package regroupant les evenements des shops du plugin HumineShop
+ * Classe d'evenement permettant de retourner sur le menu intermediare/accueil
+ * 
+ * @author miza
+ */
 public class ClickQuitButton implements Listener{
 
 	@EventHandler

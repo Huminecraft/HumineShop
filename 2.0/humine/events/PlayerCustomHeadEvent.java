@@ -19,6 +19,13 @@ import humine.utils.CustomHeadBlockInfo;
 import humine.utils.cosmetiques.Cosmetique;
 import humine.utils.shop.Stock;
 
+/**
+ * Package regroupant les evenements "principals" du plugin HumineShop
+ * Classe d'evenement permettant de faire les verifications pour securiser
+ * les actions faite avec un cosmetique custom head
+ * 
+ * @author miza
+ */
 public class PlayerCustomHeadEvent implements Listener
 {
 
@@ -30,9 +37,7 @@ public class PlayerCustomHeadEvent implements Listener
 		File file = new File(MainShop.getInstance().getCustomHeadBlockFile(), event.getPlayer().getName() + ".yml");
 		CustomHeadBlockInfo chb = CustomHeadBlockInfo.load(file);
 		
-		if(chb != null)
-			MainShop.getInstance().getPlayerCustomHeadList().put(chb.getOwner(), chb);
-		else
+		if(chb == null)
 			MainShop.getInstance().getPlayerCustomHeadList().put(event.getPlayer().getName(), new CustomHeadBlockInfo(event.getPlayer().getName()));
 	
 	}
@@ -75,6 +80,7 @@ public class PlayerCustomHeadEvent implements Listener
 		
 		if(chb.contains(event.getBlock())) {
 			chb.removeBlock(event.getBlock());
+			event.getBlock().getDrops().clear();
 			return;
 		}
 		

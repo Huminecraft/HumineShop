@@ -14,6 +14,11 @@ import humine.utils.Prestige;
 import humine.utils.cosmetiques.temporary.TemporaryMaterialHatCosmetique;
 import humine.utils.shop.RandomShop;
 
+/**
+ * Package regroupant les commandes du plugin HumineShop
+ * Classe de commande permettant de creer des cosmetiques temporaire material hat
+ * @author miza
+ */
 public class CreateTemporaryMaterialHatCosmetique implements CommandExecutor
 {
 	

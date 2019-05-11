@@ -3,6 +3,13 @@ package humine.utils.shop;
 import humine.utils.cosmetiques.ParticleCosmetique;
 import humine.utils.cosmetiques.temporary.TemporaryParticleCosmetique;
 
+/**
+ * Package regroupant les outils de HumineShop <br />
+ * Classe de sous-shop filtrant la classe mere {@link Shop} <br />
+ * en ne montrant que les {@link ParticleCosmetique}
+ * 
+ * @author miza
+ */
 public class ParticleShop extends Shop{
 
 	public ParticleShop(String name) {

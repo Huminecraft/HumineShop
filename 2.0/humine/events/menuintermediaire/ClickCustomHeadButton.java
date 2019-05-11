@@ -8,6 +8,12 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 
 import humine.main.MainShop;
 
+/**
+ * Package regroupant les evenements du menu intermediaire du plugin HumineShop
+ * Classe d'evenement permettant d'ouvrir le sous-shop cosmetique custom head
+ * 
+ * @author miza
+ */
 public class ClickCustomHeadButton implements Listener {
 
 	@EventHandler

@@ -17,6 +17,12 @@ import humine.utils.cosmetiques.temporary.TemporaryCustomHeadCosmetique;
 import humine.utils.cosmetiques.temporary.TemporaryMaterialHatCosmetique;
 import humine.utils.cosmetiques.temporary.TemporaryParticleCosmetique;
 
+/**
+ * Package regroupant les outils de HumineShop
+ * Classe representant un cosmetique
+ * 
+ * @author miza
+ */
 public abstract class Cosmetique {
 
 	private String id;
@@ -90,35 +96,52 @@ public abstract class Cosmetique {
 		return itemShop;
 	}
 	
-
+	/**
+	 * @return le prix en humis du cosmetique
+	 */
 	public int getHumisPrice() {
 		return humisPrice;
 	}
 
+	/**
+	 * @param humisPrice le nouveau prix en humis du cosmetique
+	 */
 	public void setHumisPrice(int humisPrice) {
 		this.humisPrice = humisPrice;
 	}
 
+	/**
+	 * @return le prix en pixel du cosmetique
+	 */
 	public int getPixelPrice() {
 		return PixelPrice;
 	}
 
+	/**
+	 * @param humisPrice le nouveau prix en pixel du cosmetique
+	 */
 	public void setPixelPrice(int pixelPrice) {
 		PixelPrice = pixelPrice;
 	}
 
-	public void setId(String id) {
-		this.id = id;
-	}
-
+	/**
+	 * @param name le nouveau nom du cosmetique
+	 */
 	public void setName(String name) {
 		this.name = name;
 	}
 
+	/**
+	 * @param itemShop le nouvelle item de presentation dans le shop/stock
+	 * du cosmetique
+	 */
 	public void setItemShop(ItemStack itemShop) {
 		this.itemShop = itemShop;
 	}
 	
+	/**
+	 * @return le prestige du cosmetique
+	 */
 	public Prestige getPrestige() {
 		return prestige;
 	}

@@ -50,7 +50,10 @@ public abstract class Presentation {
 		
 		inv.setItem(11, ItemShop.itemPlus());
 		inv.setItem(13, ItemShop.itemDamiStick());
+		
 		inv.setItem(15, ItemShop.itemMinus());
+		inv.setItem(16, itemTakeAllBlocks());
+		inv.setItem(17, itemTakeAllInventory());
 		
 		inv.setItem(inv.getSize() - 9, ItemShop.itemQuit());
 		
@@ -69,6 +72,24 @@ public abstract class Presentation {
 		ItemStack item = ItemShop.itemLink();
 		ItemMeta meta = item.getItemMeta();
 		meta.setDisplayName(ChatColor.WHITE + "Apercu");
+		item.setItemMeta(meta);
+		
+		return item;
+	}
+	
+	public static ItemStack itemTakeAllInventory() {
+		ItemStack item = ItemShop.itemMinus();
+		ItemMeta meta = item.getItemMeta();
+		meta.setDisplayName(ChatColor.WHITE + "Tout recuperer dans l'inventaire");
+		item.setItemMeta(meta);
+		
+		return item;
+	}
+	
+	public static ItemStack itemTakeAllBlocks() {
+		ItemStack item = ItemShop.itemMinus();
+		ItemMeta meta = item.getItemMeta();
+		meta.setDisplayName(ChatColor.WHITE + "Recuperer tout les blocs exterieurs");
 		item.setItemMeta(meta);
 		
 		return item;

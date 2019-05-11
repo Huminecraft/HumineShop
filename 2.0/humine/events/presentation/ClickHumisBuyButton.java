@@ -19,6 +19,12 @@ import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.chat.HoverEvent.Action;
 
+/**
+ * Package regroupant les evenements du menu de presentation du plugin HumineShop
+ * Classe d'evenement permettant d'acheter si possible avec les humis
+ * 
+ * @author miza
+ */
 public class ClickHumisBuyButton implements Listener
 {
 
@@ -77,7 +83,7 @@ public class ClickHumisBuyButton implements Listener
 		text.setHoverEvent(new HoverEvent(Action.SHOW_TEXT, new ComponentBuilder("Clique ici").create()));
 		text.setClickEvent(new ClickEvent(net.md_5.bungee.api.chat.ClickEvent.Action.OPEN_URL, "https://playecorentin.wixsite.com/huminecraft"));
 		
-		MainShop.sendMessage(player, ChatColor.YELLOW + "Tu n’as pas assez de Humis. Pour en obtenir clic sur ce lien :");
+		MainShop.sendMessage(player, ChatColor.YELLOW + "Tu nï¿½as pas assez de Humis. Pour en obtenir clic sur ce lien :");
 		player.spigot().sendMessage(text);
 	}
 }

@@ -6,6 +6,11 @@ import org.bukkit.command.CommandSender;
 
 import humine.main.MainShop;
 
+/**
+ * Package regroupant les commandes du plugin HumineShop
+ * Classe de commande permettant supprimer de l'argent a un joueur
+ * @author miza
+ */
 public class RemoveMoney implements CommandExecutor
 {
 
@@ -46,11 +51,11 @@ public class RemoveMoney implements CommandExecutor
 		
 		if(args[0].equalsIgnoreCase("humis")) {
 			MainShop.getInstance().getBankHumis().removeMoney(args[1], Integer.parseInt(args[2]));
-			MainShop.sendMessage(sender, args[2] + " " + MainShop.getInstance().getBankHumis().getNameValue() + " supprimés du compte de " + args[1]);
+			MainShop.sendMessage(sender, args[2] + " " + MainShop.getInstance().getBankHumis().getNameValue() + " supprimï¿½s du compte de " + args[1]);
 		}
 		else {
 			MainShop.getInstance().getBankPixel().removeMoney(args[1], Integer.parseInt(args[2]));
-			MainShop.sendMessage(sender, args[2] + " " + MainShop.getInstance().getBankPixel().getNameValue() + " supprimés du compte de " + args[1]);
+			MainShop.sendMessage(sender, args[2] + " " + MainShop.getInstance().getBankPixel().getNameValue() + " supprimï¿½s du compte de " + args[1]);
 		}
 		
 		

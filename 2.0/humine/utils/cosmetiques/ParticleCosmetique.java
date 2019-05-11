@@ -10,6 +10,13 @@ import org.bukkit.inventory.ItemStack;
 
 import humine.utils.Prestige;
 
+/**
+ * Package regroupant les outils de HumineShop
+ * Classe representant un cosmetique particle qui permet d'activer
+ * des effects de particules autour de son personnage
+ * 
+ * @author miza
+ */
 public class ParticleCosmetique extends Cosmetique{
 
 	

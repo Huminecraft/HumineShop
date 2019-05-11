@@ -1,6 +1,11 @@
 package humine.utils;
 
-
+/**
+ * Package regroupant les outils de HumineShop
+ * Classe regroupant les prestiges des cosmetiques et leurs couleurs
+ * 
+ * @author miza
+ */
 public enum Prestige {
 	COMMUN ("GRAY"),
 	PARTICULIER ("GREEN"),

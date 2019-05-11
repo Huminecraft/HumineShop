@@ -14,6 +14,12 @@ import humine.utils.shop.HatStock;
 import humine.utils.shop.ParticleStock;
 import humine.utils.shop.Shop;
 
+/**
+ * Package regroupant les evenements des stocks du plugin HumineShop
+ * Classe d'evenement permettant d'aller a la page precedente du stock
+ * 
+ * @author miza
+ */
 public class ClickPreviousButton implements Listener
 {
 

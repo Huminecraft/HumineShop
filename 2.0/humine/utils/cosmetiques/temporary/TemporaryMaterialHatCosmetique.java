@@ -10,7 +10,15 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.inventory.ItemStack;
 
 import humine.utils.Prestige;
+import humine.utils.cosmetiques.MaterialHatCosmetique;
 
+/**
+ * Package regroupant les outils de HumineShop
+ * Classe representant un cosmetique temporaire de material hat
+ * meme chose que {@link MaterialHatCosmetique} mais avec une date d'apparition
+ * 
+ * @author miza
+ */
 public class TemporaryMaterialHatCosmetique extends TemporaryCosmetique
 {
 

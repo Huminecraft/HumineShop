@@ -3,6 +3,13 @@ package humine.utils.shop;
 import humine.utils.cosmetiques.CustomHeadCosmetique;
 import humine.utils.cosmetiques.temporary.TemporaryCustomHeadCosmetique;
 
+/**
+ * Package regroupant les outils de HumineShop <br />
+ * Classe de sous-shop filtrant la classe mere {@link Shop} <br />
+ * en ne montrant que les {@link CustomHeadCosmetique}
+ * 
+ * @author miza
+ */
 public class CustomHeadShop extends Shop{
 
 	public CustomHeadShop(String name) {

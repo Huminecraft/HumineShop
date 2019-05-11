@@ -11,10 +11,21 @@ import humine.utils.cosmetiques.Cosmetique;
 import humine.utils.cosmetiques.ParticleCosmetique;
 import humine.utils.cosmetiques.temporary.TemporaryParticleCosmetique;
 
+/**
+ * Package regroupant les outils de HumineShop
+ * Classe gerant l'execution des particules sur les joueurs
+ * 
+ * @author miza
+ */
 public abstract class ParticleScheduler {
 
 	private static HashMap<Player, Cosmetique> BuyList = new HashMap<Player, Cosmetique>();
 	
+	/**
+	 * Active un effet de particule sur un joueur
+	 * @param player le joueur a enregistrer
+	 * @param cosmetique le cosmetique lié au joueur
+	 */
 	public static void enableParticleCosmetique(Player player, Cosmetique cosmetique) {
 		if(!(cosmetique instanceof ParticleCosmetique) && !(cosmetique instanceof TemporaryParticleCosmetique)) {
 			return;
@@ -26,10 +37,21 @@ public abstract class ParticleScheduler {
 			BuyList.put(player, cosmetique);
 	}
 	
+	/**
+	 * Permet de desactiver les particules d'un joueur
+	 * @param player le joueur auquel il faut desactiver l'effet particule
+	 */
 	public static void disableParticleCosmetique(Player player) {
 		BuyList.remove(player);
 	}
 	
+	/**
+	 * Permet d'executer de facon repeter la boucle activant les effets de
+	 * particule de chaque joueur dans le jeu qui l'ont lance
+	 * 
+	 * <b>ATTENTION a n'executer qu'une seul fois</b>
+	 * @param plugin
+	 */
 	public static void startScheduler(Plugin plugin) {
 		Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, new Runnable() {
 			public void run()
@@ -42,6 +64,9 @@ public abstract class ParticleScheduler {
 		}, 0L, 15L);
 	}
 	
+	/**
+	 * @return la liste des joueurs ayant des particules activees
+	 */
 	public static HashMap<Player, Cosmetique> getBuyList() {
 		return BuyList;
 	}

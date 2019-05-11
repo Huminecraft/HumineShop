@@ -10,6 +10,13 @@ import humine.utils.shop.CustomHeadStock;
 import humine.utils.shop.HatStock;
 import humine.utils.shop.ParticleStock;
 
+/**
+ * Package regroupant les evenements "principals" du plugin HumineShop
+ * Classe d'evenement permettant d'annuler les deplacements des items
+ * dans tout les shop de HumineShop
+ * 
+ * @author miza
+ */
 public class BlockMoveCosmetique implements Listener{
 
 	@EventHandler

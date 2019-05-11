@@ -7,6 +7,13 @@ import org.bukkit.event.player.PlayerJoinEvent;
 
 import humine.main.MainShop;
 
+/**
+ * Package regroupant les evenements "principals" du plugin HumineShop
+ * Classe d'evenement permettant de creer un compte bancaire au joueur
+ * se connectant pour la 1er fois sur le serveur
+ * 
+ * @author miza
+ */
 public class CreateBankAccount implements Listener{
 
 	@EventHandler

@@ -6,6 +6,11 @@ import org.bukkit.command.CommandSender;
 
 import humine.main.MainShop;
 
+/**
+ * Package regroupant les commandes du plugin HumineShop
+ * Classe de commande permettant ajouter de l'argent a un joueur
+ * @author miza
+ */
 public class AddMoney implements CommandExecutor
 {
 
@@ -46,11 +51,11 @@ public class AddMoney implements CommandExecutor
 		
 		if(args[0].equalsIgnoreCase("humis")) {
 			MainShop.getInstance().getBankHumis().addMoney(args[1], Integer.parseInt(args[2]));
-			MainShop.sendMessage(sender, args[2] + " " + MainShop.getInstance().getBankHumis().getNameValue() + " ajoutés au compte de " + args[1]);
+			MainShop.sendMessage(sender, args[2] + " " + MainShop.getInstance().getBankHumis().getNameValue() + " ajoutï¿½s au compte de " + args[1]);
 		}
 		else {
 			MainShop.getInstance().getBankPixel().addMoney(args[1], Integer.parseInt(args[2]));
-			MainShop.sendMessage(sender, args[2] + " " + MainShop.getInstance().getBankPixel().getNameValue() + " ajoutés au compte de " + args[1]);
+			MainShop.sendMessage(sender, args[2] + " " + MainShop.getInstance().getBankPixel().getNameValue() + " ajoutï¿½s au compte de " + args[1]);
 		}
 		
 		

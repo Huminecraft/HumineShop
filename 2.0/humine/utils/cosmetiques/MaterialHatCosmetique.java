@@ -10,6 +10,13 @@ import org.bukkit.inventory.ItemStack;
 
 import humine.utils.Prestige;
 
+/**
+ * Package regroupant les outils de HumineShop
+ * Classe representant un cosmetique material hat qui sont des 
+ * material de minecraft pouvant etre pose sur la tete
+ * 
+ * @author miza
+ */
 public class MaterialHatCosmetique extends Cosmetique
 {
 	

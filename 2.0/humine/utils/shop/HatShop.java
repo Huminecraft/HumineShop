@@ -3,6 +3,13 @@ package humine.utils.shop;
 import humine.utils.cosmetiques.MaterialHatCosmetique;
 import humine.utils.cosmetiques.temporary.TemporaryMaterialHatCosmetique;
 
+/**
+ * Package regroupant les outils de HumineShop <br />
+ * Classe de sous-shop filtrant la classe mere {@link Shop} <br />
+ * en ne montrant que les {@link MaterialHatCosmetique}
+ * 
+ * @author miza
+ */
 public class HatShop extends Shop{
 
 	public HatShop(String name) {

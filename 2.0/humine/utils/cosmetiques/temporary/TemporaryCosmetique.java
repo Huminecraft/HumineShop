@@ -11,6 +11,12 @@ import org.bukkit.inventory.ItemStack;
 import humine.utils.Prestige;
 import humine.utils.cosmetiques.Cosmetique;
 
+/**
+ * Package regroupant les outils de HumineShop
+ * Classe representant un cosmetique temporaire (de une journee)
+ * 
+ * @author miza
+ */
 public class TemporaryCosmetique extends Cosmetique{
 
 	private LocalDate date;

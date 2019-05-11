@@ -18,6 +18,14 @@ import humine.utils.shop.HatStock;
 import humine.utils.shop.ParticleStock;
 import humine.utils.shop.Shop;
 
+/**
+ * Package regroupant les evenements des stocks du plugin HumineShop
+ * Classe d'evenement permettant de faire une action une fois cliquer
+ * sur un cosmetique dans le stock (les actions sont differentes selon les
+ * sous-stock particle, material hat ou custom head)
+ * 
+ * @author miza
+ */
 public class ClickCosmetiqueButton implements Listener
 {
 

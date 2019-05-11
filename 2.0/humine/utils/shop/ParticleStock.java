@@ -13,6 +13,13 @@ import humine.utils.cosmetiques.Cosmetique;
 import humine.utils.cosmetiques.ParticleCosmetique;
 import humine.utils.cosmetiques.temporary.TemporaryParticleCosmetique;
 
+/**
+ * Package regroupant les outils de HumineShop <br />
+ * Classe de sous-stock filtrant la classe mere {@link Stock} de joueur <br />
+ * en ne montrant que les {@link ParticleCosmetique} appartenant au joueur
+ * 
+ * @author miza
+ */
 public class ParticleStock extends Shop
 {
 

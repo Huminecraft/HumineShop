@@ -15,6 +15,11 @@ import humine.utils.Prestige;
 import humine.utils.cosmetiques.temporary.TemporaryParticleCosmetique;
 import humine.utils.shop.RandomShop;
 
+/**
+ * Package regroupant les commandes du plugin HumineShop
+ * Classe de commande permettant de creer des cosmetiques temporaire particle
+ * @author miza
+ */
 public class CreateTemporaryParticleCosmetique implements CommandExecutor {
 
 	private static String command = "/tccp <name> <material> <humis> <pixel> <particle> <date> [prestige]";

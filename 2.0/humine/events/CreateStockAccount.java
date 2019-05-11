@@ -8,6 +8,13 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import humine.main.MainShop;
 import humine.utils.shop.Stock;
 
+/**
+ * Package regroupant les evenements "principals" du plugin HumineShop
+ * Classe d'evenement permettant de creer un stock au joueur
+ * se connectant pour la 1er fois sur le serveur
+ * 
+ * @author miza
+ */
 public class CreateStockAccount implements Listener{
 
 	@EventHandler

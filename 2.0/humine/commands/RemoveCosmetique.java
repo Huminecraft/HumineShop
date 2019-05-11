@@ -1,6 +1,5 @@
 package humine.commands;
 
-
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -12,6 +11,13 @@ import humine.utils.cosmetiques.MaterialHatCosmetique;
 import humine.utils.cosmetiques.ParticleCosmetique;
 import humine.utils.shop.Page;
 
+/**
+ * Package regroupant les commandes du plugin HumineShop
+ * Classe de commande permettant de supprimer un cosmetique
+ * grace a son <b>id</b> (numero unique de chaque cosmetique)
+ * 
+ * @author miza
+ */
 public class RemoveCosmetique implements CommandExecutor{
 
 	private static String command = "/rc <id>";

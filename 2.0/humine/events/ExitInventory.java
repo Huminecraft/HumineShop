@@ -10,6 +10,12 @@ import humine.utils.Presentation;
 import humine.utils.shop.HatStock;
 import humine.utils.shop.ParticleStock;
 
+/**
+ * Package regroupant les evenements "principals" du plugin HumineShop
+ * Classe d'evenement permettant de mettre a jour les listes des shops
+ * 
+ * @author miza
+ */
 public class ExitInventory implements Listener
 {
 

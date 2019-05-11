@@ -8,6 +8,12 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import humine.main.MainShop;
 import humine.utils.ItemShop;
 
+/**
+ * Package regroupant les evenements du menu intermediaire du plugin HumineShop
+ * Classe d'evenement permettant de retourner au menu d'accueil
+ * 
+ * @author miza
+ */
 public class ClickQuitButton implements Listener{
 
 	@EventHandler

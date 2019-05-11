@@ -13,6 +13,11 @@ import humine.main.MainShop;
 import humine.utils.Prestige;
 import humine.utils.cosmetiques.ParticleCosmetique;
 
+/**
+ * Package regroupant les commandes du plugin HumineShop
+ * Classe de commande permettant de creer des cosmetiques particle
+ * @author miza
+ */
 public class CreateParticleCosmetique implements CommandExecutor{
 
 	private static String command = "/ccp <name> <material> <humis> <pixel> <particle> [prestige] [empereur]";

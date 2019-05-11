@@ -24,13 +24,12 @@ import humine.commands.OpenShop;
 import humine.commands.RemoveCosmetique;
 import humine.commands.RemoveMoney;
 import humine.events.BlockMoveCosmetique;
-import humine.events.ClickPresentationCosmetique;
+import humine.events.ClickMaterialInventory;
 import humine.events.CreateBankAccount;
 import humine.events.CreateStockAccount;
 import humine.events.ExitInventory;
 import humine.events.PlayerCustomHeadEvent;
 import humine.events.PlayerQuit;
-import humine.events.inventory.ClickMaterialInventory;
 import humine.events.menuaccueil.ClickCustomHeadButton;
 import humine.events.menuaccueil.ClickHatStockButton;
 import humine.events.menuaccueil.ClickLinkButton;
@@ -44,7 +43,9 @@ import humine.events.menuintermediaire.ClickParticleShopButton;
 import humine.events.presentation.ClickHumisBuyButton;
 import humine.events.presentation.ClickPixelBuyButton;
 import humine.events.presentation.ClickPlusButton;
+import humine.events.presentation.ClickTakeAllBlocksButton;
 import humine.events.presentation.ClickTakeAllButton;
+import humine.events.presentation.ClickTakeAllInventoryButton;
 import humine.events.shops.ClickCosmetiqueButton;
 import humine.events.shops.ClickNextButton;
 import humine.events.shops.ClickPreviousButton;
@@ -66,6 +67,10 @@ import humine.utils.shop.ParticleStock;
 import humine.utils.shop.RandomShop;
 import humine.utils.shop.Shop;
 
+/**
+ * Classe principal de HumineShop
+ * @author miza
+ */
 public class MainShop extends JavaPlugin {
 
 	private static MainShop instance;
@@ -226,7 +231,6 @@ public class MainShop extends JavaPlugin {
 	
 	private void initializeEvents() {
 		this.getServer().getPluginManager().registerEvents(new BlockMoveCosmetique(), this);
-		this.getServer().getPluginManager().registerEvents(new ClickPresentationCosmetique(), this);
 		this.getServer().getPluginManager().registerEvents(new CreateBankAccount(), this);
 		this.getServer().getPluginManager().registerEvents(new CreateStockAccount(), this);
 		this.getServer().getPluginManager().registerEvents(new PlayerQuit(), this);
@@ -260,6 +264,8 @@ public class MainShop extends JavaPlugin {
 		this.getServer().getPluginManager().registerEvents(new humine.events.presentation.ClickQuitButton(), this);
 		this.getServer().getPluginManager().registerEvents(new ClickPlusButton(), this);
 		this.getServer().getPluginManager().registerEvents(new ClickTakeAllButton(), this);
+		this.getServer().getPluginManager().registerEvents(new ClickTakeAllBlocksButton(), this);
+		this.getServer().getPluginManager().registerEvents(new ClickTakeAllInventoryButton(), this);
 		
 		this.getServer().getPluginManager().registerEvents(new humine.events.stocks.ClickCosmetiqueButton(), this);
 		this.getServer().getPluginManager().registerEvents(new ClickDisableButton(), this);

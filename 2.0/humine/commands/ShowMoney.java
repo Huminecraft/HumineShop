@@ -8,6 +8,12 @@ import org.bukkit.entity.Player;
 
 import humine.main.MainShop;
 
+/**
+ * Package regroupant les commandes du plugin HumineShop
+ * Classe de commande permettant voir son argent et celui de quelqu'un d'autre
+ * (via une permission)
+ * @author miza
+ */
 public class ShowMoney implements CommandExecutor{
 
 	@Override

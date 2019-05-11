@@ -12,6 +12,13 @@ import humine.utils.Presentation;
 import humine.utils.cosmetiques.Cosmetique;
 import humine.utils.shop.Shop;
 
+/**
+ * Package regroupant les evenements des shops du plugin HumineShop
+ * Classe d'evenement permettant d'ouvrir le menu de presentation d'un
+ * cosmetique
+ * 
+ * @author miza
+ */
 public class ClickCosmetiqueButton implements Listener{
 
 	@EventHandler

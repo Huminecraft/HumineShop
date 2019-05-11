@@ -9,6 +9,14 @@ import org.bukkit.inventory.ItemStack;
 
 import humine.utils.Prestige;
 
+/**
+ * Package regroupant les outils de HumineShop
+ * Classe representant un cosmetique custom head
+ * qui sont des cosmetiques de tete personnalisee
+ * pouvant etre place sur la tete ou sur le sol en tant que block
+ * 
+ * @author miza
+ */
 public class CustomHeadCosmetique extends Cosmetique{
 
 	private String libelle;

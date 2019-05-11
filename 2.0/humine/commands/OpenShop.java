@@ -7,6 +7,19 @@ import org.bukkit.entity.Player;
 
 import humine.main.MainShop;
 
+/**
+ * Package regroupant les commandes du plugin HumineShop
+ * Classe de commande permettant d'ouvrir le menu d'accueil de HumineShop
+ * 
+ * Il existe:
+ * Le menu d'accueil (menu de depart)
+ * Le menu intermediaire (menu quand on clique sur la partie boutique)
+ * le randomShop (les particules temporaires)
+ * les sous-stocks (particles, material hats, custom heads)
+ * quitter (bouton pour quitter)
+ * 
+ * @author miza
+ */
 public class OpenShop implements CommandExecutor{
 
 	@Override

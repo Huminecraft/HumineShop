@@ -9,6 +9,12 @@ import humine.utils.ItemShop;
 import humine.utils.ParticleScheduler;
 import humine.utils.shop.ParticleStock;
 
+/**
+ * Package regroupant les evenements des stocks du plugin HumineShop
+ * Classe d'evenement permettant de desactiver un effet de particule
+ * 
+ * @author miza
+ */
 public class ClickDisableButton implements Listener
 {
 

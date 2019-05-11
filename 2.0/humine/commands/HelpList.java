@@ -8,6 +8,12 @@ import org.bukkit.command.CommandSender;
 
 import humine.main.MainShop;
 
+/**
+ * Package regroupant les commandes du plugin HumineShop
+ * Classe de commande permettant de donner la liste des Material de minecraft
+ * ou des Particles
+ * @author miza
+ */
 public class HelpList implements CommandExecutor
 {
 

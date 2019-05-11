@@ -3,6 +3,13 @@ package humine.utils.shop;
 import humine.utils.cosmetiques.CustomHeadCosmetique;
 import humine.utils.cosmetiques.temporary.TemporaryCustomHeadCosmetique;
 
+/**
+ * Package regroupant les outils de HumineShop <br />
+ * Classe de sous-stock filtrant la classe mere {@link Stock} de joueur <br />
+ * en ne montrant que les {@link CustomHeadCosmetique} appartenant au joueur
+ * 
+ * @author miza
+ */
 public class CustomHeadStock extends Shop{
 
 	private static String stockName = "Custom Head Stock";
