@@ -49,11 +49,10 @@ public abstract class Presentation {
 		
 		
 		inv.setItem(11, ItemShop.itemPlus());
-		inv.setItem(13, ItemShop.itemDamiStick());
 		
-		inv.setItem(15, ItemShop.itemMinus());
-		inv.setItem(16, itemTakeAllBlocks());
-		inv.setItem(17, itemTakeAllInventory());
+		inv.setItem(14, ItemShop.itemMinus());
+		inv.setItem(15, itemTakeAllBlocks());
+		inv.setItem(16, itemTakeAllInventory());
 		
 		inv.setItem(inv.getSize() - 9, ItemShop.itemQuit());
 		

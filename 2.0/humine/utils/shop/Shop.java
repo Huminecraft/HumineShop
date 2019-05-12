@@ -15,7 +15,12 @@ import org.bukkit.inventory.ItemStack;
 import humine.utils.ItemShop;
 import humine.utils.cosmetiques.Cosmetique;
 
-
+/**
+ * Package regroupant les outils de HumineShop <br />
+ * Classe stockant des {@link Cosmetique}
+ * 
+ * @author miza
+ */
 public class Shop {
 
 	private String name;
@@ -26,6 +31,7 @@ public class Shop {
 	/**
 	 * Permet de creer une boutique de cosmetique
 	 * @param name le nom de la boutique
+	 * par defaut: multiPage est a <b>true</b>
 	 */
 	public Shop(String name) {
 		this(name, true);
@@ -151,6 +157,9 @@ public class Shop {
 			return null;
 	}
 	
+	/**
+	 * Supprime tout le contenu du Shop: {@link Page} et {@link Cosmetique}
+	 */
 	public void resetShop() {
 		this.getPages().clear();
 	}
@@ -175,6 +184,12 @@ public class Shop {
 		return this.pages.isEmpty();
 	}
 	
+	/**
+	 * Recupere le cosmetique contenu dans le shop
+	 * En regardant dans toute les {@link Page}
+	 * @param id du cosmetique a rechercher
+	 * @return le cosmetique trouve, sinon null si introuvable
+	 */
 	public Cosmetique getCosmetique(String id) {
 		for(Page page : this.pages) {
 			Cosmetique c = page.getCosmetique(id);
@@ -272,6 +287,9 @@ public class Shop {
 		return playersOnShop;
 	}
 	
+	/**
+	 * @return true si il est multiPage, sinon false
+	 */
 	public boolean isMultiPage() {
 		return multiPage;
 	}

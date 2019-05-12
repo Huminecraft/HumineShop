@@ -6,10 +6,19 @@ import org.bukkit.inventory.Inventory;
 
 import humine.utils.ItemShop;
 
+/**
+ * Package regroupant les outils de HumineShop
+ * Classe representant le menu d'accueil de HumineShop
+ * 
+ * @author miza
+ */
 public class MenuAccueil implements Menu{
 
 	private String name;
 	
+	/**
+	 * Constructeur
+	 */
 	public MenuAccueil() {
 		this.name = "Accueil";
 	}

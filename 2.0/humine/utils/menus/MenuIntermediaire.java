@@ -9,10 +9,19 @@ import org.bukkit.inventory.meta.ItemMeta;
 import humine.utils.ItemShop;
 import net.md_5.bungee.api.ChatColor;
 
+/**
+ * Package regroupant les outils de HumineShop
+ * Classe representant le menu intermediaire de HumineShop
+ * 
+ * @author miza
+ */
 public class MenuIntermediaire implements Menu{
 
 	private String name;
 	
+	/**
+	 * Constructeur
+	 */
 	public MenuIntermediaire() {
 		this.name = "Menu";
 	}
@@ -59,7 +68,7 @@ public class MenuIntermediaire implements Menu{
 	public ItemStack itemCustomHeadShop() {
 		ItemStack item = ItemShop.itemCustomHeadStock();
 		ItemMeta meta = item.getItemMeta();
-		meta.setDisplayName(ChatColor.WHITE + "Têtes decoratives");
+		meta.setDisplayName(ChatColor.WHITE + "Tetes decoratives");
 		item.setItemMeta(meta);
 		
 		return item;

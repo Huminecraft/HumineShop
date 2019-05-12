@@ -17,6 +17,12 @@ import humine.utils.cosmetiques.temporary.TemporaryCustomHeadCosmetique;
 import humine.utils.cosmetiques.temporary.TemporaryMaterialHatCosmetique;
 import humine.utils.cosmetiques.temporary.TemporaryParticleCosmetique;
 
+/**
+ * Package regroupant les outils de HumineShop
+ * Classe representant un contenu de {@link Cosmetique}
+ * 
+ * @author miza
+ */
 public class Page
 {
 
@@ -258,6 +264,11 @@ public class Page
 		return true;
 	}
 	
+	/**
+	 * Recupere le cosmetique contenu dans cetet page
+	 * @param id du cosmetique a rechercher
+	 * @return le cosmetique trouve, sinon null si introuvable
+	 */
 	public Cosmetique getCosmetique(String id) {
 		for(int i = 0; i < this.cosmetiques.length; i++) {
 			if(this.cosmetiques[i] != null) {

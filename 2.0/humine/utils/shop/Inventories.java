@@ -3,6 +3,12 @@ package humine.utils.shop;
 import java.io.File;
 import java.util.ArrayList;
 
+/**
+ * Package regroupant les outils de HumineShop
+ * Classe regroupant tout les {@link Stock} de tout les joueurs
+ * 
+ * @author miza
+ */
 public class Inventories {
 
 	private ArrayList<Stock> stocks;

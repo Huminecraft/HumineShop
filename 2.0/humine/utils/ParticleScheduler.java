@@ -7,6 +7,10 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
+import com.aypi.utils.Timer;
+import com.aypi.utils.inter.TimerFinishListener;
+
+import humine.main.MainShop;
 import humine.utils.cosmetiques.Cosmetique;
 import humine.utils.cosmetiques.ParticleCosmetique;
 import humine.utils.cosmetiques.temporary.TemporaryParticleCosmetique;
@@ -35,6 +39,15 @@ public abstract class ParticleScheduler {
 			BuyList.replace(player, cosmetique);
 		else
 			BuyList.put(player, cosmetique);
+		
+		Timer t = new Timer(MainShop.getInstance(), 10, new TimerFinishListener() {
+			
+			@Override
+			public void execute() {
+				disableParticleCosmetique(player);
+			}
+		});
+		t.start();
 	}
 	
 	/**

@@ -1,5 +1,11 @@
 package humine.utils.economy;
 
+/**
+ * Package regroupant les outils de HumineShop
+ * Classe regroupant l'argent (Humis) de tout les joueurs
+ * 
+ * @author miza
+ */
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;

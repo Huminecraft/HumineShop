@@ -43,15 +43,19 @@ public class ClickPixelBuyButton implements Listener
 						if(c.getPixelPrice() <= pixel) {
 							if(c instanceof CustomHeadCosmetique) {
 								Cosmetique custom = stock.getCosmetique(c.getId());
-								if(c != null) {
+								if(custom != null) {
 									((CustomHeadCosmetique) custom).setAmount(((CustomHeadCosmetique) custom).getAmount() + 1);
 								}
+								else
+									stock.addCosmetique(c);
 							}
 							else if(c instanceof TemporaryCustomHeadCosmetique) {
 								Cosmetique custom = stock.getCosmetique(c.getId());
-								if(c != null) {
+								if(custom != null) {
 									((TemporaryCustomHeadCosmetique) custom).setAmount(((TemporaryCustomHeadCosmetique) custom).getAmount() + 1);
 								}
+								else
+									stock.addCosmetique(c);
 							}
 							else {
 								stock.addCosmetique(c);

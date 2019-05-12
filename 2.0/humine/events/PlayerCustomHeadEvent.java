@@ -79,8 +79,17 @@ public class PlayerCustomHeadEvent implements Listener
 			return;
 		
 		if(chb.contains(event.getBlock())) {
+			
+			if(hasFreeSpace(event.getPlayer()))
+				event.getPlayer().getInventory().addItem(chb.getItemStack(event.getBlock()));
+			else {
+				MainShop.sendMessage(player, "Vous n'avez plus de place dans votre inventaire, le cosmetique a etait remis dans votre stock");
+			}
+			
 			chb.removeBlock(event.getBlock());
-			event.getBlock().getDrops().clear();
+			event.setCancelled(true);
+			event.getBlock().setType(Material.AIR);
+			
 			return;
 		}
 		
@@ -89,6 +98,15 @@ public class PlayerCustomHeadEvent implements Listener
 			event.setCancelled(true);
 			return;
 		}
+	}
+	
+	private boolean hasFreeSpace(Player player) {
+		for(int i = 0; i < player.getInventory().getContents().length; i++) {
+			if(player.getInventory().getContents()[i] == null || player.getInventory().getContents()[i].getType() == Material.AIR) {
+				return true;
+			}
+		}
+		return false;
 	}
 	
 	@EventHandler

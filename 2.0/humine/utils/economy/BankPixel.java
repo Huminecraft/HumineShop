@@ -9,6 +9,12 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 
+/**
+ * Package regroupant les outils de HumineShop
+ * Classe regroupant l'argent (Pixel) de tout les joueurs
+ * 
+ * @author miza
+ */
 public class BankPixel {
 
 	private String name;
