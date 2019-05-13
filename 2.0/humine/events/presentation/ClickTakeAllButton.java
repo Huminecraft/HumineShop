@@ -1,5 +1,7 @@
 package humine.events.presentation;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map.Entry;
 
 import org.bukkit.Material;
@@ -30,7 +32,7 @@ public class ClickTakeAllButton implements Listener{
 	@EventHandler
 	public void onClick(InventoryClickEvent event) {
 		if(event.getInventory().getName().startsWith(Presentation.getName())) {
-			if(event.getCurrentItem() != null) {
+			if(event.getCurrentItem() != null && event.getCurrentItem().getType() != Material.AIR) {
 				if(event.getCurrentItem().getItemMeta().getDisplayName().equals(ItemShop.itemMinus().getItemMeta().getDisplayName())) {
 					takeAll((Player) event.getWhoClicked());
 				}
@@ -51,6 +53,8 @@ public class ClickTakeAllButton implements Listener{
 	}
 	
 	public static void TakeBlocks(CustomHeadBlockInfo chb, Stock stock, Cosmetique c) {
+		List<Block> tempo = new ArrayList<>();
+		
 		for(Entry<Block, ItemStack> entry : chb.getBlocks().entrySet()) {
 			Cosmetique cosmetique = stock.getCosmetique(entry.getValue().getItemMeta().getDisplayName().split("#")[1]);
 			
@@ -59,13 +63,16 @@ public class ClickTakeAllButton implements Listener{
 			
 			if(cosmetique.getId().equals(c.getId())) {
 				entry.getKey().setType(Material.AIR);
-				chb.removeBlock(entry.getKey());
+				tempo.add(entry.getKey());
 			}
 		}
+		
+		for(Block block : tempo)
+			chb.removeBlock(block);
 	}
 	
 	public static void takeItemInInventory(Player player, Stock stock, Cosmetique c) {
-		for(int i = 0; i < player.getInventory().getContents().length; i++) {
+		for(int i = 0; i < player.getInventory().getStorageContents().length; i++) {
 			ItemStack item = player.getInventory().getContents()[i];
 			if(item == null)
 				continue;
@@ -77,7 +84,7 @@ public class ClickTakeAllButton implements Listener{
 				continue;
 			
 			if(cosmetique.getId().equals(c.getId())) {
-				player.getInventory().getContents()[i] = null;
+				player.getInventory().setItem(i, null);;
 			}
 		}
 	}

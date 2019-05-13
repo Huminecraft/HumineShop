@@ -13,6 +13,7 @@ import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.inventory.ItemStack;
 
 import humine.main.MainShop;
 import humine.utils.CustomHeadBlockInfo;
@@ -73,41 +74,52 @@ public class PlayerCustomHeadEvent implements Listener
 			return;
 		
 		Player player = event.getPlayer();
-		CustomHeadBlockInfo chb = MainShop.getInstance().getPlayerCustomHeadList().get(player.getName());
 		
+		CustomHeadBlockInfo chb = MainShop.getInstance().getPlayerCustomHeadList().get(player.getName());
 		if(chb == null)
 			return;
 		
 		if(chb.contains(event.getBlock())) {
+			ItemStack item = chb.getItemStack(event.getBlock());
+			if(item == null)
+				return;
+
+			Stock stock = MainShop.getInstance().getInventories().getStockOfPlayer(player.getName());
+			if(stock == null)
+				return;
 			
-			if(hasFreeSpace(event.getPlayer()))
-				event.getPlayer().getInventory().addItem(chb.getItemStack(event.getBlock()));
+			Cosmetique c = stock.getCosmetique(item.getItemMeta().getDisplayName().split("#")[1]);
+			if(c == null)
+				return;
+			
+			int slot = getFreeSlot(player);
+			if(slot != -1) {
+				event.getPlayer().getInventory().setItem(slot, Cosmetique.cosmetiqueToItem(c));
+			}
 			else {
 				MainShop.sendMessage(player, "Vous n'avez plus de place dans votre inventaire, le cosmetique a etait remis dans votre stock");
 			}
-			
+				
 			chb.removeBlock(event.getBlock());
 			event.setCancelled(true);
 			event.getBlock().setType(Material.AIR);
-			
-			return;
 		}
-		
+			
 		if(belongToPlayer(event.getBlock())) {
 			player.sendMessage("Vous ne pouvez pas casser cette tete");
 			event.setCancelled(true);
 			return;
 		}
 	}
-	
-	private boolean hasFreeSpace(Player player) {
-		for(int i = 0; i < player.getInventory().getContents().length; i++) {
-			if(player.getInventory().getContents()[i] == null || player.getInventory().getContents()[i].getType() == Material.AIR) {
-				return true;
+	private int getFreeSlot(Player player) {
+		for(int i = 0; i < player.getInventory().getStorageContents().length; i++) {
+			if(player.getInventory().getStorageContents()[i] == null || player.getInventory().getStorageContents()[i].getType() == Material.AIR) {
+				return i;
 			}
 		}
-		return false;
+		return -1;
 	}
+	
 	
 	@EventHandler
 	public void onExplode(EntityExplodeEvent event) {

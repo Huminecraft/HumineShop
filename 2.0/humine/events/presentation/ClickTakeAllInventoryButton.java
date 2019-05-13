@@ -1,5 +1,6 @@
 package humine.events.presentation;
 
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -23,7 +24,7 @@ public class ClickTakeAllInventoryButton implements Listener{
 	@EventHandler
 	public void onClick(InventoryClickEvent event) {
 		if(event.getInventory().getName().startsWith(Presentation.getName())) {
-			if(event.getCurrentItem() != null) {
+			if(event.getCurrentItem() != null && event.getCurrentItem().getType() != Material.AIR) {
 				if(event.getCurrentItem().getItemMeta().getDisplayName().equals(Presentation.itemTakeAllInventory().getItemMeta().getDisplayName())) {
 					takeAllInventory((Player) event.getWhoClicked());
 				}
