@@ -82,6 +82,10 @@ public abstract class Cosmetique {
 		return id;
 	}
 	
+	public void setId(String id) {
+		this.id = id;
+	}
+	
 	/**
 	 * @return name le nom du cosmetique
 	 */
