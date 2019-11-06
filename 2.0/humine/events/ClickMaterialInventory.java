@@ -5,8 +5,11 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.inventory.ItemStack;
 
 import humine.main.MainShop;
+import humine.main.ShopUtils;
+import humine.utils.Shopper;
 import humine.utils.cosmetiques.Cosmetique;
 import humine.utils.shop.Page;
 import humine.utils.shop.Stock;
@@ -27,7 +30,7 @@ public class ClickMaterialInventory implements Listener
 		if(event.getSlot() == 39) {
 			if(event.getCurrentItem() != null && event.getCurrentItem().getType() != Material.AIR) {
 				if(event.getCurrentItem().getItemMeta().getDisplayName().contains("#")) {
-					Cosmetique c = getCosmetique(event.getCurrentItem().getItemMeta().getDisplayName().split("#")[1], (Player) event.getWhoClicked());
+					Cosmetique c = getCosmetique(event.getCurrentItem(), (Player) event.getWhoClicked());
 					if(c != null) {
 						event.setCancelled(true);
 						event.getWhoClicked().getInventory().setHelmet(null);
@@ -37,25 +40,12 @@ public class ClickMaterialInventory implements Listener
 		}
 	}
 	
-	private Cosmetique getCosmetique(String id, Player player)
+	private Cosmetique getCosmetique(ItemStack item, Player player)
 	{
-		Stock stock = MainShop.getInstance().getInventories().getStockOfPlayer(player.getName());
-		
-		if(stock == null)
+		Shopper shopper = MainShop.getInstance().getShopperBank().getShopper(player);
+		if(shopper == null)
 			return null;
 		
-		
-		for (Page page : stock.getPages())
-		{
-			for (int i = 0; i < page.getSize(); i++)
-			{
-				if (page.getCosmetiques()[i] != null && page.getCosmetiques()[i].getId().equals(id))
-				{
-					return page.getCosmetiques()[i];
-				}
-			}
-		}
-		
-		return null;
+		return ShopUtils.getCosmetiqueInStock(shopper, item);
 	}
 }

@@ -1,1 +1,0 @@
-typeSearchIndex = [{"p":"humine.utils","l":"Cosmetique"},{"p":"humine.utils","l":"Inventories"},{"p":"humine.utils","l":"Page"},{"p":"humine.utils","l":"ParticleCosmetique"},{"p":"humine.utils","l":"Shop"},{"p":"humine.utils","l":"Stock"}]

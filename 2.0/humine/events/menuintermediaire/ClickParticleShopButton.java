@@ -1,11 +1,12 @@
 package humine.events.menuintermediaire;
 
-import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.inventory.InventoryClickEvent;
 
 import humine.main.MainShop;
+import humine.utils.Shopper;
+import humine.utils.cosmetiques.TypeCosmetique;
+import humine.utils.events.ClickItemMenuIntermediaireEvent;
 
 /**
  * Package regroupant les evenements du menu intermediaire du plugin HumineShop
@@ -15,22 +16,20 @@ import humine.main.MainShop;
  */
 public class ClickParticleShopButton implements Listener{
 
+	
 	@EventHandler
-	public void onClick(InventoryClickEvent event) {
-		if(event.getInventory().getName().equals(MainShop.getInstance().getMenuIntermediaire().getName())) {
-			if(event.getCurrentItem() != null) {
-				if(event.getCurrentItem().isSimilar(MainShop.getInstance().getMenuIntermediaire().itemParticleShop())) {
-					Player player = (Player) event.getWhoClicked();
-					openParticleShop(player);
-				}
-			}
+	public void onClick(ClickItemMenuIntermediaireEvent event) {
+		if(event.getItem().isSimilar(MainShop.getInstance().getMenuIntermediaire().itemParticleShop())) {
+			openParticleShop(event.getShopper());
 		}
 	}
 
-	private void openParticleShop(Player player) {
-		if(MainShop.getInstance().getParticleShop().isEmpty())
-			player.sendMessage("Particle Shop indisponible");
+	private void openParticleShop(Shopper shopper) {
+		if(!MainShop.getInstance().getShop().isEmpty()) {
+			shopper.getShop().update(MainShop.getInstance().getShop(), TypeCosmetique.PARTICLE);
+			shopper.getShop().openShop();
+		}
 		else
-			MainShop.getInstance().getParticleShop().openShop(player);
+			MainShop.sendMessage(shopper.getPlayer(), "Boutique vide :3");
 	}
 }

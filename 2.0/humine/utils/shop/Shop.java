@@ -1,19 +1,15 @@
 package humine.utils.shop;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import org.bukkit.Bukkit;
-import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
 import humine.utils.ItemShop;
+import humine.utils.Shopper;
 import humine.utils.cosmetiques.Cosmetique;
+import humine.utils.cosmetiques.TypeCosmetique;
 
 /**
  * Package regroupant les outils de HumineShop <br />
@@ -23,18 +19,19 @@ import humine.utils.cosmetiques.Cosmetique;
  */
 public class Shop {
 
-	private String name;
+	public static final String SHOPNAME = "SHOP";
 	protected ArrayList<Page> pages;
-	protected HashMap<Player, Integer> playersOnShop;
-	private boolean multiPage;
+	protected boolean multiPage;
+	protected Shopper shopper;
+	protected int currentPage;
 	
 	/**
 	 * Permet de creer une boutique de cosmetique
 	 * @param name le nom de la boutique
 	 * par defaut: multiPage est a <b>true</b>
 	 */
-	public Shop(String name) {
-		this(name, true);
+	public Shop(Shopper shopper) {
+		this(shopper, true);
 	}
 	
 	/**
@@ -42,10 +39,10 @@ public class Shop {
 	 * @param name le nom de la boutique
 	 * @param multiPage si la boutique peut contenir plusieurs page
 	 */
-	public Shop(String name, boolean multiPage) {
-		this.name = name;
+	public Shop(Shopper shopper, boolean multiPage) {
+		this.shopper = shopper;
+		this.currentPage = 0;
 		this.pages = new ArrayList<Page>();
-		this.playersOnShop = new HashMap<Player, Integer>();
 		this.multiPage = multiPage;
 	}
 	
@@ -110,19 +107,39 @@ public class Shop {
 				this.getLastPage().addCosmetique(cosmetique);
 			}
 			else {
-				Page page = new Page("Page "+ this.pages.size() + 1, this.getLastPage().getSize());
+				Page page = new Page(this.getLastPage().getSize());
 				page.addCosmetique(cosmetique);
 				this.addPage(page);
 			}
 		}
 		else {
-			Page page = new Page("Page 1", (9 * 4));
+			Page page = new Page(9 * 4);
 			page.addCosmetique(cosmetique);
 			this.addPage(page);
 		}
 		
 	}
 	
+	
+	public void update(Shop shop) {
+		resetShop();
+		for(Page page : shop.getPages()) {
+			for(Cosmetique c : page.getCosmetiques()) {
+				if(c != null)
+					addCosmetique(c);
+			}
+		}
+	}
+	
+	public void update(Shop shop, TypeCosmetique type) {
+		resetShop();
+		for(Page page : shop.getPages()) {
+			for(Cosmetique c : page.getCosmetiques()) {
+				if(c != null && c.getType() == type)
+					addCosmetique(c);
+			}
+		}
+	}
 	/**
 	 * Permet de recuperer la premiere page de la boutique
 	 * @return Page renvoie la premiere page de la boutique, renvoie NULL si il n'y a aucune page
@@ -164,18 +181,7 @@ public class Shop {
 		this.getPages().clear();
 	}
 	
-	/**
-	 * Permet de voir si le joueur regarde le shop
-	 * @param player le joueur a verifier
-	 * @return true si contient le joueur, sinon false
-	 */
-	public boolean containsPlayer(Player player) {
-		for(Player p : this.playersOnShop.keySet()) {
-			if(p.getName().equals(player.getName()))
-				return true;
-		}
-		return false;
-	}
+
 	/**
 	 * Verifie si la boutique contient des pages
 	 * @return boolean renvoie true si la boutique ne contient aucune page, sinon false
@@ -200,91 +206,15 @@ public class Shop {
 		return null;
 	}
 	
-	/**
-	 * Sauvegarder la boutique dans un dossier
-	 * @param folder le dossier dans lequel on veut sauvegarder la boutique
-	 */
-	public void save(File folder) {
-		if(!folder.exists())
-			folder.mkdirs();
-		
-		File index = new File(folder, "index.yml");
-		if(!index.exists()) {
-			try {
-				index.createNewFile();
-			} catch (IOException e) {
-				System.err.println("Erreur creation index.yml");
-				e.printStackTrace();
-				return;
-			}
-		}
-		
-		FileConfiguration config = YamlConfiguration.loadConfiguration(index);
-		config.set("name", this.name);
-		config.set("multiPage", this.multiPage);
-		
-		try {
-			config.save(index);
-		} catch (IOException e) {
-			System.err.println("Erreur enregistrement index.yml");
-			e.printStackTrace();
-			return;
-		}
-		
-		File pageFile;
-		for(Page page : this.pages) {
-			pageFile = new File(folder, page.getName());
-			page.save(pageFile);
-		}
-		
+	public boolean containsCosmetique(String id) {
+		return getCosmetique(id) != null;
 	}
 	
-	/*
-	 * Charger la boutique dans un dossier
-	 * @param folder le dossier dans lequel on veut charger la boutique
-	 */
-	public void load(File folder) {
-		if(!folder.exists())
-			return;
-		
-		File index = new File(folder, "index.yml");
-		if(!index.exists()) {
-			System.err.println("Erreur fichier introuvable index.yml: " + this.getClass().getName());
-			return;
-		}
-		
-		FileConfiguration config = YamlConfiguration.loadConfiguration(index);
-		this.name = config.getString("name");
-		this.multiPage = config.getBoolean("multiPage");
-		index.delete();
-		
-		for(File file : folder.listFiles()) {
-			Page page = new Page("", 0);
-			page.load(file);
-			this.pages.add(page);
-		}
-		
-	}
-	
-	/**
-	 * @return String le nom de la boutique
-	 */
-	public String getName() {
-		return name;
-	}
-
 	/**
 	 * @return ArrayList&lt;Page&gt; renvoie la liste des pages
 	 */
 	public ArrayList<Page> getPages() {
 		return pages;
-	}
-
-	/**
-	 * @return ArrayList&lt;Player&gt; renvoie la liste des joueurs regardant la boutique
-	 */
-	public HashMap<Player, Integer> getPlayersOnShop() {
-		return playersOnShop;
 	}
 	
 	/**
@@ -298,91 +228,41 @@ public class Shop {
 		this.multiPage = multiPage;
 	}
 	
-	/**
-	 * Ouvrir la premiere page de la boutique au joueur, ne fait rien
-	 * si la boutique est vide
-	 * @param shop la boutique a ouvrir
-	 * @param player a qui ouvrir la boutique
-	 */
-	public void openShop(Player player) {
-		if(this.isEmpty()) {
-			return;
-		}
-		
-		Inventory inv = Bukkit.createInventory(player, this.getFirstPage().getSize()+9, this.getName());
-		for(int i = 0; i < this.getFirstPage().getSize(); i++) {
-			if(this.getFirstPage().getCosmetiques()[i] != null) {
-				ItemStack item = Cosmetique.cosmetiqueToItem(this.getFirstPage().getCosmetiques()[i]);
-				inv.addItem(item);
-			}
-		}
-		
-		if(multiPage) {
-			inv.setItem(inv.getSize() - 6, ItemShop.itemPreviousArrow());
-			inv.setItem(inv.getSize() - 4, ItemShop.itemNextArrow());
-		}
-		
-		inv.setItem(inv.getSize() - 9, ItemShop.itemQuit());
-		inv.setItem(inv.getSize() - 1, ItemShop.itemQuit());
-		
-		
-		
-		this.getPlayersOnShop().put(player, 1);
-		player.openInventory(inv);
+	public void openShop() {
+		pageTo(0);
 	}
 	
-	/**
-	 * Permet d'aller a la page suivante
-	 * @param shop la boutique en question
-	 * @param player le joueur en question
-	 */
-	public void nextPage(Player player) {
-		if(this.isEmpty() || !this.containsPlayer(player))
-			return;
-		
-		if((this.getPlayersOnShop().get(player) + 1) > this.getPages().size())
-			return;
-		
-		int page = this.getPlayersOnShop().get(player) + 1;
-		
-		Inventory inv = Bukkit.createInventory(player, this.getPage(page-1).getSize(), this.getName());
-		for(int i = 0; i < this.getPage(page-1).getSize(); i++) {
-			if(this.getPage(page-1).getCosmetiques()[i] != null) {
-				ItemStack item = Cosmetique.cosmetiqueToItem(this.getPage(page-1).getCosmetiques()[i]);
-				inv.addItem(item);
-			}
-		}
-		
-		if(multiPage) {
-			inv.setItem(inv.getSize() - 6, ItemShop.itemPreviousArrow());
-			inv.setItem(inv.getSize() - 4, ItemShop.itemNextArrow());
-		}
-		
-		inv.setItem(inv.getSize() - 9, ItemShop.itemQuit());
-		inv.setItem(inv.getSize() - 1, ItemShop.itemQuit());
-		
-		this.getPlayersOnShop().replace(player, page);
-		player.openInventory(inv);
+	public void nextPage() {
+		pageTo((currentPage + 1));
 	}
 	
-	/**
-	 * Permet d'aller a la page precedente
-	 * @param shop la boutique en question
-	 * @param player le joueur en question
-	 */
-	public void previousPage(Player player) {
-		if(this.isEmpty() || !this.containsPlayer(player))
+	public void previousPage() {
+		pageTo((currentPage - 1));
+	}
+	
+	public void closeShop() {
+		this.shopper.getPlayer().closeInventory();
+		this.currentPage = 0;
+	}
+
+	public void pageTo(int index) {
+		if(this.isEmpty() || index < 0 || index >= getPages().size())
 			return;
 		
-		if((this.getPlayersOnShop().get(player) - 1) < 1)
-			return;
+		Page page = this.getPage(index);
+		this.currentPage = index;
 		
-		int page = this.getPlayersOnShop().get(player) - 1;
+		Inventory inv = createInventory(SHOPNAME, page);
 		
-		Inventory inv = Bukkit.createInventory(player, this.getPage(page-1).getSize(), this.getName());
-		for(int i = 0; i < this.getPage(page-1).getSize(); i++) {
-			if(this.getPage(page-1).getCosmetiques()[i] != null) {
-				ItemStack item = Cosmetique.cosmetiqueToItem(this.getPage(page-1).getCosmetiques()[i]);
+		this.shopper.getPlayer().openInventory(inv);
+	}
+	
+	
+	public Inventory createInventory(String name, Page page) {
+		Inventory inv = Bukkit.createInventory(null, page.getSize(), name);
+		for(int i = 0; i < page.getSize(); i++) {
+			if(page.getCosmetiques()[i] != null) {
+				ItemStack item = page.getCosmetiques()[i].convertToItem();
 				inv.addItem(item);
 			}
 		}
@@ -395,50 +275,58 @@ public class Shop {
 		inv.setItem(inv.getSize() - 9, ItemShop.itemQuit());
 		inv.setItem(inv.getSize() - 1, ItemShop.itemQuit());
 		
-		this.getPlayersOnShop().replace(player, page);
-		player.openInventory(inv);
+		return inv;
 	}
 
 	@Override
-	public int hashCode() {
+	public int hashCode()
+	{
 		final int prime = 31;
 		int result = 1;
+		result = prime * result + currentPage;
 		result = prime * result + (multiPage ? 1231 : 1237);
-		result = prime * result + ((name == null) ? 0 : name.hashCode());
 		result = prime * result + ((pages == null) ? 0 : pages.hashCode());
-		result = prime * result + ((playersOnShop == null) ? 0 : playersOnShop.hashCode());
+		result = prime * result + ((shopper == null) ? 0 : shopper.hashCode());
 		return result;
 	}
 
 	@Override
-	public boolean equals(Object obj) {
+	public boolean equals(Object obj)
+	{
 		if (this == obj)
 			return true;
 		if (obj == null)
 			return false;
-		if (!(obj instanceof Shop))
+		if (getClass() != obj.getClass())
 			return false;
 		Shop other = (Shop) obj;
+		if (currentPage != other.currentPage)
+			return false;
 		if (multiPage != other.multiPage)
 			return false;
-		if (name == null) {
-			if (other.name != null)
-				return false;
-		} else if (!name.equals(other.name))
-			return false;
-		if (pages == null) {
+		if (pages == null)
+		{
 			if (other.pages != null)
 				return false;
-		} else if (!pages.equals(other.pages))
+		}
+		else if (!pages.equals(other.pages))
 			return false;
-		if (playersOnShop == null) {
-			if (other.playersOnShop != null)
+		if (shopper == null)
+		{
+			if (other.shopper != null)
 				return false;
-		} else if (!playersOnShop.equals(other.playersOnShop))
+		}
+		else if (!shopper.equals(other.shopper))
 			return false;
 		return true;
 	}
-	
-	
+
+	@Override
+	public String toString()
+	{
+		return "Shop [pages=" + pages + ", multiPage=" + multiPage + ", shopper=" + shopper + ", currentPage="
+				+ currentPage + "]";
+	}
+
 	
 }

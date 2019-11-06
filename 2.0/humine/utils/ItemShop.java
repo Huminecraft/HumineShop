@@ -13,35 +13,38 @@ import org.bukkit.inventory.meta.SkullMeta;
 import humine.main.MainShop;
 import humine.utils.cosmetiques.Cosmetique;
 import humine.utils.cosmetiques.CustomHeadCosmetique;
-import humine.utils.cosmetiques.temporary.TemporaryCustomHeadCosmetique;
+import humine.utils.cosmetiques.TemporaryCustomHeadCosmetique;
+import humine.utils.cosmetiques.TypeCosmetique;
 
 public abstract class ItemShop {
 
 	public static ItemStack blockHumisBuy(Cosmetique cosmetique, Player player) {
+		Shopper shopper = MainShop.getInstance().getShopperBank().getShopper(player);
+		if(shopper == null)
+			return null;
+		
 		ItemStack item = new ItemStack(Material.GOLD_BLOCK);
 		ItemMeta meta = item.getItemMeta();
 		meta.setDisplayName(ChatColor.WHITE + cosmetique.getName());
 		
 		List<String> lores = new ArrayList<String>();
 		
-		if(!(cosmetique instanceof CustomHeadCosmetique) && !(cosmetique instanceof TemporaryCustomHeadCosmetique)) {
-			if(MainShop.getInstance().getInventories().containsStockOfPlayer(player.getName())) {
-				if(MainShop.getInstance().getInventories().getStockOfPlayer(player.getName()).getCosmetique(cosmetique.getId()) != null) {
-					lores.add("Vous avez deja ce cosmetique");
-					meta.setLore(lores);
-					item.setItemMeta(meta);
-					return item;
-				}
+		if(cosmetique.getType() != TypeCosmetique.CUSTOM_HAT && cosmetique.getType() != TypeCosmetique.TEMPORARY_CUSTOM_HAT) {
+			if(shopper.getStock().getCosmetique(cosmetique.getId()) != null) {
+				lores.add("Vous avez deja ce cosmetique");
+				meta.setLore(lores);
+				item.setItemMeta(meta);
+				return item;
 			}
 		}
 		
-		if (MainShop.getInstance().getBankHumis().getMoney(player) >= cosmetique.getHumisPrice())
+		if (shopper.getHumis().getAmount() >= cosmetique.getHumisPrice())
 			lores.add(ChatColor.BOLD + "" + ChatColor.GREEN + "Acheter ! (Humis)");
 		else
-			lores.add(ChatColor.BOLD + "" + ChatColor.RED + "Obtenir plus de " + MainShop.getInstance().getBankHumis().getNameValue()+" !");
+			lores.add(ChatColor.BOLD + "" + ChatColor.RED + "Obtenir plus de " + shopper.getHumis().getName() + " !");
 
 		lores.add("Prix: " + ChatColor.GREEN + cosmetique.getHumisPrice());
-		lores.add("Vous avez " + MainShop.getInstance().getBankHumis().getMoney(player) + " " + MainShop.getInstance().getBankHumis().getNameValue());
+		lores.add("Vous avez " + shopper.getHumis().getAmount() + " " + shopper.getHumis().getName());
 
 		meta.setLore(lores);
 
@@ -51,6 +54,10 @@ public abstract class ItemShop {
 	}
 	
 	public static ItemStack blockPixelBuy(Cosmetique cosmetique, Player player) {
+		Shopper shopper = MainShop.getInstance().getShopperBank().getShopper(player);
+		if(shopper == null)
+			return null;
+		
 		ItemStack item = new ItemStack(Material.PURPLE_WOOL);
 		ItemMeta meta = item.getItemMeta();
 		meta.setDisplayName(ChatColor.WHITE + cosmetique.getName());
@@ -58,23 +65,21 @@ public abstract class ItemShop {
 		List<String> lores = new ArrayList<String>();
 		
 		if(!(cosmetique instanceof CustomHeadCosmetique) && !(cosmetique instanceof TemporaryCustomHeadCosmetique)) {
-			if(MainShop.getInstance().getInventories().containsStockOfPlayer(player.getName())) {
-				if(MainShop.getInstance().getInventories().getStockOfPlayer(player.getName()).getCosmetique(cosmetique.getId()) != null) {
-					lores.add("Vous avez deja ce cosmetique");
-					meta.setLore(lores);
-					item.setItemMeta(meta);
-					return item;
-				}
+			if(shopper.getStock().getCosmetique(cosmetique.getId()) != null) {
+				lores.add("Vous avez deja ce cosmetique");
+				meta.setLore(lores);
+				item.setItemMeta(meta);
+				return item;
 			}
 		}
 		
-		if (MainShop.getInstance().getBankPixel().getMoney(player) >= cosmetique.getPixelPrice())
+		if (shopper.getPixel().getAmount() >= cosmetique.getPixelPrice())
 			lores.add(ChatColor.BOLD + "" + ChatColor.GREEN + "Acheter ! (Pixel)");
 		else
-			lores.add(ChatColor.BOLD + "" + ChatColor.RED + "Obtenir plus de " + MainShop.getInstance().getBankPixel().getNameValue()+" !");
+			lores.add(ChatColor.BOLD + "" + ChatColor.RED + "Obtenir plus de " + shopper.getPixel().getName() + " !");
 
 		lores.add("Prix: " + ChatColor.GREEN + cosmetique.getPixelPrice());
-		lores.add("Vous avez " + MainShop.getInstance().getBankPixel().getMoney(player) + " " + MainShop.getInstance().getBankPixel().getNameValue());
+		lores.add("Vous avez " + shopper.getPixel().getAmount() + " " + shopper.getPixel().getName());
 
 		meta.setLore(lores);
 
@@ -192,14 +197,14 @@ public abstract class ItemShop {
 	}
 	
 	public static ItemStack itemCosmetiqueInfo(Cosmetique cosmetique) {
-		ItemStack item = Cosmetique.cosmetiqueToItem(cosmetique);
+		ItemStack item = cosmetique.convertToItem();
 		item.setType(Material.ENDER_EYE);
 		
 		return item;
 	}
 	
 	public static ItemStack itemCosmetiqueInfo(Cosmetique cosmetique, int number) {
-		ItemStack item = Cosmetique.cosmetiqueToItem(cosmetique);
+		ItemStack item = cosmetique.convertToItem();
 		item.setAmount(number);
 		
 		return item;

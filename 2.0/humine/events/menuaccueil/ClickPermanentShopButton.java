@@ -1,12 +1,11 @@
 package humine.events.menuaccueil;
 
-import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.inventory.InventoryClickEvent;
 
 import humine.main.MainShop;
 import humine.utils.ItemShop;
+import humine.utils.events.ClickItemMenuAccueilEvent;
 
 /**
  * Package regroupant les evenements du menu d'accueil du plugin HumineShop
@@ -17,14 +16,9 @@ import humine.utils.ItemShop;
 public class ClickPermanentShopButton implements Listener{
 
 	@EventHandler
-	public void onClick(InventoryClickEvent event) {
-		if(event.getInventory().getName().equals(MainShop.getInstance().getMenuAccueil().getName())) {
-			if(event.getCurrentItem() != null) {
-				if(event.getCurrentItem().isSimilar(ItemShop.itemPermanentShop())) {
-					Player player = (Player) event.getWhoClicked();
-					MainShop.getInstance().getMenuIntermediaire().openMenu(player);
-				}
-			}
+	public void onClick(ClickItemMenuAccueilEvent event) {
+		if(event.getItem().isSimilar(ItemShop.itemPermanentShop())) {
+			MainShop.getInstance().getMenuIntermediaire().openMenu(event.getShopper().getPlayer());
 		}
 	}
 }

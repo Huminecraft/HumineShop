@@ -1,22 +1,19 @@
 package humine.events.stocks;
 
 import org.bukkit.Material;
-import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 
 import humine.main.MainShop;
+import humine.main.ShopUtils;
 import humine.utils.ParticleScheduler;
 import humine.utils.Presentation;
-import humine.utils.cosmetiques.Cosmetique;
-import humine.utils.cosmetiques.MaterialHatCosmetique;
-import humine.utils.cosmetiques.temporary.TemporaryMaterialHatCosmetique;
-import humine.utils.shop.CustomHeadStock;
-import humine.utils.shop.HatStock;
-import humine.utils.shop.ParticleStock;
-import humine.utils.shop.Shop;
+import humine.utils.Shopper;
+import humine.utils.cosmetiques.AbstractCustomHatCosmetique;
+import humine.utils.cosmetiques.AbstractMaterialHatCosmetique;
+import humine.utils.cosmetiques.AbstractParticleCosmetique;
+import humine.utils.events.ClickCosmetiqueStockEvent;
 
 /**
  * Package regroupant les evenements des stocks du plugin HumineShop
@@ -30,87 +27,43 @@ public class ClickCosmetiqueButton implements Listener
 {
 
 	@EventHandler
-	public void onClick(InventoryClickEvent event) {
-		Player player = (Player) event.getWhoClicked();
-		
-		
-		if(event.getInventory().getName().startsWith(ParticleStock.getParticleStockName())) {
-			ParticleStock pStock = MainShop.getInstance().getParticleStockList().get(player.getName());
-			if(pStock != null) {
-				clickParticleCosmetique(pStock, event.getCurrentItem(), player);
-			}
+	public void onClick(ClickCosmetiqueStockEvent event) {
+		if(event.getCosmetique() instanceof AbstractParticleCosmetique) {
+			clickParticleCosmetique(event.getShopper(), (AbstractParticleCosmetique) event.getCosmetique());
 		}
-		else if(event.getInventory().getName().startsWith(HatStock.getHatStockName())) {
-			HatStock stock = MainShop.getInstance().getHatStockList().get(player.getName());
-			if(stock != null) {
-				clickHatCosmetique(stock, event.getCurrentItem(), player);
-			}
+		else if(event.getCosmetique() instanceof AbstractMaterialHatCosmetique) {
+			clickHatCosmetique(event.getShopper(), (AbstractMaterialHatCosmetique) event.getCosmetique());
 		}
-		else if(event.getInventory().getName().startsWith(CustomHeadStock.getCustomHeadStockName())) {
-			CustomHeadStock stock = MainShop.getInstance().getCustomHeadStockList().get(player.getName());
-			if(stock != null) {
-				clickCustomHeadCosmetique(stock, event.getCurrentItem(), player);
-			}
+		else if(event.getCosmetique() instanceof AbstractCustomHatCosmetique) {
+			clickCustomHatCosmetique(event.getShopper(), (AbstractCustomHatCosmetique) event.getCosmetique());
 		}
 	}
 	
-	public void clickCustomHeadCosmetique(CustomHeadStock stock, ItemStack item, Player player) {
-		if(item != null && item.getType() != Material.AIR) {
-			if(item.getItemMeta().getDisplayName().contains("#")) {
-				Cosmetique c = stock.getCosmetique(item.getItemMeta().getDisplayName().split("#")[1]);
-				
-				if(c != null) {
-					Presentation.openCustomHeadWindow(player, c);
-				}
-			}
-		}
+	public void clickCustomHatCosmetique(Shopper shopper, AbstractCustomHatCosmetique cosmetique) {
+		Presentation.openCustomHeadWindow(shopper.getPlayer(), cosmetique);
 	}
 
-	public void clickParticleCosmetique(Shop shop, ItemStack item, Player player) {
-		if(item != null && item.getType() != Material.AIR) {
-			if(item.getItemMeta().getDisplayName().contains("#")) {
-				Cosmetique c = shop.getCosmetique(item.getItemMeta().getDisplayName().split("#")[1]);
-				
-				if(c != null) {
-					ParticleScheduler.enableParticleCosmetique(player, c);
-					player.closeInventory();
-				}
-			}
-		}
+	public void clickParticleCosmetique(Shopper shopper, AbstractParticleCosmetique cosmetique) {
+		ParticleScheduler.enableParticleCosmetique(shopper.getPlayer(), cosmetique);
+		shopper.getPlayer().closeInventory();
 	}
 	
-	public void clickHatCosmetique(Shop shop, ItemStack item, Player player) {
-		if(item != null && item.getType() != Material.AIR) {
-			if(item.getItemMeta().getDisplayName().contains("#")) {
-				Cosmetique c = shop.getCosmetique(item.getItemMeta().getDisplayName().split("#")[1]);
-				
-				if(c != null) {
-					if(player.getInventory().getHelmet() != null && player.getInventory().getHelmet().getType() != Material.AIR) {
-						if(!player.getInventory().getHelmet().getItemMeta().getDisplayName().contains("#")) {
-							MainShop.sendMessage(player, "Veuillez retirer votre casque d'abord");
-						}
-						else {
-							player.getInventory().setHelmet(cosmetiqueToItem(c));
-						}
-					}
-					else {
-						player.getInventory().setHelmet(cosmetiqueToItem(c));
-					}
-					
-					player.closeInventory();
-				}
-			}
+	public void clickHatCosmetique(Shopper shopper, AbstractMaterialHatCosmetique cosmetique) {
+		if(shopper.getPlayer().getInventory().getHelmet() != null && shopper.getPlayer().getInventory().getHelmet().getType() != Material.AIR) {
+			if(!ShopUtils.isCosmetique(shopper, shopper.getPlayer().getInventory().getHelmet()))
+				MainShop.sendMessage(shopper.getPlayer(), "Veuillez retirer votre casque d'abord");
+			else
+				shopper.getPlayer().getInventory().setHelmet(cosmetiqueToItem(cosmetique));
 		}
+		else
+			shopper.getPlayer().getInventory().setHelmet(cosmetiqueToItem(cosmetique));
+		
+		shopper.getPlayer().closeInventory();
 	}
 	
-	private ItemStack cosmetiqueToItem(Cosmetique cosmetique) {
-		ItemStack item = Cosmetique.cosmetiqueToItem(cosmetique);
-		
-		if(cosmetique instanceof MaterialHatCosmetique)
-			item.setType(((MaterialHatCosmetique) cosmetique).getMaterialHat());
-		else if(cosmetique instanceof TemporaryMaterialHatCosmetique)
-			item.setType(((TemporaryMaterialHatCosmetique) cosmetique).getMaterialHat());
-		
+	private ItemStack cosmetiqueToItem(AbstractMaterialHatCosmetique cosmetique) {
+		ItemStack item = cosmetique.convertToItem();
+		item.setType(cosmetique.getMaterialHat());
 		return item;
 	}
 }

@@ -1,12 +1,11 @@
 package humine.events.presentation;
 
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.inventory.InventoryClickEvent;
 
 import humine.utils.Presentation;
+import humine.utils.events.ClickItemPresentationEvent;
 
 /**
  * Package regroupant les evenements du menu de presentation du plugin HumineShop
@@ -17,15 +16,10 @@ import humine.utils.Presentation;
 public class ClickLinkButton implements Listener{
 
 	@EventHandler
-	public void onClick(InventoryClickEvent event) {
-		if(event.getInventory().getName().startsWith(Presentation.getName())) {
-			if(event.getCurrentItem() != null && event.getCurrentItem().getType() != Material.AIR) {
-				if(event.getCurrentItem().isSimilar(Presentation.itemApercu())) {
-					Player player = (Player) event.getWhoClicked();
-					sendLink(player);
-					player.closeInventory();
-				}
-			}
+	public void onClick(ClickItemPresentationEvent event) {
+		if(event.getItem().isSimilar(Presentation.itemApercu())) {
+			sendLink(event.getShopper().getPlayer());
+			event.getShopper().getPlayer().closeInventory();
 		}
 	}
 	

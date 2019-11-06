@@ -1,14 +1,13 @@
 package humine.events.menuaccueil;
 
-import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.inventory.InventoryClickEvent;
 
 import humine.main.MainShop;
 import humine.utils.ItemShop;
-import humine.utils.shop.HatStock;
-import humine.utils.shop.Stock;
+import humine.utils.Shopper;
+import humine.utils.cosmetiques.TypeCosmetique;
+import humine.utils.events.ClickItemMenuAccueilEvent;
 
 /**
  * Package regroupant les evenements du menu d'accueil du plugin HumineShop
@@ -19,32 +18,18 @@ import humine.utils.shop.Stock;
 public class ClickHatStockButton implements Listener{
 
 	@EventHandler
-	public void onClick(InventoryClickEvent event) {
-		if(event.getInventory().getName().equals(MainShop.getInstance().getMenuAccueil().getName())) {
-			if(event.getCurrentItem() != null) {
-				if(event.getCurrentItem().isSimilar(ItemShop.itemHatStock())) {
-					Player player = (Player) event.getWhoClicked();
-					openStock(player);
-				}
-			}
+	public void onClick(ClickItemMenuAccueilEvent event) {
+		if(event.getItem().isSimilar(ItemShop.itemHatStock())) {
+			openStock(event.getShopper());
 		}
 	}
 	
-	private void openStock(Player player)
+	private void openStock(Shopper shopper)
 	{
-		Stock stock = MainShop.getInstance().getInventories().getStockOfPlayer(player.getName());
-		
-		if(stock != null) {
-			HatStock pStock = new HatStock(player.getName());
-			pStock.filter(stock);
-			
-			MainShop.getInstance().getHatStockList().put(player.getName(), pStock);
-			
-			if(pStock.isEmpty())
-				MainShop.sendMessage(player, "Hat Stock vide");
-			else
-				pStock.openShop(player);
-		}
-		
+		shopper.getStock().setCosmetique(shopper.getCosmetiques(TypeCosmetique.MATERIAL_HAT));
+		if(shopper.getStock().isEmpty())
+			MainShop.sendMessage(shopper.getPlayer(), "Hat Material Stock vide");
+		else
+			shopper.getStock().openShop();
 	}
 }

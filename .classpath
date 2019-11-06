@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path="2.0"/>
+	<classpathentry kind="src" path="src"/>
 	<classpathentry exported="true" kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER">
 		<attributes>
 			<attribute name="module" value="true"/>
@@ -12,5 +13,7 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry exported="true" kind="lib" path="/Librairies/AYPI/AYPI.V1.4.4.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/HumineChallenge"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/Librairies"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

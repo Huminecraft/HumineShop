@@ -19,15 +19,12 @@ import humine.commands.CreateTemporaryCustomHeadCosmetique;
 import humine.commands.CreateTemporaryMaterialHatCosmetique;
 import humine.commands.CreateTemporaryParticleCosmetique;
 import humine.commands.HelpList;
-import humine.commands.ShowMoney;
 import humine.commands.OpenShop;
 import humine.commands.RemoveCosmetique;
 import humine.commands.RemoveMoney;
+import humine.commands.ShowMoney;
 import humine.events.BlockMoveCosmetique;
 import humine.events.ClickMaterialInventory;
-import humine.events.CreateBankAccount;
-import humine.events.CreateStockAccount;
-import humine.events.ExitInventory;
 import humine.events.PlayerCustomHeadEvent;
 import humine.events.PlayerQuit;
 import humine.events.menuaccueil.ClickCustomHeadButton;
@@ -46,24 +43,15 @@ import humine.events.presentation.ClickPlusButton;
 import humine.events.presentation.ClickTakeAllBlocksButton;
 import humine.events.presentation.ClickTakeAllButton;
 import humine.events.presentation.ClickTakeAllInventoryButton;
-import humine.events.shops.ClickCosmetiqueButton;
-import humine.events.shops.ClickNextButton;
-import humine.events.shops.ClickPreviousButton;
+import humine.events.shops.RandomShopEvent;
+import humine.events.shops.ShopEvent;
 import humine.events.stocks.ClickDisableButton;
+import humine.utils.BankItemShop;
 import humine.utils.CustomHeadBlockInfo;
 import humine.utils.ParticleScheduler;
-import humine.utils.cosmetiques.Cosmetique;
-import humine.utils.economy.BankHumis;
-import humine.utils.economy.BankPixel;
+import humine.utils.ShopperBank;
 import humine.utils.menus.MenuAccueil;
 import humine.utils.menus.MenuIntermediaire;
-import humine.utils.shop.CustomHeadShop;
-import humine.utils.shop.CustomHeadStock;
-import humine.utils.shop.HatShop;
-import humine.utils.shop.HatStock;
-import humine.utils.shop.Inventories;
-import humine.utils.shop.ParticleShop;
-import humine.utils.shop.ParticleStock;
 import humine.utils.shop.RandomShop;
 import humine.utils.shop.Shop;
 
@@ -75,26 +63,19 @@ public class MainShop extends JavaPlugin {
 
 	private static MainShop instance;
 	
-	private BankHumis bankHumis;
-	private BankPixel bankPixel;
-	
-	private Inventories inventories;
-
 	private MenuAccueil menuAccueil;
 	private MenuIntermediaire menuIntermediaire;
 	
 	private Shop shop;
 	private RandomShop randomShop;
-	private ParticleShop particleShop;
-	private HatShop hatShop;
-	private CustomHeadShop customHeadShop;
 	private Shop emperorShop;
 	
-	private HashMap<String, ParticleStock> particleStockList;
-	private HashMap<String, HatStock> HatStockList;
-	private HashMap<String, CustomHeadStock> customHeadStockList;
-	
 	private HashMap<String, CustomHeadBlockInfo> playerCustomHeadList;
+	
+	private ShopperBank shopperBank;
+	private BankItemShop itemShopBank;
+	
+	public static int CosmetiqueID;
 	
 	private final File shopFolder = new File(getDataFolder(), "Shop");
 	private final File emperorShopFolder = new File(getDataFolder(), "EmperorShop");
@@ -104,6 +85,7 @@ public class MainShop extends JavaPlugin {
 	private final File inventoriesFolder = new File(getDataFolder(), "Inventories");
 	private final File IDFile = new File(getDataFolder(), "ID.yml");
 	private final File CustomHeadBlockFile = new File(getDataFolder(), "CustomHeadBlockInfos");
+	private final File shopperFolder = new File(getDataFolder(), "Shoppers");
 	
 	@Override
 	public void onEnable() {
@@ -113,39 +95,21 @@ public class MainShop extends JavaPlugin {
 		if(!CustomHeadBlockFile.exists())
 			CustomHeadBlockFile.mkdirs();
 		
-		this.shop = new Shop("Shop");
-		this.randomShop = new RandomShop("RandomShop", false);
-		this.particleShop = new ParticleShop("Boutique d'emote");
-		this.customHeadShop = new CustomHeadShop("Boutique de tete personnalisee");
-		this.hatShop = new HatShop("Boutique de Chapeau");
-		this.emperorShop = new Shop("Boutique Empereur", false);
+		if(!shopperFolder.exists())
+			shopperFolder.mkdirs();
 		
-		this.bankHumis = new BankHumis("Humis");
-		this.bankPixel = new BankPixel("Pixel");
-		this.inventories = new Inventories();
-
-		this.menuAccueil = new MenuAccueil();
-		this.menuIntermediaire = new MenuIntermediaire();
+		this.shopperBank = new ShopperBank();
+		this.itemShopBank = new BankItemShop();
+		CosmetiqueID = 0;
 		
-		this.shop.load(this.shopFolder);
-		this.particleShop.filter(this.shop);
-		this.hatShop.filter(this.shop);
-		this.customHeadShop.filter(this.shop);
-		
-		this.particleStockList = new HashMap<String, ParticleStock>();
-		this.HatStockList = new HashMap<String, HatStock>();
-		this.customHeadStockList = new HashMap<String, CustomHeadStock>();
+		this.shop = new Shop(null);
+		this.randomShop = new RandomShop(null, false);
+		this.emperorShop = new Shop(null, false);
 		
 		this.playerCustomHeadList = new HashMap<String, CustomHeadBlockInfo>();
 		
 		this.randomShop.update();
 		
-		this.bankHumis.load(this.bankHumisFile);
-		this.bankPixel.load(this.bankPixelFile);
-		this.inventories.load(this.inventoriesFolder);
-		
-		this.emperorShop.load(this.emperorShopFolder);
-
 		ParticleScheduler.startScheduler(this);
 		
 		initializeCommands();
@@ -174,8 +138,6 @@ public class MainShop extends JavaPlugin {
 		
 		File dateFolder = new File(this.randomShopFolder, LocalDate.now().toString());
 		this.randomShop.save(dateFolder);
-		this.bankHumis.save(this.bankHumisFile);
-		this.bankPixel.save(this.bankPixelFile);
 		this.inventories.save(this.inventoriesFolder);
 		this.emperorShop.save(this.emperorShopFolder);
 		
@@ -202,7 +164,7 @@ public class MainShop extends JavaPlugin {
 			}
 		}
 		FileConfiguration config = YamlConfiguration.loadConfiguration(this.IDFile);
-		config.set("cosmetique", Cosmetique.getNumId());
+		config.set("cosmetique", CosmetiqueID);
 
 		try
 		{
@@ -230,11 +192,13 @@ public class MainShop extends JavaPlugin {
 	}
 	
 	private void initializeEvents() {
+		this.getServer().getPluginManager().registerEvents(new InitializeEvents(), this);
+		
+		this.getServer().getPluginManager().registerEvents(new ShopEvent(), this);
+		this.getServer().getPluginManager().registerEvents(new RandomShopEvent(), this);
+		
 		this.getServer().getPluginManager().registerEvents(new BlockMoveCosmetique(), this);
-		this.getServer().getPluginManager().registerEvents(new CreateBankAccount(), this);
-		this.getServer().getPluginManager().registerEvents(new CreateStockAccount(), this);
 		this.getServer().getPluginManager().registerEvents(new PlayerQuit(), this);
-		this.getServer().getPluginManager().registerEvents(new ExitInventory(), this);
 		this.getServer().getPluginManager().registerEvents(new PlayerCustomHeadEvent(), this);
 		
 		this.getServer().getPluginManager().registerEvents(new ClickMaterialInventory(), this);
@@ -252,11 +216,6 @@ public class MainShop extends JavaPlugin {
 		this.getServer().getPluginManager().registerEvents(new ClickHatShopButton(), this);
 		this.getServer().getPluginManager().registerEvents(new ClickParticleShopButton(), this);
 		this.getServer().getPluginManager().registerEvents(new humine.events.menuintermediaire.ClickQuitButton(), this);
-		
-		this.getServer().getPluginManager().registerEvents(new ClickCosmetiqueButton(), this);
-		this.getServer().getPluginManager().registerEvents(new ClickNextButton(), this);
-		this.getServer().getPluginManager().registerEvents(new ClickPreviousButton(), this);
-		this.getServer().getPluginManager().registerEvents(new humine.events.shops.ClickQuitButton(), this);
 		
 		this.getServer().getPluginManager().registerEvents(new ClickHumisBuyButton(), this);
 		this.getServer().getPluginManager().registerEvents(new humine.events.presentation.ClickLinkButton(), this);
@@ -289,32 +248,6 @@ public class MainShop extends JavaPlugin {
 
 	public void setShop(Shop shop) {
 		this.shop = shop;
-	}
-
-	public BankHumis getBankHumis() {
-		return bankHumis;
-	}
-
-	public void setBankHumis(BankHumis bankHumis) {
-		this.bankHumis = bankHumis;
-	}
-
-	public BankPixel getBankPixel()
-	{
-		return bankPixel;
-	}
-	
-	public void setBankPixel(BankPixel bankPixel)
-	{
-		this.bankPixel = bankPixel;
-	}
-	
-	public Inventories getInventories() {
-		return inventories;
-	}
-
-	public void setInventories(Inventories inventories) {
-		this.inventories = inventories;
 	}
 
 	public File getShopFolder()
@@ -367,39 +300,28 @@ public class MainShop extends JavaPlugin {
 		return menuIntermediaire;
 	}
 	
-	public ParticleShop getParticleShop() {
-		return particleShop;
-	}
-	
-	public HatShop getHatShop() {
-		return hatShop;
-	}
-	
-	public CustomHeadShop getCustomHeadShop() {
-		return customHeadShop;
-	}
-	
 	public Shop getEmperorShop() {
 		return emperorShop;
-	}
-	
-	public HashMap<String, ParticleStock> getParticleStockList()
-	{
-		return particleStockList;
-	}
-	
-	public HashMap<String, HatStock> getHatStockList()
-	{
-		return HatStockList;
-	}
-	
-	public HashMap<String, CustomHeadStock> getCustomHeadStockList() {
-		return customHeadStockList;
 	}
 	
 	public HashMap<String, CustomHeadBlockInfo> getPlayerCustomHeadList()
 	{
 		return playerCustomHeadList;
+	}
+	
+	public ShopperBank getShopperBank()
+	{
+		return shopperBank;
+	}
+	
+	public BankItemShop getItemShopBank()
+	{
+		return itemShopBank;
+	}
+	
+	public File getShopperFolder()
+	{
+		return shopperFolder;
 	}
 }
 
