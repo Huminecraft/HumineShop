@@ -13,7 +13,7 @@ import com.aypi.utils.inter.TimerFinishListener;
 import humine.main.MainShop;
 import humine.utils.cosmetiques.Cosmetique;
 import humine.utils.cosmetiques.ParticleCosmetique;
-import humine.utils.cosmetiques.temporary.TemporaryParticleCosmetique;
+import humine.utils.cosmetiques.TemporaryParticleCosmetique;
 
 /**
  * Package regroupant les outils de HumineShop

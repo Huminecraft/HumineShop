@@ -1,23 +1,20 @@
 package humine.events.presentation;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map.Entry;
-
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
-import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 
-import humine.main.MainShop;
-import humine.utils.CustomHeadBlockInfo;
+import humine.main.ShopUtils;
 import humine.utils.ItemShop;
 import humine.utils.Presentation;
+import humine.utils.Shopper;
+import humine.utils.cosmetiques.AbstractCustomHatCosmetique;
 import humine.utils.cosmetiques.Cosmetique;
-import humine.utils.shop.Stock;
+import humine.utils.cosmetiques.CustomHatLocation;
+import humine.utils.events.ClickItemPresentationEvent;
 
 /**
  * Package regroupant les evenements du menu de presentation du plugin HumineShop
@@ -29,63 +26,57 @@ import humine.utils.shop.Stock;
  */
 public class ClickTakeAllButton implements Listener{
 
+	
 	@EventHandler
-	public void onClick(InventoryClickEvent event) {
-		if(event.getInventory().getName().startsWith(Presentation.getName())) {
-			if(event.getCurrentItem() != null && event.getCurrentItem().getType() != Material.AIR) {
-				if(event.getCurrentItem().getItemMeta().getDisplayName().equals(ItemShop.itemMinus().getItemMeta().getDisplayName())) {
-					takeAll((Player) event.getWhoClicked());
-				}
-			}
+	public void onClick(ClickItemPresentationEvent event) {
+		if(event.getItem().getItemMeta().getDisplayName().equals(ItemShop.itemMinus().getItemMeta().getDisplayName())) {
+			takeAll(event.getShopper());
 		}
 	}
 	
-	public void takeAll(Player player) {
-		CustomHeadBlockInfo chb = MainShop.getInstance().getPlayerCustomHeadList().get(player.getName());
-		Cosmetique c = Presentation.getCosmetiques().get(player);
-		Stock stock = MainShop.getInstance().getInventories().getStockOfPlayer(player.getName());
-		
-		if(chb == null || c == null || stock == null)
+	public void takeAll(Shopper shopper) {
+		Cosmetique c = Presentation.getCosmetiques().get(shopper.getPlayer());
+		if(c == null || !(c instanceof AbstractCustomHatCosmetique))
 			return;
 		
-		TakeBlocks(chb, stock, c);
-		takeItemInInventory(player, stock, c);
+		AbstractCustomHatCosmetique cosmetique = (AbstractCustomHatCosmetique) c;
+		
+		TakeBlocks(cosmetique);
+		takeItemInInventory(shopper, cosmetique);
 	}
 	
-	public static void TakeBlocks(CustomHeadBlockInfo chb, Stock stock, Cosmetique c) {
-		List<Block> tempo = new ArrayList<>();
-		
-		for(Entry<Block, ItemStack> entry : chb.getBlocks().entrySet()) {
-			Cosmetique cosmetique = stock.getCosmetique(entry.getValue().getItemMeta().getDisplayName().split("#")[1]);
-			
-			if(cosmetique == null)
-				continue;
-			
-			if(cosmetique.getId().equals(c.getId())) {
-				entry.getKey().setType(Material.AIR);
-				tempo.add(entry.getKey());
-			}
+	public static void TakeBlocks(AbstractCustomHatCosmetique cosmetique) {
+
+		for(CustomHatLocation l : cosmetique.getCustomHatData().getLocations()) {
+			Location location = l.convertToLocation();
+			Block block = location.getWorld().getBlockAt(location);
+			block.setType(Material.AIR);
+			cosmetique.getCustomHatData().setInStock((cosmetique.getCustomHatData().getInStock() + 1));
 		}
 		
-		for(Block block : tempo)
-			chb.removeBlock(block);
+		cosmetique.getCustomHatData().resetLocation();
 	}
 	
-	public static void takeItemInInventory(Player player, Stock stock, Cosmetique c) {
-		for(int i = 0; i < player.getInventory().getStorageContents().length; i++) {
-			ItemStack item = player.getInventory().getContents()[i];
+	public static void takeItemInInventory(Shopper shopper, AbstractCustomHatCosmetique c) {
+		if(c.getCustomHatData().getInInventory() <= 0)
+			return;
+			
+		for(int i = 0; i < shopper.getPlayer().getInventory().getStorageContents().length; i++) {
+			ItemStack item = shopper.getPlayer().getInventory().getContents()[i];
 			if(item == null)
 				continue;
-			if(!item.getItemMeta().getDisplayName().contains("#"))
-				continue;
 			
-			Cosmetique cosmetique = stock.getCosmetique(item.getItemMeta().getDisplayName().split("#")[1]);
+			Cosmetique cosmetique = ShopUtils.getCosmetiqueInStock(shopper, item);
 			if(cosmetique == null)
 				continue;
 			
 			if(cosmetique.getId().equals(c.getId())) {
-				player.getInventory().setItem(i, null);;
+				int amount = item.getAmount();
+				c.getCustomHatData().setInStock((c.getCustomHatData().getInStock() + amount));
+				c.getCustomHatData().setInInventory((c.getCustomHatData().getInInventory() - amount));
+				shopper.getPlayer().getInventory().setItem(i, null);
 			}
+				
 		}
 	}
 }

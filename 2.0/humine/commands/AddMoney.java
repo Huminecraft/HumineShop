@@ -1,10 +1,14 @@
 package humine.commands;
 
+import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 
 import humine.main.MainShop;
+import humine.main.ShopUtils;
+import humine.utils.Shopper;
 
 /**
  * Package regroupant les commandes du plugin HumineShop
@@ -31,43 +35,34 @@ public class AddMoney implements CommandExecutor
 			return false;
 		}
 		
-		if(args[0].equalsIgnoreCase("humis") && !MainShop.getInstance().getBankHumis().containsPlayer(args[1])) {
-			MainShop.sendMessage(sender, "Compte bancaire Humis du joueur inexistant");
-			MainShop.sendMessage(sender, command);
+		Player player = Bukkit.getPlayer(args[1]);
+		if(player == null) {
+			MainShop.sendMessage(sender, "Joueur inexistant");
 			return false;
 		}
 		
-		if(args[0].equalsIgnoreCase("pixel") && !MainShop.getInstance().getBankPixel().containsPlayer(args[1])) {
-			MainShop.sendMessage(sender, "Compte bancaire Pixel du joueur inexistant");
-			MainShop.sendMessage(sender, command);
+		Shopper shopper = MainShop.getInstance().getShopperBank().getShopper(player);
+		if(shopper == null) {
+			MainShop.sendMessage(sender, args[1] + " n'a pas de compte Shopper, veuillez contactez l'administration");
 			return false;
 		}
 		
-		if(!isNumber(args[2])) {
+		if(!ShopUtils.isNumber(args[2])) {
 			MainShop.sendMessage(sender, "Somme invalide");
 			MainShop.sendMessage(sender, command);
 			return false;
 		}
 		
 		if(args[0].equalsIgnoreCase("humis")) {
-			MainShop.getInstance().getBankHumis().addMoney(args[1], Integer.parseInt(args[2]));
-			MainShop.sendMessage(sender, args[2] + " " + MainShop.getInstance().getBankHumis().getNameValue() + " ajout�s au compte de " + args[1]);
+			shopper.getHumis().addAmount(Integer.parseInt(args[2]));
+			MainShop.sendMessage(sender, args[2] + " " + shopper.getHumis().getName() + " ajoute au compte de " + args[1]);
 		}
 		else {
-			MainShop.getInstance().getBankPixel().addMoney(args[1], Integer.parseInt(args[2]));
-			MainShop.sendMessage(sender, args[2] + " " + MainShop.getInstance().getBankPixel().getNameValue() + " ajout�s au compte de " + args[1]);
+			shopper.getPixel().addAmount(Integer.parseInt(args[2]));
+			MainShop.sendMessage(sender, args[2] + " " + shopper.getPixel().getName() + " ajoute au compte de " + args[1]);
 		}
-		
 		
 		return true;
 	}
 	
-	private boolean isNumber(String number) {
-		for(int i = 0; i < number.length(); i++) {
-			if(number.charAt(i) < '0' || number.charAt(i) > '9') {
-				return false;
-			}
-		}
-		return true;
-	}
 }

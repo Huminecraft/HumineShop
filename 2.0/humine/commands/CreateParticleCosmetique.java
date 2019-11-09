@@ -75,7 +75,6 @@ public class CreateParticleCosmetique implements CommandExecutor{
 		}
 		else {
 			MainShop.getInstance().getShop().addCosmetique(cosmetique);
-			MainShop.getInstance().getParticleShop().addCosmetique(cosmetique);
 		}
 		
 		MainShop.sendMessage(sender, "Cosmetique de Particule cree !");

@@ -1,11 +1,9 @@
 package humine.utils.shop;
 
-import java.io.File;
 import java.time.LocalDate;
 
-
-import humine.main.MainShop;
-import humine.utils.cosmetiques.temporary.TemporaryCosmetique;
+import humine.utils.Shopper;
+import humine.utils.cosmetiques.TemporaryCosmetique;
 
 /**
  * Package regroupant les outils de HumineShop <br />
@@ -18,14 +16,14 @@ import humine.utils.cosmetiques.temporary.TemporaryCosmetique;
 public class RandomShop extends Shop {
 
 	private LocalDate currentDate;
-
+	public static final String RANDOMSHOPNAME = "RandomShop";
 	/**
 	 * Constructeur
 	 * @param name le nom du shop
 	 * @param multiPage possibilite de voyager sur plusieurs pages ou non
 	 */
-	public RandomShop(String name, boolean multiPage) {
-		super(name, multiPage);
+	public RandomShop(Shopper owner, boolean multiPage) {
+		super(owner, multiPage);
 		this.currentDate = LocalDate.now();
 	}
 
@@ -34,8 +32,8 @@ public class RandomShop extends Shop {
 	 * @param name le nom de la page
 	 * le parametre multiPage est par defaut a <b>true</b>
 	 */
-	public RandomShop(String name) {
-		super(name);
+	public RandomShop(Shopper owner) {
+		super(owner);
 		this.currentDate = LocalDate.now();
 	}
 
@@ -49,8 +47,7 @@ public class RandomShop extends Shop {
 	 */
 	public void update() {
 		super.resetShop();
-		File folder = new File(MainShop.getInstance().getRandomShopFolder(), LocalDate.now().toString());
-		super.load(folder);
+		//TODO
 		this.currentDate = LocalDate.now();
 	}
 

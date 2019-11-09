@@ -72,7 +72,6 @@ public class CreateMaterialHatCosmetique implements CommandExecutor
 		}
 		else {
 			MainShop.getInstance().getShop().addCosmetique(cosmetique);
-			MainShop.getInstance().getHatShop().addCosmetique(cosmetique);
 		}
 		
 		MainShop.sendMessage(sender, "Cosmetique de Material Hat cree !");

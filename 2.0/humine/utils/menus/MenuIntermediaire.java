@@ -15,16 +15,9 @@ import net.md_5.bungee.api.ChatColor;
  * 
  * @author miza
  */
-public class MenuIntermediaire implements Menu{
+public abstract class MenuIntermediaire implements Menu{
 
-	private String name;
-	
-	/**
-	 * Constructeur
-	 */
-	public MenuIntermediaire() {
-		this.name = "Menu";
-	}
+	public static final String NAME_INTERMEDIAIRE = "Menu intermediaire";
 	
 	@Override
 	public void openMenu(Player player) {
@@ -33,7 +26,7 @@ public class MenuIntermediaire implements Menu{
 
 	@Override
 	public Inventory initInventory(Player player) {
-		Inventory inv = Bukkit.createInventory(null, (9 * 4), this.name);
+		Inventory inv = Bukkit.createInventory(null, (9 * 4), NAME_INTERMEDIAIRE);
 
 		inv.setItem(11, itemParticleShop());
 		inv.setItem(13, itemHatShop());
@@ -73,10 +66,4 @@ public class MenuIntermediaire implements Menu{
 		
 		return item;
 	}
-	
-	@Override
-	public String getName() {
-		return this.name;
-	}
-
 }

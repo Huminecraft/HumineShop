@@ -1,14 +1,13 @@
 package humine.events.presentation;
 
-import org.bukkit.Material;
-import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.inventory.Inventory;
 
 import humine.main.MainShop;
 import humine.utils.ItemShop;
-import humine.utils.Presentation;
+import humine.utils.Shopper;
+import humine.utils.events.ClickItemPresentationEvent;
 
 /**
  * Package regroupant les evenements du menu de presentation du plugin HumineShop
@@ -21,35 +20,20 @@ import humine.utils.Presentation;
 public class ClickQuitButton implements Listener{
 
 	@EventHandler
-	public void onClick(InventoryClickEvent event) {
-		if(event.getInventory().getName().startsWith(Presentation.getName())) {
-			if(event.getCurrentItem() != null && event.getCurrentItem().getType() != Material.AIR) {
-				if(event.getCurrentItem().isSimilar(ItemShop.itemQuit())) {
-					Player player = (Player) event.getWhoClicked();
-					returnToShop(player, event.getInventory().getName());
-				}
-			}
+	public void onClick(ClickItemPresentationEvent event) {
+		if(event.getItem().isSimilar(ItemShop.itemQuit())) {
+			returnToShop(event.getShopper(), event.getInventory());
 		}
 	}
-
-	private void returnToShop(Player player, String name)
+	
+	private void returnToShop(Shopper shopper, Inventory inventory)
 	{
-		if(MainShop.getInstance().getParticleShop().getCosmetique(name.split("#")[1]) != null)
-			MainShop.getInstance().getParticleShop().openShop(player);
-		
-		else if(MainShop.getInstance().getHatShop().getCosmetique(name.split("#")[1]) != null)
-			MainShop.getInstance().getHatShop().openShop(player);
-		
-		else if(MainShop.getInstance().getInventories().getStockOfPlayer(player.getName()).getCosmetique(name.split("#")[1]) != null)
-			MainShop.getInstance().getMenuAccueil().openMenu(player);
-			
-		else if(MainShop.getInstance().getCustomHeadShop().getCosmetique(name.split("#")[1]) != null)
-			MainShop.getInstance().getCustomHeadShop().openShop(player);
-		
-		else if(MainShop.getInstance().getRandomShop().getCosmetique(name.split("#")[1]) != null)
-			MainShop.getInstance().getRandomShop().openShop(player);
-		
-		else if(MainShop.getInstance().getEmperorShop().getCosmetique(name.split("#")[1]) != null)
-			MainShop.getInstance().getEmperorShop().openShop(player);
+		String id = inventory.getName().split("#")[1];
+		if(shopper.getStock().containsCosmetique(id))
+			MainShop.getInstance().getMenuAccueil().openMenu(shopper.getPlayer());
+		else if(shopper.getShop().containsCosmetique(id))
+			shopper.getShop().openShop();
+		else
+			MainShop.getInstance().getMenuAccueil().openMenu(shopper.getPlayer());
 	}
 }

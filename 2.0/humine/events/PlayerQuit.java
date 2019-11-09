@@ -19,5 +19,7 @@ public class PlayerQuit implements Listener
 	@EventHandler
 	public void onQuit(PlayerQuitEvent event) {
 		ParticleScheduler.disableParticleCosmetique(event.getPlayer());
+		
+		//TODO save le shopper
 	}
 }

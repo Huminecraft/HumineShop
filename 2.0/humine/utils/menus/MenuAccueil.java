@@ -12,16 +12,9 @@ import humine.utils.ItemShop;
  * 
  * @author miza
  */
-public class MenuAccueil implements Menu{
+public abstract class MenuAccueil implements Menu{
 
-	private String name;
-	
-	/**
-	 * Constructeur
-	 */
-	public MenuAccueil() {
-		this.name = "Accueil";
-	}
+	public static final String ACCUEIL_NAME = "Menu accueil";
 	
 	@Override
 	public void openMenu(Player player) {
@@ -30,7 +23,7 @@ public class MenuAccueil implements Menu{
 
 	@Override
 	public Inventory initInventory(Player player) {
-		Inventory inv = Bukkit.createInventory(null, (9 * 4), this.name);
+		Inventory inv = Bukkit.createInventory(null, (9 * 4), ACCUEIL_NAME);
 
 		inv.setItem(11, ItemShop.itemPermanentShop());
 		inv.setItem(13, ItemShop.itemLink());
@@ -45,10 +38,4 @@ public class MenuAccueil implements Menu{
 		
 		return inv;
 	}
-	
-	@Override
-	public String getName() {
-		return this.name;	
-	}
-
 }

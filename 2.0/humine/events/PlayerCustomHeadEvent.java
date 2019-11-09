@@ -1,6 +1,6 @@
 package humine.events;
 
-import java.io.File;
+import java.util.List;
 
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -12,13 +12,14 @@ import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
-import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.inventory.ItemStack;
 
 import humine.main.MainShop;
-import humine.utils.CustomHeadBlockInfo;
+import humine.main.ShopUtils;
+import humine.utils.Shopper;
+import humine.utils.cosmetiques.AbstractCustomHatCosmetique;
 import humine.utils.cosmetiques.Cosmetique;
-import humine.utils.shop.Stock;
+import humine.utils.cosmetiques.CustomHatLocation;
+import humine.utils.cosmetiques.TypeCosmetique;
 
 /**
  * Package regroupant les evenements "principals" du plugin HumineShop
@@ -31,19 +32,6 @@ public class PlayerCustomHeadEvent implements Listener
 {
 
 	@EventHandler
-	public void onJoin(PlayerJoinEvent event) {
-		if(MainShop.getInstance().getPlayerCustomHeadList().containsKey(event.getPlayer().getName()))
-			return;
-		
-		File file = new File(MainShop.getInstance().getCustomHeadBlockFile(), event.getPlayer().getName() + ".yml");
-		CustomHeadBlockInfo chb = CustomHeadBlockInfo.load(file);
-		
-		if(chb == null)
-			MainShop.getInstance().getPlayerCustomHeadList().put(event.getPlayer().getName(), new CustomHeadBlockInfo(event.getPlayer().getName()));
-	
-	}
-	
-	@EventHandler
 	public void onPose(BlockPlaceEvent event) {
 		if(event.getBlock().getType() != Material.PLAYER_HEAD)
 			return;
@@ -51,21 +39,16 @@ public class PlayerCustomHeadEvent implements Listener
 		if(!event.getItemInHand().getItemMeta().getDisplayName().contains("#"))
 			return;
 		
-		Player player = event.getPlayer();
-		Stock stock = MainShop.getInstance().getInventories().getStockOfPlayer(player.getName());
-		
-		if(stock == null)
-			return;
-		Cosmetique c = stock.getCosmetique(event.getItemInHand().getItemMeta().getDisplayName().split("#")[1]);
-		
-		if(c == null)
-			return;
-		CustomHeadBlockInfo chb = MainShop.getInstance().getPlayerCustomHeadList().get(player.getName());
-		
-		if(chb == null)
+		Shopper shopper = MainShop.getInstance().getShopperBank().getShopper(event.getPlayer());
+		if(shopper == null)
 			return;
 		
-		chb.addBlock(event.getBlock(), event.getItemInHand());
+		Cosmetique c = ShopUtils.getCosmetiqueInStock(shopper, event.getItemInHand());
+		if(c != null && c instanceof AbstractCustomHatCosmetique) {
+			AbstractCustomHatCosmetique cosmetique = (AbstractCustomHatCosmetique) c;
+			cosmetique.getCustomHatData().setInInventory(cosmetique.getCustomHatData().getInInventory() - 1);
+			cosmetique.getCustomHatData().addLocation(new CustomHatLocation(event.getBlock().getLocation()));
+		}
 	}
 	
 	@EventHandler
@@ -73,44 +56,44 @@ public class PlayerCustomHeadEvent implements Listener
 		if(event.getBlock().getType() != Material.PLAYER_HEAD)
 			return;
 		
-		Player player = event.getPlayer();
-		
-		CustomHeadBlockInfo chb = MainShop.getInstance().getPlayerCustomHeadList().get(player.getName());
-		if(chb == null)
+		Shopper shopper = MainShop.getInstance().getShopperBank().getShopper(event.getPlayer());
+		if(shopper == null)
 			return;
 		
-		if(chb.contains(event.getBlock())) {
-			ItemStack item = chb.getItemStack(event.getBlock());
-			if(item == null)
-				return;
-
-			Stock stock = MainShop.getInstance().getInventories().getStockOfPlayer(player.getName());
-			if(stock == null)
-				return;
-			
-			Cosmetique c = stock.getCosmetique(item.getItemMeta().getDisplayName().split("#")[1]);
-			if(c == null)
-				return;
-			
-			int slot = getFreeSlot(player);
-			if(slot != -1) {
-				event.getPlayer().getInventory().setItem(slot, Cosmetique.cosmetiqueToItem(c));
-			}
-			else {
-				MainShop.sendMessage(player, "Vous n'avez plus de place dans votre inventaire, le cosmetique a etait remis dans votre stock");
-			}
-				
-			chb.removeBlock(event.getBlock());
-			event.setCancelled(true);
-			event.getBlock().setType(Material.AIR);
-		}
-			
 		if(belongToPlayer(event.getBlock())) {
-			player.sendMessage("Vous ne pouvez pas casser cette tete");
+			MainShop.sendMessage(shopper.getPlayer(), "Vous ne pouvez pas casser cette tete");
 			event.setCancelled(true);
 			return;
 		}
+		
+		CustomHatLocation loc = new CustomHatLocation(event.getBlock().getLocation());
+		List<Cosmetique> cosmetiques = shopper.getCosmetiques(TypeCosmetique.CUSTOM_HAT);
+		AbstractCustomHatCosmetique cosmetique = null;
+		
+		for(Cosmetique c : cosmetiques) {
+			AbstractCustomHatCosmetique ac = (AbstractCustomHatCosmetique) c;
+			if(ac.getCustomHatData().getLocations().contains(loc))
+				cosmetique = ac;
+		}
+		
+		if(cosmetique == null)
+			return;
+		
+		int slot = getFreeSlot(shopper.getPlayer());
+		if(slot != -1) {
+			event.getPlayer().getInventory().setItem(slot, cosmetique.convertToItem());
+			cosmetique.getCustomHatData().setInInventory(cosmetique.getCustomHatData().getInInventory() + 1);
+		}
+		else {
+			MainShop.sendMessage(shopper.getPlayer(), "Vous n'avez plus de place dans votre inventaire, le cosmetique a etait remis dans votre stock");
+			cosmetique.getCustomHatData().setInStock(cosmetique.getCustomHatData().getInStock() + 1);
+		}
+			
+		event.setCancelled(true);
+		event.getBlock().setType(Material.AIR);
+		cosmetique.getCustomHatData().getLocations().remove(loc);
 	}
+	
 	private int getFreeSlot(Player player) {
 		for(int i = 0; i < player.getInventory().getStorageContents().length; i++) {
 			if(player.getInventory().getStorageContents()[i] == null || player.getInventory().getStorageContents()[i].getType() == Material.AIR) {
@@ -132,9 +115,16 @@ public class PlayerCustomHeadEvent implements Listener
 	}
 	
 	private boolean belongToPlayer(Block block) {
-		for(CustomHeadBlockInfo chb : MainShop.getInstance().getPlayerCustomHeadList().values()) {
-			if(chb.contains(block))
-				return true;
+		CustomHatLocation loc = new CustomHatLocation(block.getLocation());
+		
+		for(Shopper shopper : MainShop.getInstance().getShopperBank().getOnlyShoppers()) {
+			List<Cosmetique> cosmetiques = shopper.getCosmetiques(TypeCosmetique.CUSTOM_HAT);
+			
+			for(Cosmetique c : cosmetiques) {
+				AbstractCustomHatCosmetique ac = (AbstractCustomHatCosmetique) c;
+				if(ac.getCustomHatData().getLocations().contains(loc))
+					return true;
+			}
 		}
 		return false;
 	}
@@ -151,13 +141,11 @@ public class PlayerCustomHeadEvent implements Listener
 			return;
 		
 		Player player = (Player) event.getWhoClicked();
-		Stock stock = MainShop.getInstance().getInventories().getStockOfPlayer(player.getName());
-		
-		if(stock == null)
+		Shopper shopper = MainShop.getInstance().getShopperBank().getShopper(player);
+		if(shopper == null)
 			return;
 		
-		Cosmetique c = stock.getCosmetique(event.getCurrentItem().getItemMeta().getDisplayName().split("#")[1]);
-		
+		Cosmetique c = ShopUtils.getCosmetiqueInStock(shopper, event.getCurrentItem());
 		if(c == null)
 			return;
 		
@@ -174,13 +162,11 @@ public class PlayerCustomHeadEvent implements Listener
 			return;
 		
 		Player player = event.getPlayer();
-		Stock stock = MainShop.getInstance().getInventories().getStockOfPlayer(player.getName());
-		
-		if(stock == null)
+		Shopper shopper = MainShop.getInstance().getShopperBank().getShopper(player);
+		if(shopper == null)
 			return;
 		
-		Cosmetique c = stock.getCosmetique(event.getItemDrop().getItemStack().getItemMeta().getDisplayName().split("#")[1]);
-	
+		Cosmetique c = ShopUtils.getCosmetiqueInStock(shopper, event.getItemDrop().getItemStack());
 		if(c == null)
 			return;
 		

@@ -15,7 +15,7 @@ import org.bukkit.inventory.ItemStack;
 
 import humine.main.MainShop;
 import humine.utils.Prestige;
-import humine.utils.cosmetiques.temporary.TemporaryCustomHeadCosmetique;
+import humine.utils.cosmetiques.TemporaryCustomHeadCosmetique;
 import humine.utils.shop.RandomShop;
 
 /**

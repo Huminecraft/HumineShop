@@ -14,6 +14,4 @@ public interface Menu {
 	public void openMenu(Player player);
 	
 	public Inventory initInventory(Player player);
-	
-	public String getName();
 }

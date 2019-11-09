@@ -96,8 +96,8 @@ public class CreateCustomHeadCosmetique implements CommandExecutor{
 		}
 		else {
 			MainShop.getInstance().getShop().addCosmetique(cosmetique);
-			MainShop.getInstance().getCustomHeadShop().addCosmetique(cosmetique);
 		}
+		
 		MainShop.sendMessage(player, "Cosmetique de Custom Head cree !");
 		MainShop.sendMessage(player, "nom: " + cosmetique.getName());
 		MainShop.sendMessage(player, "id: #" + cosmetique.getId());

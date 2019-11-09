@@ -1,16 +1,13 @@
 package humine.events.presentation;
 
-import org.bukkit.Material;
-import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.inventory.InventoryClickEvent;
 
-import humine.main.MainShop;
-import humine.utils.CustomHeadBlockInfo;
 import humine.utils.Presentation;
+import humine.utils.Shopper;
+import humine.utils.cosmetiques.AbstractCustomHatCosmetique;
 import humine.utils.cosmetiques.Cosmetique;
-import humine.utils.shop.Stock;
+import humine.utils.events.ClickItemPresentationEvent;
 
 /**
  * Package regroupant les evenements du menu de presentation du plugin HumineShop
@@ -22,24 +19,19 @@ import humine.utils.shop.Stock;
 public class ClickTakeAllInventoryButton implements Listener{
 
 	@EventHandler
-	public void onClick(InventoryClickEvent event) {
-		if(event.getInventory().getName().startsWith(Presentation.getName())) {
-			if(event.getCurrentItem() != null && event.getCurrentItem().getType() != Material.AIR) {
-				if(event.getCurrentItem().getItemMeta().getDisplayName().equals(Presentation.itemTakeAllInventory().getItemMeta().getDisplayName())) {
-					takeAllInventory((Player) event.getWhoClicked());
-				}
-			}
+	public void onClick(ClickItemPresentationEvent event) {
+		if(event.getItem().getItemMeta().getDisplayName().equals(Presentation.itemTakeAllInventory().getItemMeta().getDisplayName())) {
+			takeAllInventory(event.getShopper());
 		}
 	}
 	
-	public void takeAllInventory(Player player) {
-		CustomHeadBlockInfo chb = MainShop.getInstance().getPlayerCustomHeadList().get(player.getName());
-		Cosmetique c = Presentation.getCosmetiques().get(player);
-		Stock stock = MainShop.getInstance().getInventories().getStockOfPlayer(player.getName());
-		
-		if(chb == null || c == null || stock == null)
+	public void takeAllInventory(Shopper shopper) {
+		Cosmetique c = Presentation.getCosmetiques().get(shopper.getPlayer());
+		if(c == null && !(c instanceof AbstractCustomHatCosmetique))
 			return;
 		
-		ClickTakeAllButton.takeItemInInventory(player, stock, c);
+		AbstractCustomHatCosmetique cosmetique = (AbstractCustomHatCosmetique) c;
+		
+		ClickTakeAllButton.takeItemInInventory(shopper, cosmetique);
 	}
 }
