@@ -1,10 +1,54 @@
 name: HumineShop
-main: com.humine.main.ShopMain
+main: humine.main.MainShop
+version: 3.0
 author: MizakiGaming
-version: 1.0a
-api-version: 1.13
+api-version: 1.14
 commands:
-  gemme:
-    description: Voir le nombre de gemme
   shop:
-    description: ouvre la boutique de cosmetique
+    usage:
+    description: ouvrir le shop
+    permission:
+  money:
+    usage:
+    description: voir ses humis/pixel
+    permission:
+  ccp:
+    usage:
+    description: creer un cosmetique de particule
+    permission:
+  chelp:
+    usage:
+    description: voir la liste des Material ou Particle
+    permission:
+  tccp:
+    usage:
+    description: creer un cosmetique de particule temporaire
+    permission:
+  rc:
+    usage:
+    description: supprimer un cosmetique
+    permission:
+  ccmh:
+    usage:
+    description: creer un cosmetique de Material Hat
+    permission:
+  tccmh:
+    usage:
+    description: creer un cosmetique de Material Hat temporaire
+    permission:
+  store:
+    usage:
+    description: ajouter des humis/pixel a un joueur
+    permission:
+  storedelete:
+    usage:
+    description: supprimer des humis/pixel a un joueur
+    permission:
+  ccch:
+    usage:
+    description: creer un cosmetique de Custom Head
+    permission:
+  tccch:
+    usage:
+    description: creer un cosmetique de Custom Head temporaire
+    permission:
