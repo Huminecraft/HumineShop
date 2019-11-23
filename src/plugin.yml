@@ -52,3 +52,7 @@ commands:
     usage:
     description: creer un cosmetique de Custom Head temporaire
     permission:
+  cosmetiquecommand:
+    usage:
+    description: creer un cosmetique de Custom Head temporaire
+    permission:

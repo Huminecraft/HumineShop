@@ -3,6 +3,7 @@ package humine.utils.cosmetiques;
 import java.time.LocalDate;
 
 import org.bukkit.Particle;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import humine.utils.Prestige;
@@ -43,5 +44,15 @@ public class TemporaryParticleCosmetique extends AbstractParticleCosmetique impl
 	public void setDate(LocalDate date)
 	{
 		this.date = date;
+	}
+	
+	@Override
+	public void playEffect(Player player) {
+		player.getWorld().spawnParticle(getParticleEffect(), player.getLocation().getX(), player.getLocation().getY(), player.getLocation().getZ(), 30, 0.3, 0.3, 0.3, 1.0, null);
+	}
+	
+	@Override
+	public void playDemo(Player player) {
+		playEffect(player);
 	}
 }

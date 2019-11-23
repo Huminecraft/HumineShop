@@ -68,7 +68,7 @@ public class CreateParticleCosmetique implements CommandExecutor{
 		int pixelPrice = Integer.parseInt(args[3]);
 		Particle particle = Particle.values()[ordinalParticle];
 		
-		ParticleCosmetique cosmetique = new ParticleCosmetique(args[0], new ItemStack(material), humisPrice, pixelPrice, particle, prestige);
+		ParticleCosmetique cosmetique = new ParticleCosmetique(args[0].replace("_", " "), new ItemStack(material), humisPrice, pixelPrice, particle, prestige);
 		
 		if(emperor) {
 			MainShop.getInstance().getEmperorShop().addCosmetique(cosmetique);
@@ -77,14 +77,7 @@ public class CreateParticleCosmetique implements CommandExecutor{
 			MainShop.getInstance().getShop().addCosmetique(cosmetique);
 		}
 		
-		MainShop.sendMessage(sender, "Cosmetique de Particule cree !");
-		MainShop.sendMessage(sender, "nom: " + cosmetique.getName());
-		MainShop.sendMessage(sender, "id: #" + cosmetique.getId());
-		MainShop.sendMessage(sender, "prix humis: " + cosmetique.getHumisPrice());
-		MainShop.sendMessage(sender, "prix pixel: " + cosmetique.getPixelPrice());
-		MainShop.sendMessage(sender, "Item presentation: " + cosmetique.getItemShop());
-		MainShop.sendMessage(sender, "effet particule: " + cosmetique.getParticleEffect());
-		MainShop.sendMessage(sender, "prestige: " + cosmetique.getPrestige().name().toLowerCase());
+		MainShop.sendMessage(sender, "Cosmetique de Particule #"+cosmetique.getId()+" cree !");
 		
 		return true;
 	}

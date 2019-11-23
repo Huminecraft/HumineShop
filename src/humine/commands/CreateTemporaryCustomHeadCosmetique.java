@@ -96,7 +96,7 @@ public class CreateTemporaryCustomHeadCosmetique implements CommandExecutor{
 		int pixelPrice = Integer.parseInt(args[4]);
 		LocalDate date = getDate(args[5]);
 		
-		TemporaryCustomHeadCosmetique cosmetique = new TemporaryCustomHeadCosmetique(args[0], item, humisPrice, pixelPrice, date, prestige, args[1]);
+		TemporaryCustomHeadCosmetique cosmetique = new TemporaryCustomHeadCosmetique(args[0].replace("_", " "), item, humisPrice, pixelPrice, date, prestige, args[1]);
 
 		if(date.isEqual(LocalDate.now())) {
 			MainShop.getInstance().getRandomShop().addCosmetique(cosmetique);

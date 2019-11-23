@@ -89,7 +89,7 @@ public class CreateCustomHeadCosmetique implements CommandExecutor{
 		int humisPrice = Integer.parseInt(args[3]);
 		int pixelPrice = Integer.parseInt(args[4]);
 		
-		CustomHeadCosmetique cosmetique = new CustomHeadCosmetique(args[0], item, humisPrice, pixelPrice, prestige, args[1]);
+		CustomHeadCosmetique cosmetique = new CustomHeadCosmetique(args[0].replace("_", " "), item, humisPrice, pixelPrice, prestige, args[1]);
 
 		if(emperor) {
 			MainShop.getInstance().getEmperorShop().addCosmetique(cosmetique);
@@ -98,13 +98,7 @@ public class CreateCustomHeadCosmetique implements CommandExecutor{
 			MainShop.getInstance().getShop().addCosmetique(cosmetique);
 		}
 		
-		MainShop.sendMessage(player, "Cosmetique de Custom Head cree !");
-		MainShop.sendMessage(player, "nom: " + cosmetique.getName());
-		MainShop.sendMessage(player, "id: #" + cosmetique.getId());
-		MainShop.sendMessage(player, "prix humis: " + cosmetique.getHumisPrice());
-		MainShop.sendMessage(player, "prix pixel: " + cosmetique.getPixelPrice());
-		MainShop.sendMessage(player, "Custom Head: " + cosmetique.getLibelle());
-		MainShop.sendMessage(player, "prestige: " + cosmetique.getPrestige().name().toLowerCase());
+		MainShop.sendMessage(sender, "Cosmetique de Custom Head #"+cosmetique.getId()+" cree !");
 		
 		return true;
 	}

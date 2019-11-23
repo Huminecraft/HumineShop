@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Particle;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import humine.utils.Prestige;
@@ -54,5 +55,8 @@ public abstract class AbstractParticleCosmetique extends Cosmetique
 	{
 		return TypeCosmetique.PARTICLE;
 	}
-
+	
+	public abstract void playEffect(Player player);
+	
+	public abstract void playDemo(Player player);
 }

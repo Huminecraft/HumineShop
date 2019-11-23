@@ -1,5 +1,7 @@
 package humine.main;
 
+import java.time.LocalDate;
+
 import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.block.Biome;
@@ -95,5 +97,31 @@ public abstract class ShopUtils
 			}
 		}
 		return null;
+	}
+
+	public static boolean dateValid(String date) {
+		if(date.length() != 10)
+			return false;
+		
+		String[] str = date.split("/");
+		
+		if(str.length != 3)
+			return false;
+
+		if(!isNumber(str[0]) || !isNumber(str[1]) || !isNumber(str[2]))
+			return false;
+		
+		if(str[0].length() != 2 || str[1].length() != 2 || str[2].length() != 4)
+			return false;
+		
+		return true;
+	}
+	
+	// 24/03/2019
+	public static LocalDate getDate(String date) {
+		int year = Integer.parseInt(date.split("/")[2]);
+		int month = Integer.parseInt(date.split("/")[1]);
+		int day = Integer.parseInt(date.split("/")[0]);
+		return LocalDate.of(year, month, day);
 	}
 }

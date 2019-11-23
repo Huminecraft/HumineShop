@@ -11,6 +11,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import humine.commands.AddMoney;
+import humine.commands.CosmetiqueLoad;
+import humine.commands.CreateCommandParticle;
 import humine.commands.CreateCustomHeadCosmetique;
 import humine.commands.CreateMaterialHatCosmetique;
 import humine.commands.CreateParticleCosmetique;
@@ -77,6 +79,8 @@ public class MainShop extends JavaPlugin {
 	private final File shopperFolder = new File(getDataFolder(), "Shoppers");
 	private final File bankItemFile = new File(getDataFolder(), "ItemBank.yml");
 	
+	private final File cosmetiqueFile = new File(getDataFolder(), "Cosmetiques.hs");
+	
 	@Override
 	public void onEnable() {
 		instance = this;
@@ -91,16 +95,8 @@ public class MainShop extends JavaPlugin {
 		initializeEvents();
 		
 		getServer().getLogger().log(Level.INFO, "=================================");
-		getServer().getLogger().log(Level.INFO, "HumineSHop est lancer et tu as le message");
-		if(this.shop == null) {
-			getServer().getLogger().log(Level.INFO, "Shop est null bordel !!!!");
-		}
-		else
-			getServer().getLogger().log(Level.INFO, this.shop.toString());
-		
-		if(this.randomShop == null) {
-			System.out.println("RandomShop est null bordel !!!!");
-		}
+		getServer().getLogger().log(Level.INFO, "HumineShop est lance et tu as le message");
+		getServer().getLogger().log(Level.INFO, "=================================");
 		
 		this.getServer().getScheduler().scheduleSyncRepeatingTask(this, new Runnable() {
 			public void run()
@@ -110,7 +106,7 @@ public class MainShop extends JavaPlugin {
 			}
 		}, 0L, (60 * 20));
 		
-		getServer().getLogger().log(Level.INFO, "=================================");
+		
 	}
 	
 	private void initializeVariables() {
@@ -174,6 +170,14 @@ public class MainShop extends JavaPlugin {
 		if(!randomShopFolder.exists())
 			randomShopFolder.mkdirs();
 		
+		if(!cosmetiqueFile.exists()) {
+			try {
+				cosmetiqueFile.createNewFile();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		
 		if(!shopFolder.exists())
 			shopFolder.mkdirs();
 		
@@ -205,6 +209,9 @@ public class MainShop extends JavaPlugin {
 		this.getCommand("storedelete").setExecutor(new RemoveMoney());
 		this.getCommand("ccch").setExecutor(new CreateCustomHeadCosmetique());
 		this.getCommand("tccch").setExecutor(new CreateTemporaryCustomHeadCosmetique());
+		
+		this.getCommand("cosmetiqueload").setExecutor(new CosmetiqueLoad());
+		this.getCommand("cosmetiquecommand").setExecutor(new CreateCommandParticle());
 	}
 	
 	private void initializeEvents() {
@@ -301,6 +308,10 @@ public class MainShop extends JavaPlugin {
 	public File getShopperFolder()
 	{
 		return shopperFolder;
+	}
+	
+	public File getCosmetiqueFile() {
+		return cosmetiqueFile;
 	}
 }
 

@@ -44,7 +44,7 @@ public class ClickCosmetiqueButton implements Listener
 	}
 
 	public void clickParticleCosmetique(Shopper shopper, AbstractParticleCosmetique cosmetique) {
-		ParticleScheduler.enableParticleCosmetique(shopper.getPlayer(), cosmetique);
+		ParticleScheduler.playParticleCosmetique(shopper.getPlayer(), cosmetique);
 		shopper.getPlayer().closeInventory();
 	}
 	

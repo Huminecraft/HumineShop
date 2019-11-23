@@ -65,7 +65,7 @@ public class CreateMaterialHatCosmetique implements CommandExecutor
 		int pixelPrice = Integer.parseInt(args[3]);
 		Material materialHat = Material.values()[ordinalMaterialHat];
 		
-		MaterialHatCosmetique cosmetique = new MaterialHatCosmetique(args[0], new ItemStack(material), humisPrice, pixelPrice, materialHat, prestige);
+		MaterialHatCosmetique cosmetique = new MaterialHatCosmetique(args[0].replace("_", " "), new ItemStack(material), humisPrice, pixelPrice, materialHat, prestige);
 		
 		if(emperor) {
 			MainShop.getInstance().getEmperorShop().addCosmetique(cosmetique);
@@ -74,14 +74,7 @@ public class CreateMaterialHatCosmetique implements CommandExecutor
 			MainShop.getInstance().getShop().addCosmetique(cosmetique);
 		}
 		
-		MainShop.sendMessage(sender, "Cosmetique de Material Hat cree !");
-		MainShop.sendMessage(sender, "nom: " + cosmetique.getName());
-		MainShop.sendMessage(sender, "id: #" + cosmetique.getId());
-		MainShop.sendMessage(sender, "prix humis: " + cosmetique.getHumisPrice());
-		MainShop.sendMessage(sender, "prix pixel: " + cosmetique.getPixelPrice());
-		MainShop.sendMessage(sender, "Item presentation: " + cosmetique.getItemShop());
-		MainShop.sendMessage(sender, "Material hat: " + cosmetique.getMaterialHat());
-		MainShop.sendMessage(sender, "prestige: " + cosmetique.getPrestige().name().toLowerCase());
+		MainShop.sendMessage(sender, "Cosmetique de Material Hat #"+cosmetique.getId()+" cree !");
 		
 		return true;
 	}

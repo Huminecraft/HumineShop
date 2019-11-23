@@ -1,6 +1,7 @@
 package humine.events.presentation;
 
 import org.bukkit.ChatColor;
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -43,7 +44,8 @@ public class ClickPixelBuyButton implements Listener
 				event.getShopper().getCosmetiques().add(c);
 				event.getShopper().getPixel().removeAmount(c.getPixelPrice());
 				event.getShopper().getPlayer().closeInventory();
-				MainShop.sendMessage(event.getShopper().getPlayer(), "Cosmetique achete !");
+				event.getShopper().getPlayer().getWorld().playSound(event.getShopper().getPlayer().getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 100.0f, 1.0f);
+				MainShop.sendMessage(event.getShopper().getPlayer(), "Cosmetique achete ! il se trouve maintenant dans votre stock. /shop");
 			}
 			else {
 				event.getShopper().getPlayer().closeInventory();

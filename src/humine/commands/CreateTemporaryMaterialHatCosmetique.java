@@ -74,7 +74,7 @@ public class CreateTemporaryMaterialHatCosmetique implements CommandExecutor
 		Material materialHat = Material.values()[ordinalMaterialHat];
 		LocalDate date = getDate(args[5]);
 		
-		TemporaryMaterialHatCosmetique cosmetique = new TemporaryMaterialHatCosmetique(args[0], new ItemStack(material), humisPrice, pixelPrice, date, prestige, materialHat);
+		TemporaryMaterialHatCosmetique cosmetique = new TemporaryMaterialHatCosmetique(args[0].replace("_", " "), new ItemStack(material), humisPrice, pixelPrice, date, prestige, materialHat);
 		
 		
 		if(date.isEqual(LocalDate.now())) {
