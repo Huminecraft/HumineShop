@@ -57,30 +57,31 @@ import humine.utils.shop.Shop;
 
 /**
  * Classe principal de HumineShop
+ * 
  * @author miza
  */
 public class MainShop extends JavaPlugin {
 
 	private static MainShop instance;
-	
+
 	private Shop shop;
 	private RandomShop randomShop;
 	private Shop emperorShop;
-	
+
 	private static ShopperBank shopperBank;
 	private BankItemShop itemShopBank;
-	
+
 	public static int CosmetiqueID;
-	
+
 	private final File randomShopFolder = new File(getDataFolder(), "RandomShop");
 	private final File shopFolder = new File(getDataFolder(), "Shop");
 	private final File emperorShopFolder = new File(getDataFolder(), "EmperorShop");
-	
+
 	private final File shopperFolder = new File(getDataFolder(), "Shoppers");
 	private final File bankItemFile = new File(getDataFolder(), "ItemBank.yml");
-	
+
 	private final File cosmetiqueFile = new File(getDataFolder(), "Cosmetiques.hs");
-	
+
 	@Override
 	public void onEnable() {
 		instance = this;
@@ -88,78 +89,75 @@ public class MainShop extends JavaPlugin {
 		saveConfig();
 
 		ParticleScheduler.startScheduler(this);
-		
+
 		initializeFiles();
 		initializeVariables();
 		initializeCommands();
 		initializeEvents();
-		
+
 		getServer().getLogger().log(Level.INFO, "=================================");
 		getServer().getLogger().log(Level.INFO, "HumineShop est lance et tu as le message");
 		getServer().getLogger().log(Level.INFO, "=================================");
-		
+
 		this.getServer().getScheduler().scheduleSyncRepeatingTask(this, new Runnable() {
-			public void run()
-			{
-				if(randomShop.getCurrentDate().isBefore(LocalDate.now()))
+			public void run() {
+				if (randomShop.getCurrentDate().isBefore(LocalDate.now()))
 					randomShop.update();
 			}
 		}, 0L, (60 * 20));
-		
-		
+
 	}
-	
+
 	private void initializeVariables() {
 		shopperBank = new ShopperBank();
-		if(getConfig().contains("cosmetique"))
+		if (getConfig().contains("cosmetique"))
 			CosmetiqueID = getConfig().getInt("cosmetique");
 		else
 			CosmetiqueID = 0;
-		
+
 		try {
 			this.itemShopBank = humine.utils.files.ShopLoader.loadBankItem(this.bankItemFile);
 			this.shop = humine.utils.files.ShopLoader.loadShop(this.shopFolder);
 			this.emperorShop = humine.utils.files.ShopLoader.loadShop(this.emperorShopFolder);
 			this.randomShop = humine.utils.files.ShopLoader.loadRandomShop(LocalDate.now());
-			
-			for(Player player : getServer().getOnlinePlayers()) {
+
+			for (Player player : getServer().getOnlinePlayers()) {
 				Shopper shopper = humine.utils.files.ShopLoader.loadShopper(player);
-				if(shopper == null)
+				if (shopper == null)
 					shopper = new Shopper(player);
-				
+
 				getServer().getLogger().log(Level.INFO, shopper.toString());
 				shopperBank.addShopper(shopper);
 			}
-			
+
 		} catch (IOException | ClassNotFoundException e) {
 			e.printStackTrace();
 		}
-		
-		if(this.itemShopBank == null)
+
+		if (this.itemShopBank == null)
 			this.itemShopBank = new BankItemShop();
-		if(this.shop == null)
+		if (this.shop == null)
 			this.shop = new Shop(null);
-		if(this.emperorShop == null)
+		if (this.emperorShop == null)
 			this.emperorShop = new Shop(null);
-		if(this.randomShop == null)
+		if (this.randomShop == null)
 			this.randomShop = new RandomShop(null);
 	}
 
 	@Override
-	public void onDisable()
-	{
+	public void onDisable() {
 		try {
 			getConfig().set("cosmetique", CosmetiqueID);
 			saveConfig();
-			
+
 			humine.utils.files.ShopSaver.saveShop(this.shop, this.shopFolder);
 			humine.utils.files.ShopSaver.saveShop(this.emperorShop, this.emperorShopFolder);
 			humine.utils.files.ShopSaver.saveRandomShop(this.randomShop, LocalDate.now());
 			humine.utils.files.ShopSaver.saveBankItem(this.itemShopBank, this.bankItemFile);
-			
-			for(Shopper shopper : getShopperManager().getOnlyShoppers())
+
+			for (Shopper shopper : getShopperManager().getOnlyShoppers())
 				humine.utils.files.ShopSaver.saveShopper(shopper);
-			
+
 		} catch (IOException e1) {
 			getServer().getLogger().log(Level.SEVERE, "Probleme sauvegarde");
 			e1.printStackTrace();
@@ -167,27 +165,27 @@ public class MainShop extends JavaPlugin {
 	}
 
 	private void initializeFiles() {
-		if(!randomShopFolder.exists())
+		if (!randomShopFolder.exists())
 			randomShopFolder.mkdirs();
-		
-		if(!cosmetiqueFile.exists()) {
+
+		if (!cosmetiqueFile.exists()) {
 			try {
 				cosmetiqueFile.createNewFile();
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
 		}
-		
-		if(!shopFolder.exists())
+
+		if (!shopFolder.exists())
 			shopFolder.mkdirs();
-		
-		if(!emperorShopFolder.exists())
+
+		if (!emperorShopFolder.exists())
 			emperorShopFolder.mkdirs();
-		
-		if(!shopperFolder.exists())
+
+		if (!shopperFolder.exists())
 			shopperFolder.mkdirs();
-		
-		if(!bankItemFile.exists()) {
+
+		if (!bankItemFile.exists()) {
 			try {
 				bankItemFile.createNewFile();
 			} catch (IOException e) {
@@ -195,7 +193,7 @@ public class MainShop extends JavaPlugin {
 			}
 		}
 	}
-	
+
 	private void initializeCommands() {
 		this.getCommand("money").setExecutor(new ShowMoney());
 		this.getCommand("shop").setExecutor(new OpenShopCommand());
@@ -209,24 +207,24 @@ public class MainShop extends JavaPlugin {
 		this.getCommand("storedelete").setExecutor(new RemoveMoney());
 		this.getCommand("ccch").setExecutor(new CreateCustomHeadCosmetique());
 		this.getCommand("tccch").setExecutor(new CreateTemporaryCustomHeadCosmetique());
-		
+
 		this.getCommand("cosmetiqueload").setExecutor(new CosmetiqueLoad());
 		this.getCommand("cosmetiquecommand").setExecutor(new CreateCommandParticle());
 	}
-	
+
 	private void initializeEvents() {
 		this.getServer().getPluginManager().registerEvents(new InitializeEvents(), this);
-		
+
 		this.getServer().getPluginManager().registerEvents(new CreateShopperEvent(), this);
 		this.getServer().getPluginManager().registerEvents(new ShopEvent(), this);
 		this.getServer().getPluginManager().registerEvents(new RandomShopEvent(), this);
-		
+
 		this.getServer().getPluginManager().registerEvents(new BlockMoveCosmetique(), this);
 		this.getServer().getPluginManager().registerEvents(new PlayerQuit(), this);
 		this.getServer().getPluginManager().registerEvents(new PlayerCustomHeadEvent(), this);
-		
+
 		this.getServer().getPluginManager().registerEvents(new ClickMaterialInventory(), this);
-		
+
 		this.getServer().getPluginManager().registerEvents(new ClickCustomHeadButton(), this);
 		this.getServer().getPluginManager().registerEvents(new ClickHatStockButton(), this);
 		this.getServer().getPluginManager().registerEvents(new ClickLinkButton(), this);
@@ -234,13 +232,14 @@ public class MainShop extends JavaPlugin {
 		this.getServer().getPluginManager().registerEvents(new ClickPermanentShopButton(), this);
 		this.getServer().getPluginManager().registerEvents(new ClickQuitButton(), this);
 		this.getServer().getPluginManager().registerEvents(new ClickTemporaryShopButton(), this);
-		
-		this.getServer().getPluginManager().registerEvents(new humine.events.menuintermediaire.ClickCustomHeadButton(), this);
+
+		this.getServer().getPluginManager().registerEvents(new humine.events.menuintermediaire.ClickCustomHeadButton(),
+				this);
 		this.getServer().getPluginManager().registerEvents(new ClickEmpereurButton(), this);
 		this.getServer().getPluginManager().registerEvents(new ClickHatShopButton(), this);
 		this.getServer().getPluginManager().registerEvents(new ClickParticleShopButton(), this);
 		this.getServer().getPluginManager().registerEvents(new humine.events.menuintermediaire.ClickQuitButton(), this);
-		
+
 		this.getServer().getPluginManager().registerEvents(new ClickHumisBuyButton(), this);
 		this.getServer().getPluginManager().registerEvents(new humine.events.presentation.ClickLinkButton(), this);
 		this.getServer().getPluginManager().registerEvents(new ClickPixelBuyButton(), this);
@@ -249,7 +248,7 @@ public class MainShop extends JavaPlugin {
 		this.getServer().getPluginManager().registerEvents(new ClickTakeAllButton(), this);
 		this.getServer().getPluginManager().registerEvents(new ClickTakeAllBlocksButton(), this);
 		this.getServer().getPluginManager().registerEvents(new ClickTakeAllInventoryButton(), this);
-		
+
 		this.getServer().getPluginManager().registerEvents(new humine.events.stocks.ClickCosmetiqueButton(), this);
 		this.getServer().getPluginManager().registerEvents(new ClickDisableButton(), this);
 		this.getServer().getPluginManager().registerEvents(new humine.events.stocks.ClickNextButton(), this);
@@ -274,8 +273,7 @@ public class MainShop extends JavaPlugin {
 		this.shop = shop;
 	}
 
-	public File getShopFolder()
-	{
+	public File getShopFolder() {
 		return shopFolder;
 	}
 
@@ -290,29 +288,24 @@ public class MainShop extends JavaPlugin {
 	public File getRandomShopFolder() {
 		return randomShopFolder;
 	}
-	
+
 	public Shop getEmperorShop() {
 		return emperorShop;
 	}
-	
-	public static ShopperBank getShopperManager()
-	{
+
+	public static ShopperBank getShopperManager() {
 		return shopperBank;
 	}
-	
-	public BankItemShop getItemShopBank()
-	{
+
+	public BankItemShop getItemShopBank() {
 		return itemShopBank;
 	}
-	
-	public File getShopperFolder()
-	{
+
+	public File getShopperFolder() {
 		return shopperFolder;
 	}
-	
+
 	public File getCosmetiqueFile() {
 		return cosmetiqueFile;
 	}
 }
-
-

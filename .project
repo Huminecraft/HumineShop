@@ -3,6 +3,8 @@
 	<name>HumineShop</name>
 	<comment></comment>
 	<projects>
+		<project>HumineChallenge</project>
+		<project>Librairies</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>
