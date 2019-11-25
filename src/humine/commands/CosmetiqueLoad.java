@@ -8,16 +8,15 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import fr.humine.main.ChallengeMain;
-import fr.humine.utils.files.ChallengeFile;
 import humine.main.MainShop;
+import humine.utils.files.CommandFile;
 
 public class CosmetiqueLoad implements CommandExecutor{
 
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
 		if(!(sender instanceof Player)) {
-			ChallengeMain.sendMessage(sender, "Vous devez etre un joueur");
+			MainShop.sendMessage(sender, "Vous devez etre un joueur");
 			return false;
 		}
 		
@@ -25,11 +24,11 @@ public class CosmetiqueLoad implements CommandExecutor{
 		
 		try
 		{
-			List<String> commands = ChallengeFile.loadCommandFile(MainShop.getInstance().getCosmetiqueFile());
+			List<String> commands = CommandFile.loadCommandFile(MainShop.getInstance().getCosmetiqueFile());
 			MainShop.getInstance().getShop().resetShop();
 			MainShop.getInstance().getEmperorShop().resetShop();
 			for(String str : commands) {
-				ChallengeMain.getInstance().getServer().dispatchCommand(player, str);
+				MainShop.getInstance().getServer().dispatchCommand(player, str);
 			}
 			return true;
 		}

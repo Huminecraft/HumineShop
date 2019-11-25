@@ -14,7 +14,6 @@ import org.bukkit.inventory.ItemStack;
 import humine.main.MainShop;
 import humine.main.ShopUtils;
 import humine.utils.Prestige;
-import humine.utils.cosmetiques.CommandParticle;
 import humine.utils.cosmetiques.TemporaryCommandParticle;
 import humine.utils.files.ShopLoader;
 import humine.utils.files.ShopSaver;
@@ -22,12 +21,12 @@ import humine.utils.shop.RandomShop;
 
 public class CreateTemporaryCommandParticle implements CommandExecutor{
 
-	private static final String COMMAND = "/tcommandparticle <name> <material> <humis> <pixel> <prestige> <empereur> <date> <cmd>";
+	private static final String COMMAND = "/tcommandparticle <name> <material> <humis> <pixel> <prestige> <date> <cmd>";
 	
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
 		
-		if(args.length < 8) {
+		if(args.length < 7) {
 			MainShop.sendMessage(sender, "Argument insuffisant");
 			MainShop.sendMessage(sender, COMMAND);
 			return false;
@@ -53,22 +52,18 @@ public class CreateTemporaryCommandParticle implements CommandExecutor{
 			return false;
 		}
 		
-		boolean emperor = false;
-		if(args[5].equalsIgnoreCase("true"))
-			emperor = true;
-		
 		LocalDate date = null;
-		if(ShopUtils.dateValid(args[6]))
-			date = ShopUtils.getDate(args[6]);
+		if(ShopUtils.dateValid(args[5]))
+			date = ShopUtils.getDate(args[5]);
 		
 		if(date == null) {
-			MainShop.sendMessage(sender, "Date " + args[6] + "Invalide");
+			MainShop.sendMessage(sender, "Date " + args[5] + "Invalide");
 			MainShop.sendMessage(sender, "Date : JJ/MM/AAAA");
 			return false;
 		}
 		
-		String command = args[7];
-		for(int i = 8; i < args.length; i++) 
+		String command = args[6];
+		for(int i = 7; i < args.length; i++) 
 			command += " " + args[i];
 		
 		Particle particle = ShopUtils.getParticle(command.split(" ")[5].split(":")[1]);
