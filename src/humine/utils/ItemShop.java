@@ -88,6 +88,14 @@ public abstract class ItemShop {
 		return item;
 	}
 	
+	public static ItemStack itemDemo() {
+		ItemStack item = new ItemStack(Material.CYAN_WOOL);
+		ItemMeta meta = item.getItemMeta();
+		meta.setDisplayName(ChatColor.AQUA + "Une petite demo ?");
+		item.setItemMeta(meta);
+		return item;
+	}
+	
 	@SuppressWarnings("deprecation")
 	public static ItemStack itemNextArrow() {
 		ItemStack item = new ItemStack(Material.PLAYER_HEAD);

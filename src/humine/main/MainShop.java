@@ -39,6 +39,7 @@ import humine.events.menuaccueil.ClickTemporaryShopButton;
 import humine.events.menuintermediaire.ClickEmpereurButton;
 import humine.events.menuintermediaire.ClickHatShopButton;
 import humine.events.menuintermediaire.ClickParticleShopButton;
+import humine.events.presentation.ClickDemoButton;
 import humine.events.presentation.ClickHumisBuyButton;
 import humine.events.presentation.ClickPixelBuyButton;
 import humine.events.presentation.ClickPlusButton;
@@ -233,8 +234,7 @@ public class MainShop extends JavaPlugin {
 		this.getServer().getPluginManager().registerEvents(new ClickQuitButton(), this);
 		this.getServer().getPluginManager().registerEvents(new ClickTemporaryShopButton(), this);
 
-		this.getServer().getPluginManager().registerEvents(new humine.events.menuintermediaire.ClickCustomHeadButton(),
-				this);
+		this.getServer().getPluginManager().registerEvents(new humine.events.menuintermediaire.ClickCustomHeadButton(), this);
 		this.getServer().getPluginManager().registerEvents(new ClickEmpereurButton(), this);
 		this.getServer().getPluginManager().registerEvents(new ClickHatShopButton(), this);
 		this.getServer().getPluginManager().registerEvents(new ClickParticleShopButton(), this);
@@ -255,6 +255,8 @@ public class MainShop extends JavaPlugin {
 		this.getServer().getPluginManager().registerEvents(new humine.events.stocks.ClickPreviousButton(), this);
 		this.getServer().getPluginManager().registerEvents(new humine.events.stocks.ClickQuitButton(), this);
 		this.getServer().getPluginManager().registerEvents(new ClickDisableButton(), this);
+		
+		this.getServer().getPluginManager().registerEvents(new ClickDemoButton(), this);
 	}
 
 	public static MainShop getInstance() {

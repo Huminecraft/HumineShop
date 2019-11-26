@@ -26,9 +26,12 @@ public abstract class Presentation {
 		Inventory inv = Bukkit.createInventory(player, (9 * 5), PRESENTATION_NAME + " #" + cosmetique.getId());
 
 		
-		inv.setItem(11, ItemShop.blockHumisBuy(cosmetique, player));
+		inv.setItem(10, ItemShop.blockHumisBuy(cosmetique, player));
+		inv.setItem(11, ItemShop.blockPixelBuy(cosmetique, player));
+		
 		inv.setItem(13, itemApercu());
-		inv.setItem(15, ItemShop.blockPixelBuy(cosmetique, player));
+		
+		inv.setItem(15, ItemShop.itemDemo());
 		
 		inv.setItem(inv.getSize() - 9, ItemShop.itemQuit());
 		inv.setItem(inv.getSize() - 5, ItemShop.itemCosmetiqueInfo(cosmetique));

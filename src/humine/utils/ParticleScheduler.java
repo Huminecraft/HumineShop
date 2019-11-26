@@ -64,6 +64,7 @@ public abstract class ParticleScheduler {
 	 */
 	public static void disableParticleCosmetique(Player player) {
 		BuyList.remove(player);
+		demoList.remove(player);
 	}
 	
 	/**
